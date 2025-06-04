@@ -22,9 +22,22 @@ public class User {
     private boolean active;
 
     @OneToMany (mappedBy = "user" )
-    List<Collection> collections = new ArrayList<>();
+    private List<Collection> collections = new ArrayList<>();
     @OneToMany (mappedBy = "user")
-    List<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
+    @OneToMany (mappedBy = "buyer")
+    private List<Order> buyerOrders = new ArrayList<>();
+    @OneToMany (mappedBy = "seller")
+    private List<Order> sellerOrders = new ArrayList<>();
+    @OneToMany (mappedBy = "buyer")
+    private List<Discussion> buyerDiscussion = new ArrayList<>();
+    @OneToMany (mappedBy = "seller")
+    private List<Discussion> sellerDiscussion = new ArrayList<>();
+    @OneToMany (mappedBy = "buyer")
+    private List<CartItem> buyerCartItems = new ArrayList<>();
+    @OneToMany (mappedBy = "seller")
+    private List<CartItem> sellerCartItems = new ArrayList<>();
+
 
     public User() {
     }
@@ -112,5 +125,69 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(List<Collection> collections) {
+        this.collections = collections;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Order> getBuyerOrders() {
+        return buyerOrders;
+    }
+
+    public void setBuyerOrders(List<Order> buyerOrders) {
+        this.buyerOrders = buyerOrders;
+    }
+
+    public List<Order> getSellerOrders() {
+        return sellerOrders;
+    }
+
+    public void setSellerOrders(List<Order> sellerOrders) {
+        this.sellerOrders = sellerOrders;
+    }
+
+    public List<Discussion> getBuyerDiscussion() {
+        return buyerDiscussion;
+    }
+
+    public void setBuyerDiscussion(List<Discussion> buyerDiscussion) {
+        this.buyerDiscussion = buyerDiscussion;
+    }
+
+    public List<Discussion> getSellerDiscussion() {
+        return sellerDiscussion;
+    }
+
+    public void setSellerDiscussion(List<Discussion> sellerDiscussion) {
+        this.sellerDiscussion = sellerDiscussion;
+    }
+
+    public List<CartItem> getBuyerCartItems() {
+        return buyerCartItems;
+    }
+
+    public void setBuyerCartItems(List<CartItem> buyerCartItems) {
+        this.buyerCartItems = buyerCartItems;
+    }
+
+    public List<CartItem> getSellerCartItems() {
+        return sellerCartItems;
+    }
+
+    public void setSellerCartItems(List<CartItem> sellerCartItems) {
+        this.sellerCartItems = sellerCartItems;
     }
 }

@@ -7,8 +7,7 @@ import java.time.LocalDate;
 
 public class ItemDto {
 
-
-        private int objectId;
+        private int itemId;
         private int collectionId;
         private int userId;
         private String objectName;
@@ -27,8 +26,11 @@ public class ItemDto {
         public ItemDto() {
         }
 
-    public ItemDto(int objectId, int collectionId, int userId, String objectName, String objectDescription, String objectPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate, double purchasePrice, double salePrice, String objectVersion, String objectEdition, boolean forSale, String visibilityStatus) {
-        this.objectId = objectId;
+    public ItemDto(int itemId, int collectionId, int userId, String objectName, String objectDescription,
+                   String objectPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
+                   double purchasePrice, double salePrice, String objectVersion, String objectEdition,
+                   boolean forSale, String visibilityStatus) {
+        this.itemId = itemId;
         this.collectionId = collectionId;
         this.userId = userId;
         this.objectName = objectName;
@@ -46,7 +48,7 @@ public class ItemDto {
     }
 
     public Item toItem(){
-            Item o = new Item(objectId,null, null,
+            Item o = new Item(itemId,null, null,
                     objectName, objectDescription,objectPhoto, condition,
                     purchaseDate,  releaseDate, purchasePrice,salePrice,
                     objectVersion, objectEdition, forSale,  visibilityStatus);
@@ -54,19 +56,19 @@ public class ItemDto {
         }
 
         public static ItemDto toDto(Item i){
-            return new ItemDto(i.getObjectId(),i.getCollection().getCollectionId(),
+            return new ItemDto(i.getItemId(),i.getCollection().getCollectionId(),
                     i.getUser().getUserId(), i.getObjectName(), i.getObjectDescription(),i.getObjectPhoto(),
                     i.getCondition(),i.getPurchaseDate(),i.getReleaseDate(),
                     i.getPurchasePrice(), i.getSalePrice(), i.getObjectVersion(),
                     i.getObjectEdition(), i.isForSale(), i.getVisibilityStatus());
         }
 
-        public int getObjectId() {
-            return objectId;
+        public int getItemId() {
+            return itemId;
         }
 
-        public void setObjectId(int objectId) {
-            this.objectId = objectId;
+        public void setItemId(int itemId) {
+            this.itemId = itemId;
         }
 
         public int getCollection() {
