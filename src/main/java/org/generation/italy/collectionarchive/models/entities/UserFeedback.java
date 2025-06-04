@@ -15,10 +15,10 @@ public class UserFeedback {
     @JoinColumn(name = "order_id")
     private Order orderId;
     @ManyToOne
-    @JoinColumn (name = "user_id")
+    @JoinColumn (name = "from_user")
     private User fromUser;
     @ManyToOne
-    @JoinColumn (name = "user_id")
+    @JoinColumn (name = "to_user")
     private User toUser;
     private int rating;
     private String comment;
@@ -47,11 +47,11 @@ public class UserFeedback {
         this.feedbackId = feedbackId;
     }
 
-    public Order getOrderId() {
+    public Order getOrder() {
         return orderId;
     }
 
-    public void setOrderId(Order orderId) {
+    public void setOrder(Order orderId) {
         this.orderId = orderId;
     }
 
@@ -60,7 +60,7 @@ public class UserFeedback {
     }
 
     public void setFromUser(User fromUser) {
-        fromUser = fromUser;
+        this.fromUser = fromUser;
     }
 
     public User getToUser() {

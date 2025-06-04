@@ -37,6 +37,15 @@ public class User {
     private List<CartItem> buyerCartItems = new ArrayList<>();
     @OneToMany (mappedBy = "seller")
     private List<CartItem> sellerCartItems = new ArrayList<>();
+    @OneToMany(mappedBy = "fromUser")
+    private List<UserFeedback>  feedbacksFromUser = new ArrayList<>();
+    @OneToMany (mappedBy =  "toUser")
+    List<UserFeedback> feedbacksToUser = new ArrayList<>();
+    @OneToMany (mappedBy = "user")
+    List<UserLike> userLikes = new ArrayList<>();
+    @OneToMany (mappedBy = "user")
+    List<UserComment> userComment = new ArrayList<>();
+
 
 
     public User() {
@@ -189,5 +198,37 @@ public class User {
 
     public void setSellerCartItems(List<CartItem> sellerCartItems) {
         this.sellerCartItems = sellerCartItems;
+    }
+
+    public List<UserFeedback> getFeedbacksToUser() {
+        return feedbacksToUser;
+    }
+
+    public void setFeedbacksToUser(List<UserFeedback> feedbacksToUser) {
+        this.feedbacksToUser = feedbacksToUser;
+    }
+
+    public List<UserFeedback> getFeedbacksFromUser() {
+        return feedbacksFromUser;
+    }
+
+    public void setFeedbacksFromUser(List<UserFeedback> feedbacksFromUser) {
+        this.feedbacksFromUser = feedbacksFromUser;
+    }
+
+    public List<UserLike> getUserLikes() {
+        return userLikes;
+    }
+
+    public void setUserLikes(List<UserLike> userLikes) {
+        this.userLikes = userLikes;
+    }
+
+    public List<UserComment> getUserComment() {
+        return userComment;
+    }
+
+    public void setUserComment(List<UserComment> userComment) {
+        this.userComment = userComment;
     }
 }

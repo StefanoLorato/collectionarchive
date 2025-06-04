@@ -2,7 +2,6 @@ package org.generation.italy.collectionarchive.restdto;
 
 import jakarta.persistence.*;
 import org.generation.italy.collectionarchive.models.entities.User;
-import org.generation.italy.collectionarchive.models.entities.UserContact;
 import org.generation.italy.collectionarchive.models.entities.UserFeedback;
 
 import java.time.LocalDateTime;
@@ -11,8 +10,8 @@ public class UserFeedbackDto {
 
         private int feedbackId;
         private int orderId;
-        private User fromUser;
-        private User toUser;
+        private int fromUser;
+        private int toUser;
         private int rating;
         private String comment;
         private LocalDateTime createdAt;
@@ -20,7 +19,7 @@ public class UserFeedbackDto {
         public UserFeedbackDto() {
         }
 
-        public UserFeedbackDto(int feedbackId, int orderId, User fromUser, User toUser, int rating,
+        public UserFeedbackDto(int feedbackId, int orderId, int fromUser, int toUser, int rating,
                             String comment, LocalDateTime createdAt) {
             this.feedbackId = feedbackId;
             this.orderId = orderId;
@@ -36,8 +35,8 @@ public class UserFeedbackDto {
             return uc;
         }
 
-        public UserFeedbackDto toDto(UserFeedback uc){
-            return new UserFeedbackDto(uc.getFeedbackId(),uc.getOrder().getOrderId(), uc.getFromUser(), uc.getToUser(),
+        public static UserFeedbackDto toDto(UserFeedback uc){
+            return new UserFeedbackDto(uc.getFeedbackId(),uc.getOrder().getOrderId(), uc.getFromUser().getUserId(), uc.getToUser().getUserId(),
             uc.getRating(), uc.getComment(), uc.getCreatedAt());
         }
 
@@ -57,19 +56,19 @@ public class UserFeedbackDto {
             this.orderId = orderId;
         }
 
-        public User getFromuser() {
+        public int getFromuser() {
             return fromUser;
         }
 
-        public void setFromuser(User fromuser) {
+        public void setFromuser(int fromuser) {
             fromUser = fromuser;
         }
 
-        public User getToUser() {
+        public int getToUser() {
             return toUser;
         }
 
-        public void setToUser(User toUser) {
+        public void setToUser(int toUser) {
             this.toUser = toUser;
         }
 
@@ -98,4 +97,3 @@ public class UserFeedbackDto {
         }
     }
 
-}
