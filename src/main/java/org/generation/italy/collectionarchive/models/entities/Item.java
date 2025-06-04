@@ -46,7 +46,7 @@ public class Item {
     @OneToMany (mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<>();
     @OneToMany (mappedBy = "item")
-    private List<Discussion> discussion = new ArrayList<>();
+    private List<Discussion> discussions = new ArrayList<>();
     @OneToMany (mappedBy = "item")
     private List<CartItem> cartItems = new ArrayList<>();
 

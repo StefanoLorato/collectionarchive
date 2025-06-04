@@ -1,44 +1,27 @@
-package org.generation.italy.collectionarchive.models.entities;
+package org.generation.italy.collectionarchive.restdto;
 
-import jakarta.persistence.*;
+
+import org.generation.italy.collectionarchive.models.entities.*;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "reports")
-public class Report {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "report_id")
+public class ReportDto {
     private int reportId;
-    @ManyToOne
-    @JoinColumn(name = "reporter_id")
-    private User reporter;
-    @ManyToOne
-    @JoinColumn(name = "reported_user_id")
-    private User reportedUser;
-    @ManyToOne
-    @JoinColumn(name = "object_id")
-    private Item item;
-    @ManyToOne
-    @JoinColumn(name = "collection_id")
-    private Collection collection;
-    @ManyToOne
-    @JoinColumn(name = "comment_id")
-    private UserComment comment;
-    @ManyToOne
-    @JoinColumn(name = "message_id")
-    private Message message;
+    private int reporter;
+    private int reportedUser;
+    private int item;
+    private int collection;
+    private int comment;
+    private int message;
     private String content;
     private String status;
-    @Column (name = "created_at")
     private LocalDateTime createdAt;
 
-    public Report() {
+    public ReportDto() {
     }
 
-    public Report(int reportId, User reporter, User reportedUser, Item item, Collection collection, UserComment comment,
-                  Message message, String content, String status, LocalDateTime createdAt) {
+    public ReportDto(int reportId, int reporter, int reportedUser, int item, int collection, int comment, int message,
+                     String content, String status, LocalDateTime createdAt) {
         this.reportId = reportId;
         this.reporter = reporter;
         this.reportedUser = reportedUser;
@@ -51,6 +34,16 @@ public class Report {
         this.createdAt = createdAt;
     }
 
+    public Report toReport(){
+        return new Report(reportId, null, null, null, null, null, null, content, status, createdAt);
+    }
+
+    public static ReportDto toDto(Report r){
+        return new ReportDto(r.getReportId(), r.getReporter().getUserId(), r.getReportedUser().getUserId(),
+                r.getItem().getItemId(), r.getCollection().getCollectionId(), r.getComment().getCommentId(),
+                r.getMessage().getMessageId(), r.getContent(), r.getStatus(), r.getCreatedAt());
+    }
+
     public int getReportId() {
         return reportId;
     }
@@ -58,45 +51,45 @@ public class Report {
         this.reportId = reportId;
     }
 
-    public User getReporter() {
+    public int getReporter() {
         return reporter;
     }
-    public void setReporter(User reporter) {
+    public void setReporter(int reporter) {
         this.reporter = reporter;
     }
 
-    public User getReportedUser() {
+    public int getReportedUser() {
         return reportedUser;
     }
-    public void setReportedUser(User reportedUser) {
+    public void setReportedUser(int reportedUser) {
         this.reportedUser = reportedUser;
     }
 
-    public Item getItem() {
+    public int getItem() {
         return item;
     }
-    public void setItem(Item item) {
+    public void setItem(int item) {
         this.item = item;
     }
 
-    public Collection getCollection() {
+    public int getCollection() {
         return collection;
     }
-    public void setCollection(Collection collection) {
+    public void setCollection(int collection) {
         this.collection = collection;
     }
 
-    public UserComment getComment() {
+    public int getComment() {
         return comment;
     }
-    public void setComment(UserComment comment) {
+    public void setComment(int comment) {
         this.comment = comment;
     }
 
-    public Message getMessage() {
+    public int getMessage() {
         return message;
     }
-    public void setMessage(Message message) {
+    public void setMessage(int message) {
         this.message = message;
     }
 
