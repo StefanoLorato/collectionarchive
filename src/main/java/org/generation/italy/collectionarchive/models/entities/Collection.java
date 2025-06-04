@@ -37,7 +37,13 @@ public class Collection {
     private String visibilityStatus;
 
     @OneToMany (mappedBy = "collection")
-    List<Item> items = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
+    @OneToMany (mappedBy = "collection")
+    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany (mappedBy = "collection")
+    private List<Discussion> discussions = new ArrayList<>();
+    @OneToMany (mappedBy = "collection")
+    private List<CartItem> cartItems = new ArrayList<>();
 
 
     public Collection() {

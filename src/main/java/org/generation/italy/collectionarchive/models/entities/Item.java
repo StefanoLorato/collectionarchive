@@ -3,6 +3,8 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "objects")
@@ -10,7 +12,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "object_id")
-    private int objectId;
+    private int itemId;
     @ManyToOne
     @JoinColumn (name = "collection_id")
     private Collection collection;
@@ -41,14 +43,21 @@ public class Item {
     @Column (name ="visibility_status")
     private String visibilityStatus;
 
+    @OneToMany (mappedBy = "item")
+    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany (mappedBy = "item")
+    private List<Discussion> discussion = new ArrayList<>();
+    @OneToMany (mappedBy = "item")
+    private List<CartItem> cartItems = new ArrayList<>();
+
     public Item() {
     }
 
-    public Item(int objectId, Collection collection, User user,
+    public Item(int itemId, Collection collection, User user,
                 String objectName, String objectDescription, String objectPhoto, String condition,
                 LocalDate purchaseDate, LocalDate releaseDate, double purchasePrice, double salePrice,
                 String objectVersion, String objectEdition, boolean forSale, String visibilityStatus) {
-        this.objectId = objectId;
+        this.itemId = itemId;
         this.collection = collection;
         this.user = user;
         this.objectName = objectName;
@@ -65,12 +74,12 @@ public class Item {
         this.visibilityStatus = visibilityStatus;
     }
 
-    public int getObjectId() {
-        return objectId;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setObjectId(int objectId) {
-        this.objectId = objectId;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public Collection getCollection() {
