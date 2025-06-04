@@ -25,6 +25,8 @@ public class User {
     List<Collection> collections = new ArrayList<>();
     @OneToMany (mappedBy = "user")
     List<Item> items = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    List<UserContact> userContacts = new ArrayList<>();
 
     public User() {
     }

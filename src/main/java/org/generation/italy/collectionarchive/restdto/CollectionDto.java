@@ -17,9 +17,7 @@ public class CollectionDto {
     private String description;
     private LocalDate collectionDate;
     private LocalDateTime createAt;
-
     private boolean forSale;
-
     private double salePrice;
     private String visibilityStatus;
 
