@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Profile("jpa")
 public class JpaCollectionService implements CollectionService{
     private CollectionRepository collecionRepo;
     private UserRepository userRepo;

@@ -13,7 +13,7 @@ public class Tag {
     @Column(name = "tag_id")
     private int tagId;
     @Column(name = "tag_name")
-    private int tagName;
+    private String tagName;
 
     @OneToMany (mappedBy = "tag")
     private List<ItemTag> itemTags = new ArrayList<>();
@@ -21,7 +21,7 @@ public class Tag {
     public Tag() {
     }
 
-    public Tag(int tagId, int tagName) {
+    public Tag(int tagId, String tagName) {
         this.tagId = tagId;
         this.tagName = tagName;
     }
@@ -34,11 +34,11 @@ public class Tag {
         this.tagId = tagId;
     }
 
-    public int getTagName() {
+    public String getTagName() {
         return tagName;
     }
 
-    public void setTagName(int tagName) {
+    public void setTagName(String tagName) {
         this.tagName = tagName;
     }
 

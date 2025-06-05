@@ -4,12 +4,12 @@ import org.generation.italy.collectionarchive.models.entities.Tag;
 
 public class TagDto {
     private int tagId;
-    private int tagName;
+    private String tagName;
 
     public TagDto() {
     }
 
-    public TagDto(int tagId, int tagName) {
+    public TagDto(int tagId, String tagName) {
         this.tagId = tagId;
         this.tagName = tagName;
     }
@@ -31,11 +31,11 @@ public class TagDto {
         this.tagId = tagId;
     }
 
-    public int getTagName() {
+    public String getTagName() {
         return tagName;
     }
 
-    public void setTagName(int tagName) {
+    public void setTagName(String tagName) {
         this.tagName = tagName;
     }
 }

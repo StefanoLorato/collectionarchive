@@ -72,7 +72,7 @@ public class User {
     //REPORTS
     @OneToMany(mappedBy = "reporter")
     private List<Report>  reporters = new ArrayList<>();
-    @OneToMany (mappedBy =  "reportedId")
+    @OneToMany (mappedBy =  "reportedUser")
     private List<Report> reportedUsers = new ArrayList<>();
 
 

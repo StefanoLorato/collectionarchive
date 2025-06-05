@@ -17,10 +17,10 @@ public class UserFeedback {
     @JoinColumn(name = "order_id")
     private Order orderId;
     @ManyToOne
-    @JoinColumn (name = "from_user")
+    @JoinColumn (name = "from_user_id")
     private User fromUser;
     @ManyToOne
-    @JoinColumn (name = "to_user")
+    @JoinColumn (name = "to_user_id")
     private User toUser;
     private int rating;
     private String comment;

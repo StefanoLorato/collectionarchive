@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "shipping_adress")
+@Table(name = "shipping_addresses")
 public class ShippingAdress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +19,12 @@ public class ShippingAdress {
     @Column(name = "country")
     private String country;
     @Column(name = "postalcode")
-    private int postalCode;
+    private String postalCode;
 
     public ShippingAdress() {
     }
 
-    public ShippingAdress(int shippingId, User user, String address, String city, String country, int postalCode) {
+    public ShippingAdress(int shippingId, User user, String address, String city, String country, String postalCode) {
         this.shippingId = shippingId;
         this.user = user;
         this.address = address;
@@ -73,11 +73,11 @@ public class ShippingAdress {
         this.country = country;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 }

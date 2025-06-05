@@ -9,9 +9,9 @@ public class ShippingDto {
     private String address;
     private String city;
     private String country;
-    private int postalCode;
+    private String postalCode;
 
-    public ShippingDto(int shippingId, int userId, String address, String city, String country, int postalCode) {
+    public ShippingDto(int shippingId, int userId, String address, String city, String country, String postalCode) {
         this.shippingId = shippingId;
         this.userId = userId;
         this.address = address;
@@ -69,11 +69,11 @@ public class ShippingDto {
         this.country = country;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 }
