@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "shipping_addresses")
-public class ShippingAdress {
+public class ShippingAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shipping_id")
@@ -21,10 +21,10 @@ public class ShippingAdress {
     @Column(name = "postalcode")
     private String postalCode;
 
-    public ShippingAdress() {
+    public ShippingAddress() {
     }
 
-    public ShippingAdress(int shippingId, User user, String address, String city, String country, String postalCode) {
+    public ShippingAddress(int shippingId, User user, String address, String city, String country, String postalCode) {
         this.shippingId = shippingId;
         this.user = user;
         this.address = address;

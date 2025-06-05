@@ -61,7 +61,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Bookmark> userBookmarks = new ArrayList<>();
     @OneToMany (mappedBy = "user")
-    private List<ShippingAdress> shippingAdresses = new ArrayList<>();
+    private List<ShippingAddress> shippingAddresses = new ArrayList<>();
 
     //NOTIFICATION
     @OneToMany (mappedBy = "user")
@@ -284,12 +284,12 @@ public class User {
         this.userBookmarks = userBookmarks;
     }
 
-    public List<ShippingAdress> getShippingAdresses() {
-        return shippingAdresses;
+    public List<ShippingAddress> getShippingAdresses() {
+        return shippingAddresses;
     }
 
-    public void setShippingAdresses(List<ShippingAdress> shippingAdresses) {
-        this.shippingAdresses = shippingAdresses;
+    public void setShippingAdresses(List<ShippingAddress> shippingAddresses) {
+        this.shippingAddresses = shippingAddresses;
     }
 
     public List<Notification> getUserNotification() {

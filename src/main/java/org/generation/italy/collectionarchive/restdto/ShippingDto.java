@@ -1,7 +1,6 @@
 package org.generation.italy.collectionarchive.restdto;
 
-import org.generation.italy.collectionarchive.models.entities.ShippingAdress;
-import org.generation.italy.collectionarchive.models.entities.User;
+import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 
 public class ShippingDto {
     private int shippingId;
@@ -19,12 +18,12 @@ public class ShippingDto {
         this.country = country;
         this.postalCode = postalCode;
     }
-    public ShippingAdress toShip(){
-        ShippingAdress s = new ShippingAdress(shippingId, null, address, city, country, postalCode);
+    public ShippingAddress toShip(){
+        ShippingAddress s = new ShippingAddress(shippingId, null, address, city, country, postalCode);
         return s;
     }
 
-    public static ShippingDto toDto(ShippingAdress s){
+    public static ShippingDto toDto(ShippingAddress s){
         return new ShippingDto(s.getShippingId(), s.getUser().getUserId(), s.getAddress(), s.getCity(), s.getCountry(), s.getPostalCode());
 
     }
