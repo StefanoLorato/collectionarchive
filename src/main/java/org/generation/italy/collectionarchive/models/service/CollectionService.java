@@ -26,4 +26,5 @@ public interface CollectionService {
     OrderItem createOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
     boolean deleteOrderItem(int orderItemId) throws DataException;
     boolean updateOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
+
 }
