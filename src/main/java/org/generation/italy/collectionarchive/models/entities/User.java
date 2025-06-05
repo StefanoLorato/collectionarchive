@@ -25,27 +25,55 @@ public class User {
     private List<Collection> collections = new ArrayList<>();
     @OneToMany (mappedBy = "user")
     private List<Item> items = new ArrayList<>();
+
+    //ORDERS
     @OneToMany (mappedBy = "buyer")
     private List<Order> buyerOrders = new ArrayList<>();
     @OneToMany (mappedBy = "seller")
     private List<Order> sellerOrders = new ArrayList<>();
+
+    //DISCUSSIONS
     @OneToMany (mappedBy = "buyer")
-    private List<Discussion> buyerDiscussion = new ArrayList<>();
+    private List<Discussion> buyerDiscussions = new ArrayList<>();
     @OneToMany (mappedBy = "seller")
-    private List<Discussion> sellerDiscussion = new ArrayList<>();
+    private List<Discussion> sellerDiscussions = new ArrayList<>();
+
+    //CARTITEMS
     @OneToMany (mappedBy = "buyer")
     private List<CartItem> buyerCartItems = new ArrayList<>();
     @OneToMany (mappedBy = "seller")
     private List<CartItem> sellerCartItems = new ArrayList<>();
+
+    //USERS
+    @OneToMany(mappedBy = "user")
+    private List<UserContact>  userContacts = new ArrayList<>();
     @OneToMany(mappedBy = "fromUser")
     private List<UserFeedback>  feedbacksFromUser = new ArrayList<>();
     @OneToMany (mappedBy =  "toUser")
-    List<UserFeedback> feedbacksToUser = new ArrayList<>();
+    private List<UserFeedback> feedbacksToUser = new ArrayList<>();
     @OneToMany (mappedBy = "user")
-    List<UserLike> userLikes = new ArrayList<>();
+    private List<UserLike> userLikes = new ArrayList<>();
     @OneToMany (mappedBy = "user")
-    List<UserComment> userComment = new ArrayList<>();
+    private List<UserComment> userComment = new ArrayList<>();
+    @OneToMany (mappedBy = "user")
+    private List<UserPreferredCategory> userPreferredCategories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Bookmark> userBookmarks = new ArrayList<>();
+    @OneToMany (mappedBy = "user")
+    private List<ShippingAdress> shippingAdresses = new ArrayList<>();
+
+    //NOTIFICATION
+    @OneToMany (mappedBy = "user")
+    private List<Notification> userNotification = new ArrayList<>();
+    @OneToMany (mappedBy = "fromUser")
+    private List<Notification> fromUserNotification = new ArrayList<>();
+
+    //REPORTS
+    @OneToMany(mappedBy = "reporter")
+    private List<Report>  reporters = new ArrayList<>();
+    @OneToMany (mappedBy =  "reportedId")
+    private List<Report> reportedUsers = new ArrayList<>();
 
 
     public User() {
@@ -168,20 +196,20 @@ public class User {
         this.sellerOrders = sellerOrders;
     }
 
-    public List<Discussion> getBuyerDiscussion() {
-        return buyerDiscussion;
+    public List<Discussion> getBuyerDiscussions() {
+        return buyerDiscussions;
     }
 
-    public void setBuyerDiscussion(List<Discussion> buyerDiscussion) {
-        this.buyerDiscussion = buyerDiscussion;
+    public void setBuyerDiscussions(List<Discussion> buyerDiscussions) {
+        this.buyerDiscussions = buyerDiscussions;
     }
 
-    public List<Discussion> getSellerDiscussion() {
-        return sellerDiscussion;
+    public List<Discussion> getSellerDiscussions() {
+        return sellerDiscussions;
     }
 
-    public void setSellerDiscussion(List<Discussion> sellerDiscussion) {
-        this.sellerDiscussion = sellerDiscussion;
+    public void setSellerDiscussions(List<Discussion> sellerDiscussions) {
+        this.sellerDiscussions = sellerDiscussions;
     }
 
     public List<CartItem> getBuyerCartItems() {
@@ -230,5 +258,69 @@ public class User {
 
     public void setUserComment(List<UserComment> userComment) {
         this.userComment = userComment;
+    }
+
+    public List<UserContact> getUserContacts() {
+        return userContacts;
+    }
+
+    public void setUserContacts(List<UserContact> userContacts) {
+        this.userContacts = userContacts;
+    }
+
+    public List<UserPreferredCategory> getUserPreferredCategories() {
+        return userPreferredCategories;
+    }
+
+    public void setUserPreferredCategories(List<UserPreferredCategory> userPreferredCategories) {
+        this.userPreferredCategories = userPreferredCategories;
+    }
+
+    public List<Bookmark> getUserBookmarks() {
+        return userBookmarks;
+    }
+
+    public void setUserBookmarks(List<Bookmark> userBookmarks) {
+        this.userBookmarks = userBookmarks;
+    }
+
+    public List<ShippingAdress> getShippingAdresses() {
+        return shippingAdresses;
+    }
+
+    public void setShippingAdresses(List<ShippingAdress> shippingAdresses) {
+        this.shippingAdresses = shippingAdresses;
+    }
+
+    public List<Notification> getUserNotification() {
+        return userNotification;
+    }
+
+    public void setUserNotification(List<Notification> userNotification) {
+        this.userNotification = userNotification;
+    }
+
+    public List<Notification> getFromUserNotification() {
+        return fromUserNotification;
+    }
+
+    public void setFromUserNotification(List<Notification> fromUserNotification) {
+        this.fromUserNotification = fromUserNotification;
+    }
+
+    public List<Report> getReporters() {
+        return reporters;
+    }
+
+    public void setReporters(List<Report> reporters) {
+        this.reporters = reporters;
+    }
+
+    public List<Report> getReportedUsers() {
+        return reportedUsers;
+    }
+
+    public void setReportedUsers(List<Report> reportedUsers) {
+        this.reportedUsers = reportedUsers;
     }
 }

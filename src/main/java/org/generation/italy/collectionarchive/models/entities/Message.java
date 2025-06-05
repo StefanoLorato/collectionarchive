@@ -3,6 +3,8 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "messages")
@@ -17,6 +19,11 @@ public class Message {
     private String content;
     @Column (name = "sent_at")
     private LocalDateTime sentAt;
+
+    @OneToMany(mappedBy = "message")
+    List<Notification> messageNotification = new ArrayList<>();
+    @OneToMany(mappedBy = "message")
+    private List<Report> reportedMessages = new ArrayList<>();
 
     public Message() {
     }
@@ -54,5 +61,21 @@ public class Message {
     }
     public void setSentAt(LocalDateTime sentAt) {
         this.sentAt = sentAt;
+    }
+
+    public List<Notification> getMessageNotification() {
+        return messageNotification;
+    }
+
+    public void setMessageNotification(List<Notification> messageNotification) {
+        this.messageNotification = messageNotification;
+    }
+
+    public List<Report> getReportedMessages() {
+        return reportedMessages;
+    }
+
+    public void setReportedMessages(List<Report> reportedMessages) {
+        this.reportedMessages = reportedMessages;
     }
 }

@@ -1,36 +1,32 @@
-package org.generation.italy.collectionarchive.models.entities;
+package org.generation.italy.collectionarchive.restdto;
 
-import jakarta.persistence.*;
+import org.generation.italy.collectionarchive.models.entities.ShippingAdress;
+import org.generation.italy.collectionarchive.models.entities.User;
 
-@Entity
-@Table(name = "shipping_adress")
-public class ShippingAdress {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "shipping_id")
+public class ShippingDto {
     private int shippingId;
-    @ManyToOne
-    @JoinColumn (name = "user_id")
-    private User user;
-    @Column(name = "address")
+    private int userId;
     private String address;
-    @Column(name = "city")
     private String city;
-    @Column(name = "country")
     private String country;
-    @Column(name = "postalcode")
     private int postalCode;
 
-    public ShippingAdress() {
-    }
-
-    public ShippingAdress(int shippingId, User user, String address, String city, String country, int postalCode) {
+    public ShippingDto(int shippingId, int userId, String address, String city, String country, int postalCode) {
         this.shippingId = shippingId;
-        this.user = user;
+        this.userId = userId;
         this.address = address;
         this.city = city;
         this.country = country;
         this.postalCode = postalCode;
+    }
+    public ShippingAdress toShip(){
+        ShippingAdress s = new ShippingAdress(shippingId, null, address, city, country, postalCode);
+        return s;
+    }
+
+    public static ShippingDto toDto(ShippingAdress s){
+        return new ShippingDto(s.getShippingId(), s.getUser().getUserId(), s.getAddress(), s.getCity(), s.getCountry(), s.getPostalCode());
+
     }
 
     public int getShippingId() {
@@ -41,12 +37,12 @@ public class ShippingAdress {
         this.shippingId = shippingId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getAddress() {
@@ -81,3 +77,7 @@ public class ShippingAdress {
         this.postalCode = postalCode;
     }
 }
+
+
+
+

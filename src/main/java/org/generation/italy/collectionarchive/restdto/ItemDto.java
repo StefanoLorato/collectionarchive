@@ -10,57 +10,57 @@ public class ItemDto {
         private int itemId;
         private int collectionId;
         private int userId;
-        private String objectName;
-        private String objectDescription;
-        private String objectPhoto;
+        private String itemName;
+        private String itemDescription;
+        private String itemPhoto;
         private String condition;
         private LocalDate purchaseDate;
         private LocalDate releaseDate;
         private double purchasePrice;
         private double salePrice;
-        private String objectVersion;
-        private String objectEdition;
+        private String itemVersion;
+        private String itemEdition;
         private boolean forSale;
         private String visibilityStatus;
 
         public ItemDto() {
         }
 
-    public ItemDto(int itemId, int collectionId, int userId, String objectName, String objectDescription,
-                   String objectPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
-                   double purchasePrice, double salePrice, String objectVersion, String objectEdition,
+    public ItemDto(int itemId, int collectionId, int userId, String itemName, String itemDescription,
+                   String itemPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
+                   double purchasePrice, double salePrice, String itemVersion, String itemEdition,
                    boolean forSale, String visibilityStatus) {
         this.itemId = itemId;
         this.collectionId = collectionId;
         this.userId = userId;
-        this.objectName = objectName;
-        this.objectDescription = objectDescription;
-        this.objectPhoto = objectPhoto;
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
+        this.itemPhoto = itemPhoto;
         this.condition = condition;
         this.purchaseDate = purchaseDate;
         this.releaseDate = releaseDate;
         this.purchasePrice = purchasePrice;
         this.salePrice = salePrice;
-        this.objectVersion = objectVersion;
-        this.objectEdition = objectEdition;
+        this.itemVersion = itemVersion;
+        this.itemEdition = itemEdition;
         this.forSale = forSale;
         this.visibilityStatus = visibilityStatus;
     }
 
     public Item toItem(){
             Item o = new Item(itemId,null, null,
-                    objectName, objectDescription,objectPhoto, condition,
+                    itemName, itemDescription, itemPhoto, condition,
                     purchaseDate,  releaseDate, purchasePrice,salePrice,
-                    objectVersion, objectEdition, forSale,  visibilityStatus);
+                    itemVersion, itemEdition, forSale,  visibilityStatus);
             return o;
         }
 
         public static ItemDto toDto(Item i){
             return new ItemDto(i.getItemId(),i.getCollection().getCollectionId(),
-                    i.getUser().getUserId(), i.getObjectName(), i.getObjectDescription(),i.getObjectPhoto(),
+                    i.getUser().getUserId(), i.getItemName(), i.getItemDescription(),i.getItemPhoto(),
                     i.getCondition(),i.getPurchaseDate(),i.getReleaseDate(),
-                    i.getPurchasePrice(), i.getSalePrice(), i.getObjectVersion(),
-                    i.getObjectEdition(), i.isForSale(), i.getVisibilityStatus());
+                    i.getPurchasePrice(), i.getSalePrice(), i.getItemVersion(),
+                    i.getItemEdition(), i.isForSale(), i.getVisibilityStatus());
         }
 
         public int getItemId() {
@@ -87,28 +87,28 @@ public class ItemDto {
             this.userId = userId;
         }
 
-        public String getObjectName() {
-            return objectName;
+        public String getItemName() {
+            return itemName;
         }
 
-        public void setObjectName(String objectName) {
-            this.objectName = objectName;
+        public void setItemName(String itemName) {
+            this.itemName = itemName;
         }
 
-        public String getObjectDescription() {
-            return objectDescription;
+        public String getItemDescription() {
+            return itemDescription;
         }
 
-        public void setObjectDescription(String objectDescription) {
-            this.objectDescription = objectDescription;
+        public void setItemDescription(String itemDescription) {
+            this.itemDescription = itemDescription;
         }
 
-        public String getObjectPhoto() {
-            return objectPhoto;
+        public String getItemPhoto() {
+            return itemPhoto;
         }
 
-        public void setObjectPhoto(String objectPhoto) {
-            this.objectPhoto = objectPhoto;
+        public void setItemPhoto(String itemPhoto) {
+            this.itemPhoto = itemPhoto;
         }
 
         public String getCondition() {
@@ -151,20 +151,20 @@ public class ItemDto {
             this.salePrice = salePrice;
         }
 
-        public String getObjectVersion() {
-            return objectVersion;
+        public String getItemVersion() {
+            return itemVersion;
         }
 
-        public void setObjectVersion(String objectVersion) {
-            this.objectVersion = objectVersion;
+        public void setItemVersion(String itemVersion) {
+            this.itemVersion = itemVersion;
         }
 
-        public String getObjectEdition() {
-            return objectEdition;
+        public String getItemEdition() {
+            return itemEdition;
         }
 
-        public void setObjectEdition(String objectEdition) {
-            this.objectEdition = objectEdition;
+        public void setItemEdition(String itemEdition) {
+            this.itemEdition = itemEdition;
         }
 
         public boolean isForSale() {

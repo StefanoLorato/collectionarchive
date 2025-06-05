@@ -1,24 +1,21 @@
 package org.generation.italy.collectionarchive.restdto;
 
-import jakarta.persistence.*;
-import org.generation.italy.collectionarchive.models.entities.Item;
-import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.entities.UserComment;
 
 public class UserCommentDto {
 
     private int commentId;
-    private int user;
-    private int item;
+    private int userId;
+    private int itemId;
     private String comment;
 
     public UserCommentDto() {
     }
 
-    public UserCommentDto(int commentId, int user, int item, String comment) {
+    public UserCommentDto(int commentId, int userId, int itemId, String comment) {
         this.commentId = commentId;
-        this.user = user;
-        this.item = item;
+        this.userId = userId;
+        this.itemId = itemId;
         this.comment = comment;
     }
 
@@ -41,20 +38,20 @@ public class UserCommentDto {
         this.commentId = commentId;
     }
 
-    public int getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(int user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getItem() {
-        return item;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setItem(int item) {
-        this.item = item;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getComment() {

@@ -2,6 +2,9 @@ package org.generation.italy.collectionarchive.models.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="user_likes")
 public class UserLike {
@@ -13,8 +16,12 @@ public class UserLike {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "object_id")
+    @JoinColumn(name = "item_id")
     private Item item;
+
+    @OneToMany(mappedBy = "like")
+    List<Notification> likeNotification = new ArrayList<>();
+
 
     public UserLike() {
     }
@@ -48,4 +55,14 @@ public class UserLike {
     public void setItem(Item item) {
         this.item = item;
     }
+
+    public List<Notification> getLikeNotification() {
+        return likeNotification;
+    }
+
+    public void setLikeNotification(List<Notification> likeNotification) {
+        this.likeNotification = likeNotification;
+    }
+
+
 }

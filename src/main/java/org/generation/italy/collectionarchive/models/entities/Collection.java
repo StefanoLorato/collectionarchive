@@ -38,13 +38,24 @@ public class Collection {
 
     @OneToMany (mappedBy = "collection")
     private List<Item> items = new ArrayList<>();
+
     @OneToMany (mappedBy = "collection")
     private List<OrderItem> orderItems = new ArrayList<>();
+
     @OneToMany (mappedBy = "collection")
     private List<Discussion> discussions = new ArrayList<>();
+
     @OneToMany (mappedBy = "collection")
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "collection")
+    private List<Bookmark> collectionBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "collection")
+    private List<Report>  reportedCollections = new ArrayList<>();
+
+    @OneToMany(mappedBy = "collection")
+    private List<WishList> desiredItems = new ArrayList<>();
 
     public Collection() {
     }
@@ -160,4 +171,62 @@ public class Collection {
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
     }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<Discussion> getDiscussions() {
+        return discussions;
+    }
+
+    public void setDiscussions(List<Discussion> discussions) {
+        this.discussions = discussions;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public List<Bookmark> getCollectionBookmarks() {
+        return collectionBookmarks;
+    }
+
+    public void setCollectionBookmarks(List<Bookmark> collectionBookmarks) {
+        this.collectionBookmarks = collectionBookmarks;
+    }
+
+    public List<Report> getReportedCollections() {
+        return reportedCollections;
+    }
+
+    public void setReportedCollections(List<Report> reportedCollections) {
+        this.reportedCollections = reportedCollections;
+    }
+
+    public List<WishList> getDesiredItems() {
+        return desiredItems;
+    }
+
+    public void setDesiredItems(List<WishList> desiredItems) {
+        this.desiredItems = desiredItems;
+    }
+
+
 }
