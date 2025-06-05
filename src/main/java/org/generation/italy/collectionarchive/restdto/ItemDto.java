@@ -75,7 +75,7 @@ public class ItemDto {
             return collectionId;
         }
 
-        public void setCollection(Collection collection) {
+        public void setCollection(int collectionId) {
             this.collectionId = collectionId;
         }
 
@@ -83,7 +83,7 @@ public class ItemDto {
             return userId;
         }
 
-        public void setUser(Collection user) {
+        public void setUser(int userId) {
             this.userId = userId;
         }
 
