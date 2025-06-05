@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 public class ItemDto {
 
-
         private int itemId;
         private int collectionId;
         private int userId;
@@ -27,7 +26,10 @@ public class ItemDto {
         public ItemDto() {
         }
 
-    public ItemDto(int itemId, int collectionId, int userId, String objectName, String objectDescription, String objectPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate, double purchasePrice, double salePrice, String objectVersion, String objectEdition, boolean forSale, String visibilityStatus) {
+    public ItemDto(int itemId, int collectionId, int userId, String objectName, String objectDescription,
+                   String objectPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
+                   double purchasePrice, double salePrice, String objectVersion, String objectEdition,
+                   boolean forSale, String visibilityStatus) {
         this.itemId = itemId;
         this.collectionId = collectionId;
         this.userId = userId;

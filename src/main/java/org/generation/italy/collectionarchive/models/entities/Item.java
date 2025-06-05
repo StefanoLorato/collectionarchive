@@ -3,6 +3,8 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "objects")
@@ -40,6 +42,17 @@ public class Item {
     private boolean forSale;
     @Column (name ="visibility_status")
     private String visibilityStatus;
+
+    @OneToMany (mappedBy = "item")
+    private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany (mappedBy = "item")
+    private List<Discussion> discussions = new ArrayList<>();
+    @OneToMany (mappedBy = "item")
+    private List<CartItem> cartItems = new ArrayList<>();
+    @OneToMany ( mappedBy = "item")
+    private List<UserLike> itemsLikes = new ArrayList<>();
+    @OneToMany(mappedBy = "item")
+    private List<UserComment> itemsComments = new ArrayList<>();
 
     public Item() {
     }
@@ -183,5 +196,45 @@ public class Item {
 
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<Discussion> getDiscussions() {
+        return discussions;
+    }
+
+    public void setDiscussions(List<Discussion> discussions) {
+        this.discussions = discussions;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public List<UserLike> getItemsLikes() {
+        return itemsLikes;
+    }
+
+    public void setItemsLikes(List<UserLike> itemsLikes) {
+        this.itemsLikes = itemsLikes;
+    }
+
+    public List<UserComment> getItemsComments() {
+        return itemsComments;
+    }
+
+    public void setItemsComments(List<UserComment> itemsComments) {
+        this.itemsComments = itemsComments;
     }
 }
