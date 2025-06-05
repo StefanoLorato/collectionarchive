@@ -40,7 +40,7 @@ public class NotificationDto {
     public static NotificationDto toDto(Notification n){
         return new NotificationDto(n.getNotificationId(), n.getUser().getUserId(), n.getFromUser().getUserId(),
                                     n.getLike().getLikeId(), n.getComment().getCommentId(), n.getMessage().getMessageId(),
-                                    n.getFeedback().getFeedbackId(), n.getContent(), n.isRead(), n.getCreatedAt())
+                                    n.getFeedback().getFeedbackId(), n.getContent(), n.isRead(), n.getCreatedAt());
     }
 
     public int getNotificationId() {

@@ -13,7 +13,7 @@ public class UserLike {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "object_id")
+    @JoinColumn(name = "item_id")
     private Item item;
 
     public UserLike() {

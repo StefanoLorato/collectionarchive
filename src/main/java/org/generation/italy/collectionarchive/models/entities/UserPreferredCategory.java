@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name= "user_preferred_categories ")
-public class UserPreferedCategory {
+public class UserPreferredCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "preference_id")
@@ -16,10 +16,10 @@ public class UserPreferedCategory {
     @JoinColumn (name = "category_id")
     private Category category;
 
-    public UserPreferedCategory() {
+    public UserPreferredCategory() {
     }
 
-    public UserPreferedCategory(int preferenceId, User user, Category category) {
+    public UserPreferredCategory(int preferenceId, User user, Category category) {
         this.preferenceId = preferenceId;
         this.user = user;
         this.category = category;

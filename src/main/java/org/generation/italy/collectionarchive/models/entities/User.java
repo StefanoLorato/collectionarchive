@@ -40,11 +40,11 @@ public class User {
     @OneToMany(mappedBy = "fromUser")
     private List<UserFeedback>  feedbacksFromUser = new ArrayList<>();
     @OneToMany (mappedBy =  "toUser")
-    List<UserFeedback> feedbacksToUser = new ArrayList<>();
+    private List<UserFeedback> feedbacksToUser = new ArrayList<>();
     @OneToMany (mappedBy = "user")
-    List<UserLike> userLikes = new ArrayList<>();
+    private List<UserLike> userLikes = new ArrayList<>();
     @OneToMany (mappedBy = "user")
-    List<UserComment> userComment = new ArrayList<>();
+    private List<UserComment> userComment = new ArrayList<>();
 
 
 

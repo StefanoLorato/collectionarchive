@@ -3,50 +3,49 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "wishlist")
 public class WishList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "desired_object_id")
-    private int desiredObjectId;
+    @Column(name= "desired_item_id")
+    private int desiredItemId;
     @ManyToOne
     @JoinColumn (name = "collection_id")
     private Collection collection;
-    @Column(name= "object_name")
-    private String objectName;
-    @Column(name= "object_description")
-    private String objectDescription;
+    @Column(name= "item_name")
+    private String itemName;
+    @Column(name= "item_description")
+    private String itemDescription;
     @Column(name= "release_date")
     private LocalDate releaseDate;
-    @Column(name= "object_version")
-    private String objectVersion;
-    @Column(name= "object_edition")
-    private String objectEdition;
+    @Column(name= "item_version")
+    private String itemVersion;
+    @Column(name= "item_edition")
+    private String itemEdition;
 
     public WishList() {
     }
 
-    public WishList(int desiredObjectId, Collection collection, String objectName,
-                    String objectDescription, LocalDate releaseDate,
-                    String objectVersion, String objectEdition) {
-        this.desiredObjectId = desiredObjectId;
+    public WishList(int desiredItemId, Collection collection, String itemName,
+                    String itemDescription, LocalDate releaseDate,
+                    String itemVersion, String itemEdition) {
+        this.desiredItemId = desiredItemId;
         this.collection = collection;
-        this.objectName = objectName;
-        this.objectDescription = objectDescription;
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
         this.releaseDate = releaseDate;
-        this.objectVersion = objectVersion;
-        this.objectEdition = objectEdition;
+        this.itemVersion = itemVersion;
+        this.itemEdition = itemEdition;
     }
 
-    public int getDesiredObjectId() {
-        return desiredObjectId;
+    public int getDesiredItemId() {
+        return desiredItemId;
     }
 
-    public void setDesiredObjectId(int desiredObjectId) {
-        this.desiredObjectId = desiredObjectId;
+    public void setDesiredItemId(int desiredItemId) {
+        this.desiredItemId = desiredItemId;
     }
 
     public Collection getCollection() {
@@ -57,20 +56,20 @@ public class WishList {
         this.collection = collection;
     }
 
-    public String getObjectName() {
-        return objectName;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public String getObjectDescription() {
-        return objectDescription;
+    public String getItemDescription() {
+        return itemDescription;
     }
 
-    public void setObjectDescription(String objectDescription) {
-        this.objectDescription = objectDescription;
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
 
 
@@ -82,19 +81,19 @@ public class WishList {
         this.releaseDate = releaseDate;
     }
 
-    public String getObjectVersion() {
-        return objectVersion;
+    public String getItemVersion() {
+        return itemVersion;
     }
 
-    public void setObjectVersion(String objectVersion) {
-        this.objectVersion = objectVersion;
+    public void setItemVersion(String itemVersion) {
+        this.itemVersion = itemVersion;
     }
 
-    public String getObjectEdition() {
-        return objectEdition;
+    public String getItemEdition() {
+        return itemEdition;
     }
 
-    public void setObjectEdition(String objectEdition) {
-        this.objectEdition = objectEdition;
+    public void setItemEdition(String itemEdition) {
+        this.itemEdition = itemEdition;
     }
 }

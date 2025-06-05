@@ -1,6 +1,6 @@
 package org.generation.italy.collectionarchive.restdto;
 
-import org.generation.italy.collectionarchive.models.entities.UserPreferedCategory;
+import org.generation.italy.collectionarchive.models.entities.UserPreferredCategory;
 
 public class UserPreferredCategoryDto {
     private int preferenceId;
@@ -15,11 +15,11 @@ public class UserPreferredCategoryDto {
         this.userId = userId;
         this.categoryId = categoryId;
     }
-    public UserPreferedCategory toUserPreferredCategory(){
-        UserPreferedCategory upc = new UserPreferedCategory(preferenceId, null, null);
+    public UserPreferredCategory toUserPreferredCategory(){
+        UserPreferredCategory upc = new UserPreferredCategory(preferenceId, null, null);
         return upc;
     }
-    public static UserPreferredCategoryDto toDto(UserPreferedCategory upc){
+    public static UserPreferredCategoryDto toDto(UserPreferredCategory upc){
         return new UserPreferredCategoryDto(upc.getPreferenceId(), upc.getUser().getUserId(), upc.getCategory().getCategoryId());
     }
 

@@ -9,7 +9,7 @@ public class ReportDto {
     private int reportId;
     private int reporter;
     private int reportedUser;
-    private int item;
+    private int itemId;
     private int collection;
     private int comment;
     private int message;
@@ -20,12 +20,12 @@ public class ReportDto {
     public ReportDto() {
     }
 
-    public ReportDto(int reportId, int reporter, int reportedUser, int item, int collection, int comment, int message,
+    public ReportDto(int reportId, int reporter, int reportedUser, int itemId, int collection, int comment, int message,
                      String content, String status, LocalDateTime createdAt) {
         this.reportId = reportId;
         this.reporter = reporter;
         this.reportedUser = reportedUser;
-        this.item = item;
+        this.itemId = itemId;
         this.collection = collection;
         this.comment = comment;
         this.message = message;
@@ -65,11 +65,11 @@ public class ReportDto {
         this.reportedUser = reportedUser;
     }
 
-    public int getItem() {
-        return item;
+    public int getItemId() {
+        return itemId;
     }
-    public void setItem(int item) {
-        this.item = item;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public int getCollection() {

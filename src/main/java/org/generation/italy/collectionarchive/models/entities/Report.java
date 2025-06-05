@@ -18,7 +18,7 @@ public class Report {
     @JoinColumn(name = "reported_user_id")
     private User reportedUser;
     @ManyToOne
-    @JoinColumn(name = "object_id")
+    @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne
     @JoinColumn(name = "collection_id")

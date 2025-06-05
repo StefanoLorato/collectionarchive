@@ -1,7 +1,5 @@
 package org.generation.italy.collectionarchive.restdto;
 
-import jakarta.persistence.*;
-import org.generation.italy.collectionarchive.models.entities.Collection;
 import org.generation.italy.collectionarchive.models.entities.WishList;
 
 import java.time.LocalDate;
@@ -9,37 +7,37 @@ import java.time.LocalDate;
 public class WishListDto {
         private int desiredObjectId;
         private int collectionId;
-        private String objectName;
-        private String objectDescription;
+        private String itemName;
+        private String itemDescription;
         private LocalDate releaseDate;
-        private String objectVersion;
-        private String objectEdition;
+        private String itemVersion;
+        private String itemEdition;
 
         public WishListDto() {
         }
 
-        public WishListDto(int desiredObjectId, int collectionId, String objectName,
-                        String objectDescription, LocalDate releaseDate,
-                           String objectVersion, String objectEdition) {
+        public WishListDto(int desiredObjectId, int collectionId, String itemName,
+                           String itemDescription, LocalDate releaseDate,
+                           String itemVersion, String itemEdition) {
             this.desiredObjectId = desiredObjectId;
             this.collectionId = collectionId;
-            this.objectName = objectName;
-            this.objectDescription = objectDescription;
+            this.itemName = itemName;
+            this.itemDescription = itemDescription;
             this.releaseDate = releaseDate;
-            this.objectVersion = objectVersion;
-            this.objectEdition = objectEdition;
+            this.itemVersion = itemVersion;
+            this.itemEdition = itemEdition;
         }
 
         public WishList ToWishList(){
-            WishList wl = new WishList(desiredObjectId, null, objectName, objectDescription,
-                    releaseDate, objectVersion, objectEdition);
+            WishList wl = new WishList(desiredObjectId, null, itemName, itemDescription,
+                    releaseDate, itemVersion, itemEdition);
             return wl;
         }
 
         public static WishListDto toDto(WishList wishList){
-            return new WishListDto(wishList.getDesiredObjectId(), wishList.getCollection().getCollectionId(),
-                        wishList.getObjectName(), wishList.getObjectDescription(),
-                        wishList.getReleaseDate(), wishList.getObjectVersion(), wishList.getObjectEdition());
+            return new WishListDto(wishList.getDesiredItemId(), wishList.getCollection().getCollectionId(),
+                        wishList.getItemName(), wishList.getItemDescription(),
+                        wishList.getReleaseDate(), wishList.getItemVersion(), wishList.getItemEdition());
         }
 
     public int getDesiredObjectId() {
@@ -58,22 +56,21 @@ public class WishListDto {
         this.collectionId = collectionId;
     }
 
-    public String getObjectName() {
-        return objectName;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public String getObjectDescription() {
-        return objectDescription;
+    public String getItemDescription() {
+        return itemDescription;
     }
 
-    public void setObjectDescription(String objectDescription) {
-        this.objectDescription = objectDescription;
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
-
 
     public LocalDate getReleaseDate() {
         return releaseDate;
@@ -83,20 +80,20 @@ public class WishListDto {
         this.releaseDate = releaseDate;
     }
 
-    public String getObjectVersion() {
-        return objectVersion;
+    public String getItemVersion() {
+        return itemVersion;
     }
 
-    public void setObjectVersion(String objectVersion) {
-        this.objectVersion = objectVersion;
+    public void setItemVersion(String itemVersion) {
+        this.itemVersion = itemVersion;
     }
 
-    public String getObjectEdition() {
-        return objectEdition;
+    public String getItemEdition() {
+        return itemEdition;
     }
 
-    public void setObjectEdition(String objectEdition) {
-        this.objectEdition = objectEdition;
+    public void setItemEdition(String itemEdition) {
+        this.itemEdition = itemEdition;
     }
 }
 

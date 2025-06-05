@@ -19,7 +19,7 @@ public class Discussion {
     @JoinColumn(name = "seller_id")
     private User seller;
     @ManyToOne
-    @JoinColumn(name = "object_id")
+    @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne
     @JoinColumn(name = "collection_id")
