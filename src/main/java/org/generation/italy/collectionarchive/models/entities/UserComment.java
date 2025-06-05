@@ -3,6 +3,9 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 import org.generation.italy.collectionarchive.restdto.UserCommentDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table (name = "user_comments")
 public class UserComment {
@@ -17,6 +20,12 @@ public class UserComment {
     @JoinColumn(name = "item_id")
     private Item item;
     private String comment;
+
+    @OneToMany(mappedBy = "comment")
+    List<Notification> commentNotification = new ArrayList<>();
+    @OneToMany(mappedBy = "comment")
+    private List<Report> reportedComments = new ArrayList<>();
+
 
     public UserComment() {
     }
@@ -59,5 +68,21 @@ public class UserComment {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public List<Notification> getCommentNotification() {
+        return commentNotification;
+    }
+
+    public void setCommentNotification(List<Notification> commentNotification) {
+        this.commentNotification = commentNotification;
+    }
+
+    public List<Report> getReportedComments() {
+        return reportedComments;
+    }
+
+    public void setReportedComments(List<Report> reportedComments) {
+        this.reportedComments = reportedComments;
     }
 }

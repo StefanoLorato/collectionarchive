@@ -16,7 +16,10 @@ public class Category {
     private String categoryName;
 
     @OneToMany (mappedBy = "category")
-    List<Collection> collections = new ArrayList<>();
+    private List<Collection> collections = new ArrayList<>();
+
+    @OneToMany (mappedBy = "category")
+    private List<UserPreferredCategory> userPreferredCategories = new ArrayList<>();
 
 
     public Category() {
@@ -41,5 +44,21 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(List<Collection> collections) {
+        this.collections = collections;
+    }
+
+    public List<UserPreferredCategory> getUserPreferredCategories() {
+        return userPreferredCategories;
+    }
+
+    public void setUserPreferredCategories(List<UserPreferredCategory> userPreferredCategories) {
+        this.userPreferredCategories = userPreferredCategories;
     }
 }

@@ -3,6 +3,8 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_feedbacks")
@@ -24,6 +26,9 @@ public class UserFeedback {
     private String comment;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "feedback")
+    List<Notification> feedbackNotification = new ArrayList<>();
 
     public UserFeedback() {
     }
@@ -93,5 +98,21 @@ public class UserFeedback {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Order getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Order orderId) {
+        this.orderId = orderId;
+    }
+
+    public List<Notification> getFeedbackNotification() {
+        return feedbackNotification;
+    }
+
+    public void setFeedbackNotification(List<Notification> feedbackNotification) {
+        this.feedbackNotification = feedbackNotification;
     }
 }

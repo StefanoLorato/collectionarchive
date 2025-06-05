@@ -43,16 +43,32 @@ public class Item {
     @Column (name ="visibility_status")
     private String visibilityStatus;
 
+
+    @OneToMany (mappedBy = "item")
+    private List<ItemTag> itemTags = new ArrayList<>();
+
     @OneToMany (mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<>();
+
     @OneToMany (mappedBy = "item")
     private List<Discussion> discussions = new ArrayList<>();
+
     @OneToMany (mappedBy = "item")
     private List<CartItem> cartItems = new ArrayList<>();
+
     @OneToMany ( mappedBy = "item")
     private List<UserLike> itemsLikes = new ArrayList<>();
+
     @OneToMany(mappedBy = "item")
     private List<UserComment> itemsComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<Bookmark> itemBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<Report>  reportedItems = new ArrayList<>();
+
+
 
     public Item() {
     }
@@ -236,5 +252,29 @@ public class Item {
 
     public void setItemsComments(List<UserComment> itemsComments) {
         this.itemsComments = itemsComments;
+    }
+
+    public List<ItemTag> getItemTags() {
+        return itemTags;
+    }
+
+    public void setItemTags(List<ItemTag> itemTags) {
+        this.itemTags = itemTags;
+    }
+
+    public List<Bookmark> getItemBookmarks() {
+        return itemBookmarks;
+    }
+
+    public void setItemBookmarks(List<Bookmark> itemBookmarks) {
+        this.itemBookmarks = itemBookmarks;
+    }
+
+    public List<Report> getReportedItems() {
+        return reportedItems;
+    }
+
+    public void setReportedItems(List<Report> reportedItems) {
+        this.reportedItems = reportedItems;
     }
 }

@@ -2,6 +2,9 @@ package org.generation.italy.collectionarchive.models.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "tags")
 public class Tag {
@@ -11,6 +14,9 @@ public class Tag {
     private int tagId;
     @Column(name = "tag_name")
     private int tagName;
+
+    @OneToMany (mappedBy = "tag")
+    private List<ItemTag> itemTags = new ArrayList<>();
 
     public Tag() {
     }
@@ -34,5 +40,13 @@ public class Tag {
 
     public void setTagName(int tagName) {
         this.tagName = tagName;
+    }
+
+    public List<ItemTag> getItemTags() {
+        return itemTags;
+    }
+
+    public void setItemTags(List<ItemTag> itemTags) {
+        this.itemTags = itemTags;
     }
 }
