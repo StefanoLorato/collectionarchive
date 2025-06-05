@@ -24,8 +24,6 @@ public class Order {
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
-    @OneToOne (mappedBy = "orderId")
-    private List<UserFeedback> orderFeedbacks = new ArrayList<>();
 
 
     public Order() {
@@ -72,14 +70,5 @@ public class Order {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-
-    public List<UserFeedback> getOrderFeedbacks() {
-        return orderFeedbacks;
-    }
-
-    public void setOrderFeedbacks(List<UserFeedback> orderFeedbacks) {
-        this.orderFeedbacks = orderFeedbacks;
-    }
-
 
 }
