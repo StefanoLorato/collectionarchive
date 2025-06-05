@@ -11,4 +11,8 @@ public interface CollectionService {
     List<Collection> findAllCollection() throws DataException;
     Optional<Collection> findCollectionById(int id) throws DataException;
     Collection createCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
+    boolean deleteCollection(int id) throws DataException;
+    boolean updateCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
+
+
 }
