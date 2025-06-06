@@ -19,7 +19,7 @@ public class UserContactDto {
         this.phone = phone;
     }
 
-    public UserContact toUserConcat(){
+    public UserContact toUserContact(){
         UserContact uc = new UserContact( contactId, null, phone);
         return uc;
     }
@@ -50,9 +50,5 @@ public class UserContactDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public UserContact toUserContact() {
-        return null;
     }
 }

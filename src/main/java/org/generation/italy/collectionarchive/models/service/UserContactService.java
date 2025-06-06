@@ -1,5 +1,6 @@
 package org.generation.italy.collectionarchive.models.service;
 
+import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 import org.generation.italy.collectionarchive.models.entities.UserContact;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
@@ -17,4 +18,16 @@ public interface UserContactService {
     boolean updateUserContact(UserContact contact, int userId) throws DataException, EntityNotFoundException;
 
     boolean deleteUserContact(int id) throws DataException;
+
+    List<ShippingAddress> findAllShippingAddresses() throws DataException;
+
+    Optional<ShippingAddress> findShippingAddressById(int id) throws DataException;
+
+    ShippingAddress createShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException;
+
+    boolean updateShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException;
+
+    boolean deleteShippingAddress(int id) throws DataException;
+
+
 }
