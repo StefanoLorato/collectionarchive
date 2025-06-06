@@ -26,6 +26,16 @@ public class CollectionRestController {
         this.collectionService = collectionService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCollectionById(@PathVariable int id) throws DataException {
+
+        Optional<Collection> c = collectionService.findCollectionById(id);
+        if(c.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        CollectionDto co = CollectionDto.toDto(c.get());
+        return ResponseEntity.ok(c);
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllCollection() throws DataException {
@@ -34,6 +44,7 @@ public class CollectionRestController {
                 .stream().map(CollectionDto::toDto).toList();
         return ResponseEntity.ok(collectionDtos);
     }
+
     @PostMapping
     public ResponseEntity<CollectionDto> createCollection(@RequestBody CollectionDto dto) throws DataException, EntityNotFoundException {
         Collection c = dto.toCollection();

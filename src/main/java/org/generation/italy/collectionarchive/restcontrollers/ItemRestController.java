@@ -5,7 +5,6 @@ import org.generation.italy.collectionarchive.models.entities.Item;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.CollectionService;
-import org.generation.italy.collectionarchive.models.service.ItemService;
 import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.generation.italy.collectionarchive.restdto.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +21,28 @@ import java.util.Optional;
 @RequestMapping("/api/item")
 
 public class ItemRestController {
-    private ItemService itemService;
+    private CollectionService collectionService;
 
     @Autowired
-    public  ItemRestController(ItemService itemService) {
-        this.itemService = itemService;
+    public  ItemRestController(CollectionService collectionService) {
+        this.collectionService = collectionService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getItemById(@PathVariable int id) throws DataException {
+
+        Optional<Item> c = collectionService.findItemById(id);
+        if(c.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        ItemDto io = ItemDto.toDto(c.get());
+        return ResponseEntity.ok(c);
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllItem() throws DataException {
 
-        List<ItemDto> itemDtos = itemService.findAllItem()
+        List<ItemDto> itemDtos = collectionService.findAllItem()
                 .stream().map(ItemDto::toDto).toList();
         return ResponseEntity.ok(itemDtos);
     }
@@ -41,7 +50,7 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        itemService.createItem(c, dto.getUser(),dto.getCollection());
+        collectionService.createItem(c, dto.getUser(),dto.getCollection());
         ItemDto saved = ItemDto.toDto(c);
 
         URI location = ServletUriComponentsBuilder
@@ -54,7 +63,7 @@ public class ItemRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItemById(@PathVariable int id) throws DataException{
-        boolean deleted = itemService.deleteItem(id);
+        boolean deleted = collectionService.deleteItem(id);
         if(deleted){
             return ResponseEntity.noContent().build();
         }
@@ -66,14 +75,14 @@ public class ItemRestController {
         if(id != dto.getItemId()){
             return ResponseEntity.badRequest().body("L'id del path non corrisponde all'id del dto");
         }
-        Optional<Item> co = itemService.findItemById(id);
+        Optional<Item> co = collectionService.findItemById(id);
         if(co.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Item i = dto.toItem();
         i.setItemId(id);
 
-        boolean updated = itemService.updateItem(i, dto.getUser(),dto.getCollection());
+        boolean updated = collectionService.updateItem(i, dto.getUser(),dto.getCollection());
         if (updated) {
             return ResponseEntity.ok().build();
         } else {
