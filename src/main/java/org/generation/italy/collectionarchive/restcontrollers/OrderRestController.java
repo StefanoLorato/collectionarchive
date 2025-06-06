@@ -6,7 +6,6 @@ import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.CollectionService;
 import org.generation.italy.collectionarchive.restdto.OrderDto;
-import org.springframework.aop.scope.ScopedObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,11 +1,9 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
-import org.generation.italy.collectionarchive.models.entities.Order;
 import org.generation.italy.collectionarchive.models.entities.OrderItem;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.CollectionService;
-import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.generation.italy.collectionarchive.restdto.OrderItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
