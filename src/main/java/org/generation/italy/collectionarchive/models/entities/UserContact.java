@@ -2,17 +2,17 @@ package org.generation.italy.collectionarchive.models.entities;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "user_contacts")
-public class UserContact {
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name="user_contacts")
+public class UserContact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contact_id")
+    @Column (name= "contact_id")
     private int contactId;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name= "user_id")
     private User user;
     private String phone;
 

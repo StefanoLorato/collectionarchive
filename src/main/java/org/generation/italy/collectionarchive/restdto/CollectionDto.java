@@ -1,6 +1,5 @@
 package org.generation.italy.collectionarchive.restdto;
 
-import jakarta.persistence.*;
 import org.generation.italy.collectionarchive.models.entities.Collection;
 
 import java.time.LocalDate;
@@ -17,9 +16,7 @@ public class CollectionDto {
     private String description;
     private LocalDate collectionDate;
     private LocalDateTime createAt;
-
     private boolean forSale;
-
     private double salePrice;
     private String visibilityStatus;
 
@@ -80,7 +77,7 @@ public class CollectionDto {
         this.completed = completed;
     }
 
-    public int getCategory() {
+    public int getCategoryId() {
         return categoryId;
     }
 
@@ -88,7 +85,7 @@ public class CollectionDto {
         this.categoryId = categoryId;
     }
 
-    public int getUser() {
+    public int getUserId() {
         return userId;
     }
 

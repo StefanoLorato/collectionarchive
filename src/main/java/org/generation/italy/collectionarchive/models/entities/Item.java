@@ -3,26 +3,29 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "objects")
+@Table(name = "items")
 public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "object_id")
-    private int objectId;
+    @Column (name = "item_id")
+    private int itemId;
     @ManyToOne
     @JoinColumn (name = "collection_id")
     private Collection collection;
     @ManyToOne
     @JoinColumn (name = "user_id")
     private User user;
-    @Column (name = "object_name")
-    private String objectName;
-    @Column (name = "object_description")
-    private String objectDescription;
-    @Column (name = "object_photo")
-    private String objectPhoto;
+    @Column (name = "item_name")
+    private String itemName;
+    @Column (name = "item_description")
+    private String itemDescription;
+    @Column (name = "item_photo")
+    private String itemPhoto;
     private String condition;
     @Column(name= "purchase_date")
     private LocalDate purchaseDate;
@@ -32,45 +35,72 @@ public class Item {
     private double purchasePrice;
     @Column (name = "sale_price")
     private double salePrice;
-    @Column (name= "object_version")
-    private String objectVersion;
-    @Column (name= "object_edition")
-    private String objectEdition;
+    @Column (name= "item_version")
+    private String itemVersion;
+    @Column (name= "item_edition")
+    private String itemEdition;
     @Column (name = "for_sale")
     private boolean forSale;
     @Column (name ="visibility_status")
     private String visibilityStatus;
 
+
+    @OneToMany (mappedBy = "item")
+    private List<ItemTag> itemTags = new ArrayList<>();
+
+    @OneToMany (mappedBy = "item")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToMany (mappedBy = "item")
+    private List<Discussion> discussions = new ArrayList<>();
+
+    @OneToMany (mappedBy = "item")
+    private List<CartItem> cartItems = new ArrayList<>();
+
+    @OneToMany ( mappedBy = "item")
+    private List<UserLike> itemsLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<UserComment> itemsComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<Bookmark> itemBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<Report>  reportedItems = new ArrayList<>();
+
+
+
     public Item() {
     }
 
-    public Item(int objectId, Collection collection, User user,
-                String objectName, String objectDescription, String objectPhoto, String condition,
+    public Item(int itemId, Collection collection, User user,
+                String itemName, String itemDescription, String itemPhoto, String condition,
                 LocalDate purchaseDate, LocalDate releaseDate, double purchasePrice, double salePrice,
-                String objectVersion, String objectEdition, boolean forSale, String visibilityStatus) {
-        this.objectId = objectId;
+                String itemVersion, String itemEdition, boolean forSale, String visibilityStatus) {
+        this.itemId = itemId;
         this.collection = collection;
         this.user = user;
-        this.objectName = objectName;
-        this.objectDescription = objectDescription;
-        this.objectPhoto = objectPhoto;
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
+        this.itemPhoto = itemPhoto;
         this.condition = condition;
         this.purchaseDate = purchaseDate;
         this.releaseDate = releaseDate;
         this.purchasePrice = purchasePrice;
         this.salePrice = salePrice;
-        this.objectVersion = objectVersion;
-        this.objectEdition = objectEdition;
+        this.itemVersion = itemVersion;
+        this.itemEdition = itemEdition;
         this.forSale = forSale;
         this.visibilityStatus = visibilityStatus;
     }
 
-    public int getObjectId() {
-        return objectId;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setObjectId(int objectId) {
-        this.objectId = objectId;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public Collection getCollection() {
@@ -89,28 +119,28 @@ public class Item {
         this.user = user;
     }
 
-    public String getObjectName() {
-        return objectName;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public String getObjectDescription() {
-        return objectDescription;
+    public String getItemDescription() {
+        return itemDescription;
     }
 
-    public void setObjectDescription(String objectDescription) {
-        this.objectDescription = objectDescription;
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
     }
 
-    public String getObjectPhoto() {
-        return objectPhoto;
+    public String getItemPhoto() {
+        return itemPhoto;
     }
 
-    public void setObjectPhoto(String objectPhoto) {
-        this.objectPhoto = objectPhoto;
+    public void setItemPhoto(String itemPhoto) {
+        this.itemPhoto = itemPhoto;
     }
 
     public String getCondition() {
@@ -153,20 +183,20 @@ public class Item {
         this.salePrice = salePrice;
     }
 
-    public String getObjectVersion() {
-        return objectVersion;
+    public String getItemVersion() {
+        return itemVersion;
     }
 
-    public void setObjectVersion(String objectVersion) {
-        this.objectVersion = objectVersion;
+    public void setItemVersion(String itemVersion) {
+        this.itemVersion = itemVersion;
     }
 
-    public String getObjectEdition() {
-        return objectEdition;
+    public String getItemEdition() {
+        return itemEdition;
     }
 
-    public void setObjectEdition(String objectEdition) {
-        this.objectEdition = objectEdition;
+    public void setItemEdition(String itemEdition) {
+        this.itemEdition = itemEdition;
     }
 
     public boolean isForSale() {
@@ -183,5 +213,69 @@ public class Item {
 
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<Discussion> getDiscussions() {
+        return discussions;
+    }
+
+    public void setDiscussions(List<Discussion> discussions) {
+        this.discussions = discussions;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
+    public List<UserLike> getItemsLikes() {
+        return itemsLikes;
+    }
+
+    public void setItemsLikes(List<UserLike> itemsLikes) {
+        this.itemsLikes = itemsLikes;
+    }
+
+    public List<UserComment> getItemsComments() {
+        return itemsComments;
+    }
+
+    public void setItemsComments(List<UserComment> itemsComments) {
+        this.itemsComments = itemsComments;
+    }
+
+    public List<ItemTag> getItemTags() {
+        return itemTags;
+    }
+
+    public void setItemTags(List<ItemTag> itemTags) {
+        this.itemTags = itemTags;
+    }
+
+    public List<Bookmark> getItemBookmarks() {
+        return itemBookmarks;
+    }
+
+    public void setItemBookmarks(List<Bookmark> itemBookmarks) {
+        this.itemBookmarks = itemBookmarks;
+    }
+
+    public List<Report> getReportedItems() {
+        return reportedItems;
+    }
+
+    public void setReportedItems(List<Report> reportedItems) {
+        this.reportedItems = reportedItems;
     }
 }
