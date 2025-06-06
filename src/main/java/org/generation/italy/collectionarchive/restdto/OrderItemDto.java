@@ -5,15 +5,15 @@ import org.generation.italy.collectionarchive.models.entities.OrderItem;
 public class OrderItemDto {
     private int orderItemId;
     private int orderId;
-    private int itemId;
-    private int collectionId;
+    private Integer itemId;
+    private Integer collectionId;
     private double price;
 
     public OrderItemDto() {
     }
 
-    public OrderItemDto(int orderItemId, int orderId, int itemId,
-                     int collectionId, double price) {
+    public OrderItemDto(int orderItemId, int orderId, Integer itemId,
+                     Integer collectionId, double price) {
         this.orderItemId = orderItemId;
         this.orderId = orderId;
         this.itemId = itemId;
@@ -26,9 +26,20 @@ public class OrderItemDto {
     }
 
     public static OrderItemDto toDto(OrderItem oi){
-        return new OrderItemDto(oi.getOrderItemId(), oi.getOrder().getOrderId(),
-                                oi.getItem().getItemId(), oi.getCollection().getCollectionId(),
-                                oi.getPrice());
+        OrderItemDto dto =  new OrderItemDto();
+
+        dto.setOrderItemId(oi.getOrderItemId());
+        dto.setOrderId(oi.getOrder().getOrderId());
+        dto.setPrice(oi.getPrice());
+
+        if (oi.getItem() != null) {
+            dto.setItemId(oi.getItem().getItemId());
+        }
+        if (oi.getCollection() != null) {
+            dto.setCollectionId(oi.getCollection().getCollectionId());
+        }
+
+        return dto;
     }
 
     public int getOrderItemId() {
@@ -43,23 +54,23 @@ public class OrderItemDto {
         return orderId;
     }
 
-    public void setOrder(int orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 
-    public int getCollectionId() {
+    public Integer getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    public void setCollectionId(Integer collectionId) {
         this.collectionId = collectionId;
     }
 

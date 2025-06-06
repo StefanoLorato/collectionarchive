@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,7 @@ public class OrderRestController {
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto dto) throws DataException, EntityNotFoundException{
         Order o = dto.toOrder();
+        o.setOrderedAt(LocalDateTime.now());
         collectionService.createOrder(o, dto.getBuyerId(), dto.getSellerId());
         OrderDto saved = OrderDto.toDto(o);
         URI location = ServletUriComponentsBuilder

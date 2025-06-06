@@ -175,11 +175,24 @@ public class JpaCollectionService implements CollectionService{
             Optional<Order> ob = orderRepo.findById(orderId);
             Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
 
-            Optional<Item> opi = itemRepo.findById(itemId);
-            Item i = opi.orElse(null);
+            Item i = null;
+            Collection c = null;
 
-            Optional<Collection> opc = collectionRepo.findById(collectionId);
-            Collection c = opc.orElse(null);
+            if (itemId != null) {
+                i = itemRepo.findById(itemId)
+                        .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+
+            if (collectionId != null) {
+                c = collectionRepo.findById(collectionId)
+                        .orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
+
+//            Optional<Item> opi = itemRepo.findById(itemId);
+//            Item i = opi.orElse(null);
+//
+//            Optional<Collection> opc = collectionRepo.findById(collectionId);
+//            Collection c = opc.orElse(null);
 
             oi.setOrder(order);
             oi.setItem(i);
@@ -214,11 +227,24 @@ public class JpaCollectionService implements CollectionService{
             Optional<Order> ob = orderRepo.findById(orderId);
             Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
 
-            Optional<Item> opi = itemRepo.findById(itemId);
-            Item i = opi.orElse(null);
+            Item i = null;
+            Collection c = null;
 
-            Optional<Collection> opc = collectionRepo.findById(collectionId);
-            Collection c = opc.orElse(null);
+            if (itemId != null) {
+                i = itemRepo.findById(itemId)
+                        .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+
+            if (collectionId != null) {
+                c = collectionRepo.findById(collectionId)
+                        .orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
+
+//            Optional<Item> opi = itemRepo.findById(itemId);
+//            Item i = opi.orElse(null);
+//
+//            Optional<Collection> opc = collectionRepo.findById(collectionId);
+//            Collection c = opc.orElse(null);
 
             oi.setOrder(order);
             oi.setItem(i);
