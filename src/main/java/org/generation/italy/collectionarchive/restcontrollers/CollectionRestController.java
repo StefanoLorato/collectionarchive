@@ -26,6 +26,16 @@ public class CollectionRestController {
         this.collectionService = collectionService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCollectionById(@PathVariable int id) throws DataException {
+
+        Optional<Collection> c = collectionService.findCollectionById(id);
+        if(c.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        CollectionDto co = CollectionDto.toDto(c.get());
+        return ResponseEntity.ok(c);
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllCollection() throws DataException {
