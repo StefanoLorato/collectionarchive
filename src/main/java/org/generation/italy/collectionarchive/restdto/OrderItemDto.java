@@ -7,13 +7,13 @@ public class OrderItemDto {
     private int orderId;
     private int itemId;
     private int collectionId;
-    private double price;
+    private Double price;
 
     public OrderItemDto() {
     }
 
     public OrderItemDto(int orderItemId, int orderId, int itemId,
-                     int collectionId, double price) {
+                     int collectionId, Double price) {
         this.orderItemId = orderItemId;
         this.orderId = orderId;
         this.itemId = itemId;
@@ -63,11 +63,11 @@ public class OrderItemDto {
         this.collectionId = collectionId;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

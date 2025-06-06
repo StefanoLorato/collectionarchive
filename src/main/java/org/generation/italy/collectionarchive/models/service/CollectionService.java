@@ -1,9 +1,6 @@
 package org.generation.italy.collectionarchive.models.service;
 
-import org.generation.italy.collectionarchive.models.entities.Collection;
-import org.generation.italy.collectionarchive.models.entities.Item;
-import org.generation.italy.collectionarchive.models.entities.Order;
-import org.generation.italy.collectionarchive.models.entities.OrderItem;
+import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 
@@ -35,5 +32,12 @@ public interface CollectionService {
     OrderItem createOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
     boolean deleteOrderItem(int orderItemId) throws DataException;
     boolean updateOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
+
+    //CATEGORY
+    List<Category> findAllCategories() throws DataException;
+    Optional<Category> findCategoryId(int categoryId) throws DataException;
+    Category createCategory(Category c) throws DataException, EntityNotFoundException;
+    boolean deleteCategory(int categoryId) throws DataException;
+    boolean updateCategory(Category c);
 
 }

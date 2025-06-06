@@ -62,7 +62,7 @@ public class JpaCollectionService implements CollectionService{
             collectionRepo.save(c);
             return c;
         } catch (PersistenceException pe) {
-            throw new DataException("errore nella creazione di un nuovo prodotto", pe);
+            throw new DataException("errore nella creazione di un collection", pe);
         }
     }
 
@@ -96,7 +96,7 @@ public class JpaCollectionService implements CollectionService{
 
             return true;
         } catch (PersistenceException pe) {
-            throw new DataException("errore nella modifica di un prodotto", pe);
+            throw new DataException("errore nella modifica di una collection", pe);
         }
     }
 
@@ -127,7 +127,7 @@ public class JpaCollectionService implements CollectionService{
             itemRepo.save(i);
             return i;
         } catch (PersistenceException pe) {
-            throw new DataException("errore nella creazione di un nuovo prodotto", pe);
+            throw new DataException("errore nella creazione di un nuovo item", pe);
         }
     }
 
@@ -160,7 +160,7 @@ public class JpaCollectionService implements CollectionService{
 
             return true;
         } catch (PersistenceException pe) {
-            throw new DataException("errore nella modifica di un prodotto", pe);
+            throw new DataException("errore nella modifica di un Item", pe);
         }
     }
 
@@ -299,4 +299,52 @@ public class JpaCollectionService implements CollectionService{
             throw new DataException("errore nella modifica di un order item", pe);
         }
     }
+
+    //CATEGORY
+    @Override
+    public List<Category> findAllCategories() throws DataException {
+        return categoryRepo.findAll();
+    }
+
+    @Override
+    public Optional<Category> findCategoryId(int categoryId) throws DataException {
+        return categoryRepo.findById(categoryId);
+    }
+
+    @Override
+    public Category createCategory(Category c) throws DataException, EntityNotFoundException {
+        try {
+            categoryRepo.save(c);
+            return c;
+        } catch (PersistenceException pe) {
+            throw new DataException("Errore nella creazione della Categoria", pe);
+        }
+    }
+
+    @Override
+    public boolean deleteCategory(int categoryId) throws DataException {
+        Optional<Category> co = categoryRepo.findById(categoryId);
+        if(co.isEmpty()){
+            return false;
+        }
+        categoryRepo.delete(co.get());
+        return true;
+    }
+
+    @Override
+    public boolean updateCategory(Category c) {
+        try {
+            Optional<Category> co = categoryRepo.findById(c.getCategoryId());
+            if(co.isEmpty()){
+                return false;
+            }
+            categoryRepo.save(c);
+            return true;
+        } catch (PersistenceException pe) {
+            throw new DataException("errore nella modifica della categoria", pe);
+        }
+    }
+
 }
+
+
