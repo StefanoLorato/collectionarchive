@@ -1,6 +1,7 @@
 package org.generation.italy.collectionarchive.models.service;
 
 import org.generation.italy.collectionarchive.models.entities.Collection;
+import org.generation.italy.collectionarchive.models.entities.WishList;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 
@@ -13,6 +14,11 @@ public interface CollectionService {
     Collection createCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
     boolean deleteCollection(int id) throws DataException;
     boolean updateCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
+    List<WishList> findAllWishList();
+    Optional<WishList> findWishListById(int id);
+    WishList createWishList(WishList w);
+    boolean deleteWishList(int id);
+    boolean updateItem(int id, WishList w);
 
 
 }
