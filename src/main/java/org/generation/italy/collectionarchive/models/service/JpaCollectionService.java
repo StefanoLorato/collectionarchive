@@ -104,14 +104,13 @@ public class JpaCollectionService implements CollectionService{
         return List.of();
     }
 
-
     @Override
     public Optional<WishList> findWishListById(int id) {
         return Optional.empty();
     }
 
     @Override
-    public WishList createWishList(WishList w) {
+    public WishList createWishList(WishList w, int collectionId) {
         return null;
     }
 
@@ -121,7 +120,7 @@ public class JpaCollectionService implements CollectionService{
     }
 
     @Override
-    public boolean updateItem(int id, WishList w) {
+    public boolean updateItem(WishList w , int collectionId) {
         return false;
     }
 }

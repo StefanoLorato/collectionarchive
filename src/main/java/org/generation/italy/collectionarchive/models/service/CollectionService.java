@@ -16,9 +16,9 @@ public interface CollectionService {
     boolean updateCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
     List<WishList> findAllWishList();
     Optional<WishList> findWishListById(int id);
-    WishList createWishList(WishList w);
+    WishList createWishList(WishList w, int collectionId);
     boolean deleteWishList(int id);
-    boolean updateItem(int id, WishList w);
+    boolean updateItem( WishList w, int collectionId);
 
 
 }

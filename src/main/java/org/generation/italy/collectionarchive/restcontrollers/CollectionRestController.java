@@ -34,6 +34,7 @@ public class CollectionRestController {
                 .stream().map(CollectionDto::toDto).toList();
         return ResponseEntity.ok(collectionDtos);
     }
+
     @PostMapping
     public ResponseEntity<CollectionDto> createCollection(@RequestBody CollectionDto dto) throws DataException, EntityNotFoundException {
         Collection c = dto.toCollection();
