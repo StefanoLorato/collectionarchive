@@ -51,4 +51,8 @@ public class UserContactDto {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public UserContact toUserContact() {
+        return null;
+    }
 }
