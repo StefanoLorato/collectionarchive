@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/collection")
+@RequestMapping("/api/collections")
 
 public class CollectionRestController {
     private CollectionService collectionService;

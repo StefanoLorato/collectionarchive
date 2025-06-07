@@ -30,6 +30,8 @@ public class JpaUserService implements UserService{
         this.shippingRepo = shippingRepo;
     }
 
+    // USER CONTACT
+
     @Override
     public List<UserContact> findAllUserContacts() throws DataException {
         return contactRepo.findAll();
@@ -82,6 +84,8 @@ public class JpaUserService implements UserService{
         }
         return false;
     }
+
+    // SHIPPING ADDRESS
 
     @Override
     public List<ShippingAddress> findAllShippingAddresses() throws DataException {

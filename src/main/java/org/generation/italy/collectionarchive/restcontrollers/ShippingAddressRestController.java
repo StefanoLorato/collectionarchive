@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/shipping-address")
+@RequestMapping("/api/shippingAddress")
 public class ShippingAddressRestController {
 
     private final UserService userContactService;
