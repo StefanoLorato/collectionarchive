@@ -8,10 +8,12 @@ import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundEx
 import org.generation.italy.collectionarchive.models.repositories.specifications.CollectionRepository;
 import org.generation.italy.collectionarchive.models.repositories.specifications.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class JpaWishListService implements WishListService{
     private CollectionRepository collectionRepo;
     private WishListRepository wishListRepo;
@@ -20,6 +22,7 @@ public class JpaWishListService implements WishListService{
 
     public JpaWishListService(WishListRepository wishListRepo, CollectionRepository collectionRepo) {
         this.wishListRepo = wishListRepo;
+        this.collectionRepo = collectionRepo;
     }
     //WISHLIST
     @Override
