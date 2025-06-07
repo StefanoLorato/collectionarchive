@@ -34,17 +34,17 @@ public class JpaOrderService implements OrderService {
 
     //ORDER
     @Override
-    public List<org.generation.italy.collectionarchive.models.entities.Order> findAllOrders() throws DataException {
+    public List<Order> findAllOrders() throws DataException {
         return orderRepo.findAll();
     }
 
     @Override
-    public Optional<org.generation.italy.collectionarchive.models.entities.Order> findOrderById(int orderId) throws DataException {
+    public Optional<Order> findOrderById(int orderId) throws DataException {
         return orderRepo.findById(orderId);
     }
 
     @Override
-    public org.generation.italy.collectionarchive.models.entities.Order createOrder(org.generation.italy.collectionarchive.models.entities.Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException {
+    public Order createOrder(Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException {
         try{
             Optional<User> ob = userRepo.findById(buyerId);
             User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
@@ -63,7 +63,7 @@ public class JpaOrderService implements OrderService {
 
     @Override
     public boolean deleteOrder(int orderId) throws DataException {
-        Optional<org.generation.italy.collectionarchive.models.entities.Order>  oo = orderRepo.findById(orderId);
+        Optional<Order>  oo = orderRepo.findById(orderId);
         if(oo.isEmpty()){
             return false;
         }
@@ -73,9 +73,9 @@ public class JpaOrderService implements OrderService {
 
     @Transactional
     @Override
-    public boolean updateOrder(org.generation.italy.collectionarchive.models.entities.Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException {
+    public boolean updateOrder(Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException {
         try{
-            Optional<org.generation.italy.collectionarchive.models.entities.Order> oo = orderRepo.findById(o.getOrderId());
+            Optional<Order> oo = orderRepo.findById(o.getOrderId());
             if(oo.isEmpty()){
                 return false;
             }
