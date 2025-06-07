@@ -1,5 +1,6 @@
 package org.generation.italy.collectionarchive.models.service;
 
+import org.generation.italy.collectionarchive.models.entities.CartItem;
 import org.generation.italy.collectionarchive.models.entities.Order;
 import org.generation.italy.collectionarchive.models.entities.OrderItem;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
@@ -21,4 +22,10 @@ public interface OrderService {
     OrderItem createOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
     boolean deleteOrderItem(int orderItemId) throws DataException;
     boolean updateOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
+    // CART ITEM
+    List<CartItem> findAllCartItems() throws DataException;
+    Optional<CartItem> findCartItemById(int id) throws DataException;
+    CartItem createCartItem(CartItem ci, Integer buyerId, Integer sellerId, Integer itemId, Integer collectionId) throws DataException;
+    boolean deleteCartItem(int id) throws DataException;
+    boolean updateCartItem(CartItem ci, Integer buyerId, Integer sellerId, Integer itemId, Integer collectionId) throws DataException;
 }

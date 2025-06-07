@@ -5,6 +5,7 @@ import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.repositories.specifications.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,15 +19,17 @@ public class JpaOrderService implements OrderService {
     private UserRepository userRepo;
     private CollectionRepository collectionRepo;
     private ItemRepository itemRepo;
+    private CartItemRepository cartItemRepo;
 
-
+    @Autowired
     public JpaOrderService(OrderRepository orderRepo,OrderItemRepository orderItemRepo,UserRepository userRepo,
-                           CollectionRepository collectionRepo,ItemRepository itemRepo){
+                           CollectionRepository collectionRepo,ItemRepository itemRepo, CartItemRepository cartItemRepo){
       this.orderRepo= orderRepo;
       this.orderItemRepo = orderItemRepo;
       this.userRepo = userRepo;
       this.collectionRepo = collectionRepo;
       this.itemRepo = itemRepo;
+      this.cartItemRepo = cartItemRepo;
     }
 
     //ORDER
@@ -106,14 +109,19 @@ public class JpaOrderService implements OrderService {
     @Override
     public OrderItem createOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException {
         try{
-            Optional<org.generation.italy.collectionarchive.models.entities.Order> ob = orderRepo.findById(orderId);
-            org.generation.italy.collectionarchive.models.entities.Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
+            Optional<Order> ob = orderRepo.findById(orderId);
+            Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
 
-            Optional<Item> opi = itemRepo.findById(itemId);
-            Item i = opi.orElse(null);
-
-            Optional<Collection> opc = collectionRepo.findById(collectionId);
-            Collection c = opc.orElse(null);
+            Item i = null;
+            Collection c = null;
+            if (itemId != null) {
+                i = itemRepo.findById(itemId)
+                        .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+            if (collectionId != null) {
+                c = collectionRepo.findById(collectionId)
+                        .orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
 
             oi.setOrder(order);
             oi.setItem(i);
@@ -145,14 +153,21 @@ public class JpaOrderService implements OrderService {
                 return false;
             }
 
-            Optional<org.generation.italy.collectionarchive.models.entities.Order> ob = orderRepo.findById(orderId);
+            Optional<Order> ob = orderRepo.findById(orderId);
             Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
 
-            Optional<Item> opi = itemRepo.findById(itemId);
-            Item i = opi.orElse(null);
+            Item i = null;
+            Collection c = null;
 
-            Optional<Collection> opc = collectionRepo.findById(collectionId);
-            Collection c = opc.orElse(null);
+            if (itemId != null) {
+                i = itemRepo.findById(itemId)
+                        .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+
+            if (collectionId != null) {
+                c = collectionRepo.findById(collectionId)
+                        .orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
 
             oi.setOrder(order);
             oi.setItem(i);
@@ -165,4 +180,91 @@ public class JpaOrderService implements OrderService {
         }
     }
 
+    //CART iTEM
+    @Override
+    public List<CartItem> findAllCartItems() throws DataException {
+        return cartItemRepo.findAll();
+    }
+
+    @Override
+    public Optional<CartItem> findCartItemById(int id) throws DataException {
+        return cartItemRepo.findById(id);
+    }
+
+    @Override
+    public CartItem createCartItem(CartItem ci, Integer buyerId, Integer sellerId, Integer itemId, Integer collectionId) throws DataException {
+        try{
+            Optional<User> ob = userRepo.findById(buyerId);
+            User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
+            Optional<User> os = userRepo.findById(sellerId);
+            User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
+
+            Item i = null;
+            Collection c = null;
+            if (itemId != null) {
+                i = itemRepo.findById(itemId)
+                        .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+            if (collectionId != null) {
+                c = collectionRepo.findById(collectionId)
+                        .orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
+
+            ci.setBuyer(buyer);
+            ci.setSeller(seller);
+            ci.setItem(i);
+            ci.setCollection(c);
+
+            cartItemRepo.save(ci);
+            return ci;
+        } catch (PersistenceException pe){
+            throw new DataException("errore nella creazione di un cart item", pe);
+        }
+    }
+
+    @Override
+    public boolean deleteCartItem(int id) throws DataException {
+        Optional<CartItem> oci = cartItemRepo.findById(id);
+        if(oci.isEmpty()){
+            return false;
+        }
+        cartItemRepo.delete(oci.get());
+        return true;
+    }
+
+    @Override
+    public boolean updateCartItem(CartItem ci, Integer buyerId, Integer sellerId, Integer itemId, Integer collectionId) throws DataException {
+        try{
+            Optional<CartItem> oci = cartItemRepo.findById(ci.getCartItemId());
+            if(oci.isEmpty()){
+                return false;
+            }
+
+            Optional<User> ob = userRepo.findById(buyerId);
+            User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
+            Optional<User> os = userRepo.findById(sellerId);
+            User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
+
+            Item i = null;
+            Collection c = null;
+            if (itemId != null) {
+                i = itemRepo.findById(itemId)
+                        .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+            if (collectionId != null) {
+                c = collectionRepo.findById(collectionId)
+                        .orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
+
+            ci.setBuyer(buyer);
+            ci.setSeller(seller);
+            ci.setItem(i);
+            ci.setCollection(c);
+
+            cartItemRepo.save(ci);
+            return true;
+        } catch (PersistenceException pe){
+            throw new DataException("errore nella modifica di un cart item", pe);
+        }
+    }
 }

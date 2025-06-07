@@ -20,9 +20,10 @@ public class JpaCollectionService implements CollectionService{
 
 
     @Autowired
-    public JpaCollectionService( CollectionRepository collectionRepo, UserRepository userRepo){
+    public JpaCollectionService( CollectionRepository collectionRepo, UserRepository userRepo, CategoryRepository categoryRepo){
         this.collectionRepo = collectionRepo;
         this.userRepo = userRepo;
+        this.categoryRepo = categoryRepo;
     }
 
     //COLLECTION

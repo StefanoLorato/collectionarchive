@@ -26,9 +26,20 @@ public class OrderItemDto {
     }
 
     public static OrderItemDto toDto(OrderItem oi){
-        return new OrderItemDto(oi.getOrderItemId(), oi.getOrder().getOrderId(),
-                                oi.getItem().getItemId(), oi.getCollection().getCollectionId(),
-                                oi.getPrice());
+        OrderItemDto dto =  new OrderItemDto();
+
+        dto.setOrderItemId(oi.getOrderItemId());
+        dto.setOrderId(oi.getOrder().getOrderId());
+        dto.setPrice(oi.getPrice());
+
+        if (oi.getItem() != null) {
+            dto.setItemId(oi.getItem().getItemId());
+        }
+        if (oi.getCollection() != null) {
+            dto.setCollectionId(oi.getCollection().getCollectionId());
+        }
+
+        return dto;
     }
 
     public int getOrderItemId() {
@@ -43,7 +54,7 @@ public class OrderItemDto {
         return orderId;
     }
 
-    public void setOrder(int orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
 
