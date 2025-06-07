@@ -28,9 +28,22 @@ public class CartItemDto {
         return new CartItem(cartItemId, null, null, null, null, expiresAt);
     }
 
-    public static CartItemDto toDto(CartItem c){
-        return new CartItemDto(c.getCartItemId(), c.getBuyer().getUserId(), c.getSeller().getUserId(),
-                                c.getItem().getItemId(), c.getCollection().getCollectionId(), c.getExpiresAt());
+    public static CartItemDto toDto(CartItem ci){
+        CartItemDto dto =  new CartItemDto();
+
+        dto.setCartItemId(ci.getCartItemId());
+        dto.setBuyerId(ci.getBuyer().getUserId());
+        dto.setSellerId(ci.getSeller().getUserId());
+        dto.setExpiresAt(ci.getExpiresAt());
+
+        if (ci.getItem() != null) {
+            dto.setItemId(ci.getItem().getItemId());
+        }
+        if (ci.getCollection() != null) {
+            dto.setCollectionId(ci.getCollection().getCollectionId());
+        }
+
+        return dto;
     }
 
     public int getCartItemId() {

@@ -16,8 +16,8 @@ public class ItemDto {
         private String condition;
         private LocalDate purchaseDate;
         private LocalDate releaseDate;
-        private double purchasePrice;
-        private double salePrice;
+        private Double purchasePrice;
+        private Double salePrice;
         private String itemVersion;
         private String itemEdition;
         private boolean forSale;
@@ -28,7 +28,7 @@ public class ItemDto {
 
     public ItemDto(int itemId, int collectionId, int userId, String itemName, String itemDescription,
                    String itemPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
-                   double purchasePrice, double salePrice, String itemVersion, String itemEdition,
+                   Double purchasePrice, Double salePrice, String itemVersion, String itemEdition,
                    boolean forSale, String visibilityStatus) {
         this.itemId = itemId;
         this.collectionId = collectionId;
@@ -48,11 +48,12 @@ public class ItemDto {
     }
 
     public Item toItem(){
-            Item o = new Item(itemId,null, null,
+            Item i = new Item(itemId,null, null,
                     itemName, itemDescription, itemPhoto, condition,
                     purchaseDate,  releaseDate, purchasePrice,salePrice,
                     itemVersion, itemEdition, forSale,  visibilityStatus);
-            return o;
+          i.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
+            return i;
         }
 
         public static ItemDto toDto(Item i){
@@ -135,19 +136,19 @@ public class ItemDto {
             this.releaseDate = releaseDate;
         }
 
-        public double getPurchasePrice() {
+        public Double getPurchasePrice() {
             return purchasePrice;
         }
 
-        public void setPurchasePrice(double purchasePrice) {
+        public void setPurchasePrice(Double purchasePrice) {
             this.purchasePrice = purchasePrice;
         }
 
-        public double getSalePrice() {
+        public Double getSalePrice() {
             return salePrice;
         }
 
-        public void setSalePrice(double salePrice) {
+        public void setSalePrice(Double salePrice) {
             this.salePrice = salePrice;
         }
 

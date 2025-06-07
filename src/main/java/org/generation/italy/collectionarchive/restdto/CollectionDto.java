@@ -17,14 +17,15 @@ public class CollectionDto {
     private LocalDate collectionDate;
     private LocalDateTime createAt;
     private boolean forSale;
-    private double salePrice;
+    private Double salePrice;
     private String visibilityStatus;
 
     public CollectionDto() {
     }
 
     public CollectionDto(int collectionId, String collectionName, boolean completed,
-                      int categoryId, int userId, String visibility, String description, LocalDate collectionDate, LocalDateTime createAt, boolean forSale, double salePrice, String visibilityStatus) {
+                         int categoryId, int userId, String visibility, String description, LocalDate collectionDate,
+                         LocalDateTime createAt, boolean forSale, Double salePrice, String visibilityStatus) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.completed = completed;
@@ -41,7 +42,10 @@ public class CollectionDto {
 
     public Collection toCollection(){
         Collection c = new Collection( collectionId, collectionName, completed,
-         null, null, visibility,  description, collectionDate,  createAt,  forSale,  salePrice, visibilityStatus);
+         null, null, visibility,  description, collectionDate,  createAt,  forSale,
+                salePrice, visibilityStatus);
+        c.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
+        c.setVisibility(this.visibility != null ? this.visibility : "visible");
         return c;
     }
 
@@ -133,11 +137,11 @@ public class CollectionDto {
         this.createAt = createAt;
     }
 
-    public double getSalePrice() {
+    public Double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(double salePrice) {
+    public void setSalePrice(Double salePrice) {
         this.salePrice = salePrice;
     }
 

@@ -32,7 +32,7 @@ public class Collection {
     @Column (name = "for_sale")
     private boolean forSale;
     @Column (name="sale_price")
-    private double salePrice;
+    private Double salePrice;
     @Column (name ="visibility_status")
     private String visibilityStatus;
 
@@ -61,7 +61,7 @@ public class Collection {
     }
 
     public Collection(int collectionId, String collectionName, boolean completed,
-                      Category category, User user, String visibility, String description, LocalDate collectionDate, LocalDateTime createAt, boolean forSale, double salePrice, String visibilityStatus) {
+                      Category category, User user, String visibility, String description, LocalDate collectionDate, LocalDateTime createAt, boolean forSale, Double salePrice, String visibilityStatus) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.completed = completed;
@@ -156,11 +156,11 @@ public class Collection {
         this.createAt = createAt;
     }
 
-    public double getSalePrice() {
+    public Double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(double salePrice) {
+    public void setSalePrice(Double salePrice) {
         this.salePrice = salePrice;
     }
 
