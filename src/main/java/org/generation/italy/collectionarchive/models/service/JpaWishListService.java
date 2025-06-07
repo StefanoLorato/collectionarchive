@@ -5,8 +5,8 @@ import org.generation.italy.collectionarchive.models.entities.Collection;
 import org.generation.italy.collectionarchive.models.entities.WishList;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.repositories.specifications.CollectionRepository;
-import org.generation.italy.collectionarchive.models.repositories.specifications.WishListRepository;
+import org.generation.italy.collectionarchive.models.repositories.CollectionRepository;
+import org.generation.italy.collectionarchive.models.repositories.WishListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
