@@ -6,32 +6,35 @@ import org.generation.italy.collectionarchive.models.entities.Item;
 import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.repositories.specifications.CollectionRepository;
-import org.generation.italy.collectionarchive.models.repositories.specifications.ItemRepository;
-import org.generation.italy.collectionarchive.models.repositories.specifications.UserRepository;
+import org.generation.italy.collectionarchive.models.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
-public class JpaItemService implements ItemService {
-    private ItemRepository itemRepo;
-    private CollectionRepository collecionRepo;
+public class JpaItemService implements ItemService{
+    private CollectionRepository collectionRepo;
     private UserRepository userRepo;
+    private CategoryRepository categoryRepo;
+    private ItemRepository itemRepo;
+
 
     @Autowired
-    public JpaItemService( ItemRepository itemRepo,CollectionRepository collectionRepo,
-                           UserRepository userRepo){
-        this.itemRepo = itemRepo;
-        this.collecionRepo = collectionRepo;
+    public JpaItemService( CollectionRepository collectionRepo, UserRepository userRepo,
+                                 CategoryRepository categoryRepo, ItemRepository itemRepo,
+                                 OrderRepository orderRepo,
+                                 OrderItemRepository orderItemRepo){
+        this.collectionRepo = collectionRepo;
         this.userRepo = userRepo;
+        this.categoryRepo = categoryRepo;
+        this.itemRepo = itemRepo;
     }
 
-
+    //ITEM
     @Override
     public List<Item> findAllItem() throws DataException {
         return itemRepo.findAll();
@@ -51,18 +54,19 @@ public class JpaItemService implements ItemService {
                 throw new EntityNotFoundException(User.class, userId);
             }
             User u = os.get();
-            Optional<Collection> oc = collecionRepo.findById(collectionId);
+            Optional<Collection> oc = collectionRepo.findById(collectionId);
             Collection ca = oc.orElseThrow(()-> new EntityNotFoundException(Collection.class, collectionId));
             i.setUser(u);
             i.setCollection(ca);
             itemRepo.save(i);
             return i;
         } catch (PersistenceException pe) {
-            throw new DataException("errore nella creazione di un nuovo prodotto", pe);
+            throw new DataException("errore nella creazione di un nuovo item", pe);
         }
     }
 
     @Override
+    @Transactional
     public boolean deleteItem(int id) throws DataException {
         Optional<Item> io = itemRepo.findById(id);
         if(io.isPresent()){
@@ -73,6 +77,7 @@ public class JpaItemService implements ItemService {
     }
 
     @Override
+    @Transactional
     public boolean updateItem(Item i,int userId, int collectionId) throws DataException, EntityNotFoundException {
         try {
             Optional<Item> io = itemRepo.findById(i.getItemId());
@@ -81,7 +86,7 @@ public class JpaItemService implements ItemService {
             }
             Optional<User> uo = userRepo.findById(userId);
             User u = uo.orElseThrow(()->new EntityNotFoundException(User.class, userId));
-            Optional<Collection> oc = collecionRepo.findById(collectionId);
+            Optional<Collection> oc = collectionRepo.findById(collectionId);
             Collection co = oc.orElseThrow(()-> new EntityNotFoundException(Collection.class, collectionId));
             i.setUser(u);
             i.setCollection(co);
@@ -89,8 +94,8 @@ public class JpaItemService implements ItemService {
 
             return true;
         } catch (PersistenceException pe) {
-            throw new DataException("errore nella modifica di un prodotto", pe);
+            throw new DataException("errore nella modifica di un Item", pe);
         }
     }
-}
 
+}

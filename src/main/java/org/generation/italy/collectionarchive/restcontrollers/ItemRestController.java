@@ -1,12 +1,10 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
-import org.generation.italy.collectionarchive.models.entities.Collection;
+
 import org.generation.italy.collectionarchive.models.entities.Item;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.CollectionService;
 import org.generation.italy.collectionarchive.models.service.ItemService;
-import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.generation.italy.collectionarchive.restdto.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/item")
+@RequestMapping("/api/items")
 
 public class ItemRestController {
     private ItemService itemService;
@@ -29,6 +27,16 @@ public class ItemRestController {
         this.itemService = itemService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getItemById(@PathVariable int id) throws DataException {
+
+        Optional<Item> c = itemService.findItemById(id);
+        if(c.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        ItemDto io = ItemDto.toDto(c.get());
+        return ResponseEntity.ok(c);
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllItem() throws DataException {

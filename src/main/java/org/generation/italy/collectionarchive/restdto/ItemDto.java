@@ -52,7 +52,7 @@ public class ItemDto {
                     itemName, itemDescription, itemPhoto, condition,
                     purchaseDate,  releaseDate, purchasePrice,salePrice,
                     itemVersion, itemEdition, forSale,  visibilityStatus);
-            i.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
+          i.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
             return i;
         }
 
