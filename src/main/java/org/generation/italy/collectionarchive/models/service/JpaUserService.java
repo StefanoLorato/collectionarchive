@@ -7,9 +7,9 @@ import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.entities.UserContact;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.repositories.specifications.ShippingAddressRepository;
-import org.generation.italy.collectionarchive.models.repositories.specifications.UserContactRepository;
-import org.generation.italy.collectionarchive.models.repositories.specifications.UserRepository;
+import org.generation.italy.collectionarchive.models.repositories.ShippingAddressRepository;
+import org.generation.italy.collectionarchive.models.repositories.UserContactRepository;
+import org.generation.italy.collectionarchive.models.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

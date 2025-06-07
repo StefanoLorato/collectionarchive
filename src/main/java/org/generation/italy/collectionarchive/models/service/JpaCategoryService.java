@@ -4,7 +4,7 @@ import jakarta.persistence.PersistenceException;
 import org.generation.italy.collectionarchive.models.entities.Category;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.repositories.specifications.*;
+import org.generation.italy.collectionarchive.models.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
