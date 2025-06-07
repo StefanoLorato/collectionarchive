@@ -75,6 +75,7 @@ public class CollectionRestController {
         if(id != dto.getCollectionId()){
             return ResponseEntity.badRequest().body("L'id del path non corrisponde all'id del dto");
         }
+
         Optional<Collection> co = collectionService.findCollectionById(id);
         if(co.isEmpty()){
             return ResponseEntity.notFound().build();
