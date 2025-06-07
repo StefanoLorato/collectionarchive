@@ -98,4 +98,9 @@ public class JpaItemService implements ItemService{
         }
     }
 
+    @Override
+    public List<Item> findItemByCollectionId(int collectionId) {
+        return itemRepo.findByCollectionCollectionId(collectionId);
+    }
+
 }

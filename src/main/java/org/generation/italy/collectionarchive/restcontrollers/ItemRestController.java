@@ -38,6 +38,16 @@ public class ItemRestController {
         return ResponseEntity.ok(c);
     }
 
+    @GetMapping("/collection/{collectionId}")
+    public ResponseEntity<?> getItemsByCollectionId(@PathVariable("collectionId") int collectionId) {
+        List<ItemDto> items = itemService.findItemByCollectionId(collectionId)
+                .stream().map(ItemDto::toDto).toList();
+        if (items.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(items);
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllItem() throws DataException {
 

@@ -15,4 +15,5 @@ public interface ItemService {
     Item createItem(Item i,int userId, int collectionId) throws DataException, EntityNotFoundException;
     boolean deleteItem(int id) throws DataException;
     boolean updateItem(Item t, int userId, int collectionId) throws DataException, EntityNotFoundException;
+    List<Item> findItemByCollectionId(int collectionId);
 }
