@@ -17,11 +17,11 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/cartItems")
-public class CartItemsRestController {
+public class CartItemRestController {
     private OrderService orderService;
 
     @Autowired
-    public CartItemsRestController(OrderService orderService) {
+    public CartItemRestController(OrderService orderService) {
         this.orderService = orderService;
     }
 
