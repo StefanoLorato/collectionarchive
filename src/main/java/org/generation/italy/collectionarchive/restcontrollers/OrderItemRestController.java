@@ -4,6 +4,7 @@ import org.generation.italy.collectionarchive.models.entities.OrderItem;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.CollectionService;
+import org.generation.italy.collectionarchive.models.service.OrderService;
 import org.generation.italy.collectionarchive.restdto.OrderItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,22 +19,22 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/order-items")
 public class OrderItemRestController {
-    private CollectionService collectionService;
+    private OrderService orderItemService;
 
     @Autowired
-    public OrderItemRestController(CollectionService collectionService){
-        this.collectionService = collectionService;
+    public OrderItemRestController(OrderService orderItemService){
+        this.orderItemService = orderItemService;
     }
 
     @GetMapping
     public ResponseEntity<?> getAllOrderItems() throws DataException {
-        List<OrderItemDto> orderItems = collectionService.findAllOrderItems().stream().map(OrderItemDto::toDto).toList();
+        List<OrderItemDto> orderItems = orderItemService.findAllOrderItems().stream().map(OrderItemDto::toDto).toList();
         return ResponseEntity.ok(orderItems);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrderItemById(@PathVariable Integer id){
-        Optional<OrderItem> ooi = collectionService.findOrderItemById(id);
+        Optional<OrderItem> ooi = orderItemService.findOrderItemById(id);
         if(ooi.isEmpty()){
             return ResponseEntity.notFound().build();
         }
@@ -44,7 +45,7 @@ public class OrderItemRestController {
     @PostMapping
     public ResponseEntity<OrderItemDto> createOrderItem(@RequestBody OrderItemDto dto) throws DataException, EntityNotFoundException {
         OrderItem o = dto.toOrderItem();
-        collectionService.createOrderItem(o, dto.getOrderId(), dto.getItemId(), dto.getCollectionId());
+        orderItemService.createOrderItem(o, dto.getOrderId(), dto.getItemId(), dto.getCollectionId());
         OrderItemDto saved = OrderItemDto.toDto(o);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -56,7 +57,7 @@ public class OrderItemRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderItemById(@PathVariable int id) throws DataException{
-        boolean deleted = collectionService.deleteOrderItem(id);
+        boolean deleted = orderItemService.deleteOrderItem(id);
         if(deleted){
             return ResponseEntity.noContent().build();
         }
@@ -68,12 +69,12 @@ public class OrderItemRestController {
         if(id != dto.getOrderItemId()){
             return ResponseEntity.badRequest().body("l'id del path non corrisponde all'id del dto");
         }
-        Optional<OrderItem> oo = collectionService.findOrderItemById(id);
+        Optional<OrderItem> oo = orderItemService.findOrderItemById(id);
         if(oo.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         OrderItem o = dto.toOrderItem();
-        boolean updated = collectionService.updateOrderItem(o, dto.getOrderId(), dto.getItemId(), dto.getCollectionId());
+        boolean updated = orderItemService.updateOrderItem(o, dto.getOrderId(), dto.getItemId(), dto.getCollectionId());
         if (updated) {
             return ResponseEntity.ok().build();
         } else {

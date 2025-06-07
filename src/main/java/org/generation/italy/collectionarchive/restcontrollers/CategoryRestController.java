@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.Category;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.CollectionService;
+import org.generation.italy.collectionarchive.models.service.CategoryService;
 import org.generation.italy.collectionarchive.restdto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +18,10 @@ import java.util.Optional;
 @RequestMapping("/api/categories")
 @CrossOrigin(origins = "*")
 public class CategoryRestController {
-    private CollectionService categoryService;
+    private CategoryService categoryService;
 
     @Autowired
-    public CategoryRestController(CollectionService categoryService){
+    public CategoryRestController(CategoryService categoryService){
         this.categoryService = categoryService;
     }
 
