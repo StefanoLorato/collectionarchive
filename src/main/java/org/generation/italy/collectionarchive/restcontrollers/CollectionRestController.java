@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,7 @@ public class CollectionRestController {
     @PostMapping
     public ResponseEntity<CollectionDto> createCollection(@RequestBody CollectionDto dto) throws DataException, EntityNotFoundException {
         Collection c = dto.toCollection();
+        c.setCreatedAt(LocalDateTime.now());
         collectionService.createCollection(c, dto.getUserId(), dto.getCategoryId());
 
         CollectionDto saved = CollectionDto.toDto(c);

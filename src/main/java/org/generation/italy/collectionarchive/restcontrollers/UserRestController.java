@@ -3,6 +3,10 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.service.JpaUserService;
+import org.generation.italy.collectionarchive.models.service.UserService;
+import org.generation.italy.collectionarchive.restdto.OrderDto;
+import org.generation.italy.collectionarchive.restdto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +18,19 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserRestController {
-    private final JpaUserService userService;
+    private final UserService userService;
 
+    @Autowired
     public UserRestController(JpaUserService userService) {
         this.userService = userService;
     }
-    // GET all users
+
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            return ResponseEntity.ok(userService.findAllUsers());
-        } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<?> getAllUsers() {
+        List<UserDto> users = userService.findAllUsers().stream().map(UserDto::toDto).toList();
+        return ResponseEntity.ok(users);
     }
 
-    // GET
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         try {
