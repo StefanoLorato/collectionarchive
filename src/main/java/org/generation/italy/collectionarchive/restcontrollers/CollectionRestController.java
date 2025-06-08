@@ -35,7 +35,7 @@ public class CollectionRestController {
             return ResponseEntity.notFound().build();
         }
         CollectionDto co = CollectionDto.toDto(c.get());
-        return ResponseEntity.ok(c);
+        return ResponseEntity.ok(co);
     }
 
     @GetMapping

@@ -35,7 +35,7 @@ public class ItemRestController {
             return ResponseEntity.notFound().build();
         }
         ItemDto io = ItemDto.toDto(c.get());
-        return ResponseEntity.ok(c);
+        return ResponseEntity.ok(io);
     }
 
     @GetMapping("/collection/{collectionId}")
