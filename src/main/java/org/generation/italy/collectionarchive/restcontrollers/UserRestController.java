@@ -6,6 +6,7 @@ import org.generation.italy.collectionarchive.models.service.JpaUserService;
 import org.generation.italy.collectionarchive.models.service.UserService;
 import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.generation.italy.collectionarchive.restdto.UserDto;
+import org.generation.italy.collectionarchive.restdto.logindto.UserInputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,22 +50,27 @@ public class UserRestController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> createUser(@RequestBody UserInputDto inputDto) {
         try {
-            User user = userDto.toUser();
+            User user = inputDto.toEntity();
+            // user.setPassword(passwordEncoder.encode(user.getPassword()));
             User created = userService.createUser(user);
-            UserDto responseDto = UserDto.toDto(created);
-            responseDto.setPassword(null);  // sempre no password in output
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+            UserDto dto = UserDto.toDto(created);
+            return ResponseEntity.status(HttpStatus.CREATED).body(dto);
         } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Errore nella creazione dell'utente: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Richiesta malformata o campi mancanti: " + e.getMessage());
         }
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserInputDto inputDto) {
         try {
-            User user = userDto.toUser();
+            User user = inputDto.toEntity();
             user.setUserId(id);
             boolean updated = userService.updateUser(user);
             return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();

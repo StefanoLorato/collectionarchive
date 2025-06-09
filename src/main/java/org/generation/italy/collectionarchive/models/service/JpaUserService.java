@@ -10,6 +10,7 @@ import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundEx
 import org.generation.italy.collectionarchive.models.repositories.ShippingAddressRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserContactRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
+import org.generation.italy.collectionarchive.restdto.logindto.UserInputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,13 @@ public class JpaUserService implements UserService{
     private UserRepository userRepo;
     private ShippingAddressRepository shippingRepo;
 
+    public User toEntity(UserInputDto dto) {
+        User user = new User();
+        user.setEmail(dto.getEmail());
+        user.setUsername(dto.getUsername());
+        //user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        return user;
+    }
 
     @Autowired
     public JpaUserService(UserContactRepository contactRepo, UserRepository userRepo,
