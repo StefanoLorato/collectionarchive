@@ -81,6 +81,7 @@ public class CollectionRestController {
             return ResponseEntity.notFound().build();
         }
         Collection c = dto.toCollection();
+        c.setCreatedAt(co.get().getCreatedAt());
         c.setCollectionId(id);
 
         boolean updated = collectionService.updateCollection(c, dto.getUserId(), dto.getCategoryId());

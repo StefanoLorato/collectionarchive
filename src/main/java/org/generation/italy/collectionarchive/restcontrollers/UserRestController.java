@@ -18,7 +18,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserRestController {
-    private final UserService userService;
+    private UserService userService;
 
     @Autowired
     public UserRestController(JpaUserService userService) {

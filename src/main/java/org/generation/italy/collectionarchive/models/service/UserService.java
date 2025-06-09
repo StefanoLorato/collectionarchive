@@ -25,6 +25,9 @@ public interface UserService {
     boolean updateUserContact(UserContact contact, int userId) throws DataException, EntityNotFoundException;
     boolean deleteUserContact(int id) throws DataException;
 
+    //USER LIKE
+
+
     // SHIPPING ADDRESS
     List<ShippingAddress> findAllShippingAddresses() throws DataException;
     Optional<ShippingAddress> findShippingAddressById(int id) throws DataException;

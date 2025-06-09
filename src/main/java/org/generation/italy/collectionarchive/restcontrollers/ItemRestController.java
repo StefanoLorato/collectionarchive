@@ -59,7 +59,11 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        itemService.createItem(c, dto.getUser(),dto.getCollection());
+        int userId = dto.getUser(); // o getUserId() se hai solo l’id
+        int collectionId = dto.getCollection(); // o getCollectionId()
+
+        itemService.createItem(c, userId, collectionId);
+
         ItemDto saved = ItemDto.toDto(c);
 
         URI location = ServletUriComponentsBuilder
@@ -67,6 +71,7 @@ public class ItemRestController {
                 .path("/{id}")
                 .buildAndExpand(saved.getItemId())
                 .toUri();
+
         return ResponseEntity.created(location).body(saved);
     }
 
