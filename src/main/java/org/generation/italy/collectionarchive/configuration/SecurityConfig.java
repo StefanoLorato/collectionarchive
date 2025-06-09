@@ -8,9 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class PasswordConfig {
+public class SecurityConfig {
 
-    @Bean
+    @Bean //Crea oggetto che ed esegue la funzione
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) //disattiva protezione CSRF
 //Con un token CSRF ogni form (o richiesta sensibile) contiene un token univoco e temporaneo.
