@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.UserContactService;
+import org.generation.italy.collectionarchive.models.service.UserService;
 import org.generation.italy.collectionarchive.restdto.ShippingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/shipping-address")
+@RequestMapping("/api/shippingAddress")
 public class ShippingAddressRestController {
 
-    private final UserContactService userContactService;
+    private final UserService userContactService;
 
     @Autowired
-    public ShippingAddressRestController(UserContactService userContactService) {
+    public ShippingAddressRestController(UserService userContactService) {
         this.userContactService = userContactService;
     }
 
@@ -89,4 +89,3 @@ public class ShippingAddressRestController {
         }
     }
 }
-

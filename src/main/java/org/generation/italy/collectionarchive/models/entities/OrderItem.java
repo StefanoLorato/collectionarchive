@@ -18,13 +18,13 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "collection_id")
     private Collection collection;
-    private double  price;
+    private Double  price;
 
     public OrderItem() {
     }
 
     public OrderItem(int orderItemId, Order order, Item item,
-                     Collection collection, double price) {
+                     Collection collection, Double price) {
         this.orderItemId = orderItemId;
         this.order = order;
         this.item = item;
@@ -60,10 +60,10 @@ public class OrderItem {
         this.collection = collection;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

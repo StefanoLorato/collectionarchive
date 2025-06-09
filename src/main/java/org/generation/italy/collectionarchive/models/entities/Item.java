@@ -32,9 +32,9 @@ public class Item {
     @Column(name= "release_date")
     private LocalDate releaseDate;
     @Column(name= "purchase_price")
-    private double purchasePrice;
+    private Double purchasePrice;
     @Column (name = "sale_price")
-    private double salePrice;
+    private Double salePrice;
     @Column (name= "item_version")
     private String itemVersion;
     @Column (name= "item_edition")
@@ -76,7 +76,7 @@ public class Item {
 
     public Item(int itemId, Collection collection, User user,
                 String itemName, String itemDescription, String itemPhoto, String condition,
-                LocalDate purchaseDate, LocalDate releaseDate, double purchasePrice, double salePrice,
+                LocalDate purchaseDate, LocalDate releaseDate, Double purchasePrice, Double salePrice,
                 String itemVersion, String itemEdition, boolean forSale, String visibilityStatus) {
         this.itemId = itemId;
         this.collection = collection;
@@ -167,19 +167,19 @@ public class Item {
         this.releaseDate = releaseDate;
     }
 
-    public double getPurchasePrice() {
+    public Double getPurchasePrice() {
         return purchasePrice;
     }
 
-    public void setPurchasePrice(double purchasePrice) {
+    public void setPurchasePrice(Double purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
 
-    public double getSalePrice() {
+    public Double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(double salePrice) {
+    public void setSalePrice(Double salePrice) {
         this.salePrice = salePrice;
     }
 

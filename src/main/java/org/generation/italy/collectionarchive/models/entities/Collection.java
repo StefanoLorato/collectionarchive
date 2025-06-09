@@ -28,11 +28,11 @@ public class Collection {
     @Column(name = "collection_date")
     private LocalDate collectionDate;
     @Column(name = "created_at")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     @Column (name = "for_sale")
     private boolean forSale;
     @Column (name="sale_price")
-    private double salePrice;
+    private Double salePrice;
     @Column (name ="visibility_status")
     private String visibilityStatus;
 
@@ -61,7 +61,7 @@ public class Collection {
     }
 
     public Collection(int collectionId, String collectionName, boolean completed,
-                      Category category, User user, String visibility, String description, LocalDate collectionDate, LocalDateTime createAt, boolean forSale, double salePrice, String visibilityStatus) {
+                      Category category, User user, String visibility, String description, LocalDate collectionDate, LocalDateTime createdAt, boolean forSale, Double salePrice, String visibilityStatus) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.completed = completed;
@@ -70,7 +70,7 @@ public class Collection {
         this.visibility = visibility;
         this.description = description;
         this.collectionDate = collectionDate;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.forSale = forSale;
         this.salePrice = salePrice;
         this.visibilityStatus = visibilityStatus;
@@ -148,19 +148,19 @@ public class Collection {
         this.forSale = forSale;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public double getSalePrice() {
+    public Double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(double salePrice) {
+    public void setSalePrice(Double salePrice) {
         this.salePrice = salePrice;
     }
 
