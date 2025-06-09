@@ -53,7 +53,7 @@ public class UserRestController {
         return ResponseEntity.ok(dto);
     }
 
-    // POST nuovo utente
+    // POST
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         User user = userDto.toUser();
@@ -64,7 +64,7 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
     }
 
-    // PUT per aggiornare utente
+    // PUT
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
         User user = userDto.toUser();
@@ -73,7 +73,7 @@ public class UserRestController {
         return success ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    // DELETE utente
+    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         boolean success = userService.deleteUser(id);

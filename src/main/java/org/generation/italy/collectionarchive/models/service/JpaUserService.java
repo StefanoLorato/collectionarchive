@@ -33,7 +33,7 @@ public class JpaUserService implements UserService{
 
     @Autowired
     public JpaUserService(UserContactRepository contactRepo, UserRepository userRepo,
-                                 ShippingAddressRepository shippingRepo, UserRepository userRepository) {
+                         ShippingAddressRepository shippingRepo, UserRepository userRepository) {
         this.contactRepo = contactRepo;
         this.userRepo = userRepo;
         this.shippingRepo = shippingRepo;
@@ -41,7 +41,6 @@ public class JpaUserService implements UserService{
     }
 
     // USER
-
     @Override
     public List<User> findAllUsers() throws DataException{
         return userRepo.findAll();
@@ -59,7 +58,7 @@ public class JpaUserService implements UserService{
         } catch (PersistenceException e) {
             throw new DataException("errore nella creazione dell'user", e);
         }
-    } //Qui dovrò inserire la logica di criptazione dei dati
+    }
 
     @Override
     public boolean deleteUser(Integer id) throws DataException{

@@ -323,4 +323,10 @@ public class User {
     public void setReportedUsers(List<Report> reportedUsers) {
         this.reportedUsers = reportedUsers;
     }
+
+    public Long getId() {
+        return 0L;
+    }
+    public void masterSetName(String masterUser) {
+    }
 }
