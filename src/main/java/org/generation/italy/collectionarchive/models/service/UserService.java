@@ -1,8 +1,6 @@
 package org.generation.italy.collectionarchive.models.service;
 
-import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
-import org.generation.italy.collectionarchive.models.entities.User;
-import org.generation.italy.collectionarchive.models.entities.UserContact;
+import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 
@@ -31,4 +29,22 @@ public interface UserService {
     ShippingAddress createShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException;
     boolean updateShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException;
     boolean deleteShippingAddress(int id) throws DataException;
+
+    // USER LIKE
+    List<UserLike> findAllUserLikes() throws DataException;
+    Optional<UserLike> findUserLikeById(int id) throws DataException;
+    UserLike createUserLike(int userId, int itemId) throws DataException, EntityNotFoundException;
+    boolean deleteUserLike(int id) throws DataException;
+    List<UserLike> findUserLikesByUserId(int userId) throws DataException;
+    boolean userAlreadyLikedItem(int userId, int itemId) throws DataException;
+
+    // USER FEEDBACK
+
+    List<UserFeedback> findAllUserFeedbacks() throws DataException;
+    Optional<UserFeedback> findUserFeedbackById(int id) throws DataException;
+    Optional<UserFeedback> findFeedbackByOrderId(int orderId) throws DataException;
+    UserFeedback createUserFeedback(int orderId, int fromUserId, int toUserId, int rating, String comment)
+            throws DataException, EntityNotFoundException;
+    boolean deleteUserFeedback(int id) throws DataException;
+
 }

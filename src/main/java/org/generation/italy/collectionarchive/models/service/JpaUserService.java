@@ -7,11 +7,19 @@ import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.entities.UserContact;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.repositories.ShippingAddressRepository;
-import org.generation.italy.collectionarchive.models.repositories.UserContactRepository;
-import org.generation.italy.collectionarchive.models.repositories.UserRepository;
+import org.generation.italy.collectionarchive.models.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.generation.italy.collectionarchive.models.entities.UserLike;
+import org.generation.italy.collectionarchive.models.entities.Item;
+import org.generation.italy.collectionarchive.models.repositories.UserLikeRepository;
+import org.generation.italy.collectionarchive.models.repositories.ItemRepository;
+import org.generation.italy.collectionarchive.models.entities.Order;
+import org.generation.italy.collectionarchive.models.entities.UserFeedback;
+import org.generation.italy.collectionarchive.models.repositories.OrderRepository;
+import org.generation.italy.collectionarchive.models.repositories.UserFeedbackRepository;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +30,30 @@ public class JpaUserService implements UserService{
     private UserRepository userRepo;
     private ShippingAddressRepository shippingRepo;
     private UserRepository userRepository;
+    private UserLikeRepository userLikeRepo;
+    private ItemRepository itemRepo;
+    private UserFeedbackRepository userFeedbackRepo;
+    private OrderRepository orderRepo;
+
+
 
     @Autowired
-    public JpaUserService(UserContactRepository contactRepo, UserRepository userRepo,
-                                 ShippingAddressRepository shippingRepo, UserRepository userRepository) {
+    public JpaUserService(UserContactRepository contactRepo,
+                          UserRepository userRepo,
+                          ShippingAddressRepository shippingRepo,
+                          UserRepository userRepository,
+                          UserLikeRepository userLikeRepo,
+                          ItemRepository itemRepo,
+                          UserFeedbackRepository userFeedbackRepo,
+                          OrderRepository orderRepo) {
         this.contactRepo = contactRepo;
         this.userRepo = userRepo;
         this.shippingRepo = shippingRepo;
         this.userRepository = userRepository;
+        this.userLikeRepo = userLikeRepo;
+        this.itemRepo = itemRepo;
+        this.userFeedbackRepo = userFeedbackRepo;
+        this.orderRepo = orderRepo;
     }
 
     // USER
@@ -188,4 +212,122 @@ public class JpaUserService implements UserService{
         }
         return false;
     }
+    // USER LIKE
+
+    @Override
+    public List<UserLike> findAllUserLikes() throws DataException {
+        return userLikeRepo.findAll();
+    }
+
+    @Override
+    public Optional<UserLike> findUserLikeById(int id) throws DataException {
+        return userLikeRepo.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public UserLike createUserLike(int userId, int itemId) throws DataException, EntityNotFoundException {
+        try {
+            User user = userRepo.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
+            Item item = itemRepo.findById(itemId)
+                    .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+
+            UserLike like = new UserLike();
+            like.setUser(user);
+            like.setItem(item);
+            return userLikeRepo.save(like);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore durante la creazione del like", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteUserLike(int id) throws DataException {
+        Optional<UserLike> ul = userLikeRepo.findById(id);
+        if (ul.isPresent()) {
+            userLikeRepo.delete(ul.get());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<UserLike> findUserLikesByUserId(int userId) throws DataException {
+        return userLikeRepo.findByUserUserId(userId);
+    }
+
+    @Override
+    public boolean userAlreadyLikedItem(int userId, int itemId) throws DataException {
+        return userLikeRepo.existsByUserUserIdAndItemItemId(userId, itemId);
+    }
+    @Override
+    public List<UserFeedback> findAllUserFeedbacks() throws DataException {
+        try {
+            return userFeedbackRepo.findAll();
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nel recupero dei feedback", e);
+        }
+    }
+
+    @Override
+    public Optional<UserFeedback> findUserFeedbackById(int id) throws DataException {
+        try {
+            return userFeedbackRepo.findById(id);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nel recupero del feedback", e);
+        }
+    }
+
+    @Override
+    public Optional<UserFeedback> findFeedbackByOrderId(int orderId) throws DataException {
+        try {
+            return userFeedbackRepo.findByOrderOrderId(orderId);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nel recupero del feedback per ordine", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public UserFeedback createUserFeedback(int orderId, int fromUserId, int toUserId, int rating, String comment)
+            throws DataException, EntityNotFoundException {
+        try {
+            Order order = orderRepo.findById(orderId)
+                    .orElseThrow(() -> new EntityNotFoundException(Order.class, orderId));
+            User fromUser = userRepo.findById(fromUserId)
+                    .orElseThrow(() -> new EntityNotFoundException(User.class, fromUserId));
+            User toUser = userRepo.findById(toUserId)
+                    .orElseThrow(() -> new EntityNotFoundException(User.class, toUserId));
+
+            UserFeedback feedback = new UserFeedback();
+            feedback.setOrder(order);
+            feedback.setFromUser(fromUser);
+            feedback.setToUser(toUser);
+            feedback.setRating(rating);
+            feedback.setComment(comment);
+            feedback.setCreatedAt(java.time.LocalDateTime.now());
+
+            return userFeedbackRepo.save(feedback);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore durante la creazione del feedback", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteUserFeedback(int id) throws DataException {
+        try {
+            Optional<UserFeedback> f = userFeedbackRepo.findById(id);
+            if (f.isPresent()) {
+                userFeedbackRepo.delete(f.get());
+                return true;
+            }
+            return false;
+        } catch (PersistenceException e) {
+            throw new DataException("Errore durante l'eliminazione del feedback", e);
+        }
+    }
+
 }
