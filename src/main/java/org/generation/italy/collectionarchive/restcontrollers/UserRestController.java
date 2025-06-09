@@ -34,7 +34,8 @@ public class UserRestController {
         List<UserDto> users = userService.findAllUsers()
                 .stream()
                 .map(UserDto::toDto)
-                .peek(dto -> dto.setPassword(null)) // nascondi la password
+                .peek(dto -> dto.setPassword(null))// nascondi la password
+                .peek(dto -> dto.setEmail(null))// nascondi la mail
                 .collect(Collectors.toList());
         return ResponseEntity.ok(users);
     }
@@ -47,7 +48,8 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
         UserDto dto = UserDto.toDto(userOpt.get());
-        dto.setPassword(null); // occhio alla password
+        dto.setPassword(null);
+        dto.setEmail(null);
         return ResponseEntity.ok(dto);
     }
 
