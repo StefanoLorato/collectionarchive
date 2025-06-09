@@ -10,6 +10,7 @@ import org.generation.italy.collectionarchive.restdto.logindto.UserInputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +21,12 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserRestController {
     private final UserService userService;
+    //private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserRestController(JpaUserService userService) {
+    public UserRestController(JpaUserService userService) { //Inserire il passwordEndcore in input
         this.userService = userService;
+        //this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -42,7 +45,7 @@ public class UserRestController {
             if(user.isEmpty()) return ResponseEntity.notFound().build();
 
             UserDto dto = UserDto.toDto(user.get());
-            dto.setPassword(null);  // Non mandare la password
+            dto.setPassword(null);
             return ResponseEntity.ok(dto);
         } catch (DataException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -53,7 +56,7 @@ public class UserRestController {
     public ResponseEntity<?> createUser(@RequestBody UserInputDto inputDto) {
         try {
             User user = inputDto.toEntity();
-            // user.setPassword(passwordEncoder.encode(user.getPassword()));
+            //user.setPassword(passwordEncoder.encode(user.getPassword()));
             User created = userService.createUser(user);
             UserDto dto = UserDto.toDto(created);
             return ResponseEntity.status(HttpStatus.CREATED).body(dto);
@@ -62,7 +65,7 @@ public class UserRestController {
                     .body("Errore nella creazione dell'utente: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Richiesta malformata o campi mancanti: " + e.getMessage());
+                    .body("Username o e-mail già in uso! " + e.getMessage());
         }
     }
 
