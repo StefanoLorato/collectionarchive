@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.models.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name= "user_preferred_categories ")
+@Table(name= "user_preferred_categories")
 public class UserPreferredCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

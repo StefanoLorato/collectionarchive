@@ -29,7 +29,9 @@ public class UserContactRestController {
     @GetMapping
     public ResponseEntity<List<UserContactDto>> getAllUserContacts() throws DataException {
         List<UserContactDto> dtos = contactService.findAllUserContacts()
-                .stream().map(UserContactDto::toDto).toList();
+                .stream()
+                .map(UserContactDto::toDto)
+                .toList();
         return ResponseEntity.ok(dtos);
     }
 
