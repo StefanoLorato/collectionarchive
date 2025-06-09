@@ -26,37 +26,45 @@ public class UserRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers() {
-        List<UserDto> users = userService.findAllUsers().stream().map(UserDto::toDto).toList();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.findAllUsers().stream()
+                .map(UserDto::toDto)
+                .peek(dto -> dto.setPassword(null)) // fai sparire la password qui
+                .toList();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
         try {
             Optional<User> user = userService.findUserById(id);
-            return user.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+            if(user.isEmpty()) return ResponseEntity.notFound().build();
+
+            UserDto dto = UserDto.toDto(user.get());
+            dto.setPassword(null);  // Non mandare la password
+            return ResponseEntity.ok(dto);
         } catch (DataException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // POST
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         try {
+            User user = userDto.toUser();
             User created = userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(created);
+            UserDto responseDto = UserDto.toDto(created);
+            responseDto.setPassword(null);  // sempre no password in output
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
         } catch (DataException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    // PUT
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
         try {
+            User user = userDto.toUser();
             user.setUserId(id);
             boolean updated = userService.updateUser(user);
             return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
@@ -65,7 +73,6 @@ public class UserRestController {
         }
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         try {

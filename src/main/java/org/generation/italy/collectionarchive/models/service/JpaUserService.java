@@ -21,7 +21,7 @@ public class JpaUserService implements UserService{
     private UserContactRepository contactRepo;
     private UserRepository userRepo;
     private ShippingAddressRepository shippingRepo;
-    private UserRepository userRepository;
+
 
     @Autowired
     public JpaUserService(UserContactRepository contactRepo, UserRepository userRepo,
@@ -29,25 +29,25 @@ public class JpaUserService implements UserService{
         this.contactRepo = contactRepo;
         this.userRepo = userRepo;
         this.shippingRepo = shippingRepo;
-        this.userRepository = userRepository;
+
     }
 
     // USER
 
     @Override
     public List<User> findAllUsers() throws DataException{
-        return userRepository.findAll();
+        return userRepo.findAll();
     }
 
     @Override
     public Optional<User> findUserById(Integer id) throws DataException{
-        return userRepository.findById(id);
+        return userRepo.findById(id);
     }
 
     @Override
     public User createUser(User user) throws DataException {
         try {
-            return userRepository.save(user);
+            return userRepo.save(user);
         } catch (PersistenceException e) {
             throw new DataException("errore nella creazione dell'user", e);
         }
@@ -55,11 +55,11 @@ public class JpaUserService implements UserService{
 
     @Override
     public boolean deleteUser(Integer id) throws DataException{
-        Optional<User> ou = userRepository.findById(id);
+        Optional<User> ou = userRepo.findById(id);
         if(ou.isEmpty()){
             return false;
         }
-        userRepository.delete(ou.get());
+        userRepo.delete(ou.get());
         return true;
     }
 
@@ -67,9 +67,9 @@ public class JpaUserService implements UserService{
     @Override
     public boolean updateUser(User u) throws DataException {
         try {
-            Optional<User> ou = userRepository.findById(u.getUserId());
+            Optional<User> ou = userRepo.findById(u.getUserId());
             if(ou.isPresent()){
-                userRepository.save(u);
+                userRepo.save(u);
                 return true;
             }
             return false;
@@ -80,7 +80,7 @@ public class JpaUserService implements UserService{
 
     @Override
     public Optional<User> findUserByEmail(String email){
-        return userRepository.findByEmail(email);
+        return userRepo.findByEmail(email);
     }
 
     // USER CONTACT
