@@ -1,6 +1,5 @@
 package org.generation.italy.collectionarchive.config;
 
-import com.luv2code.springboot.todos.repository.UserRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final org.generation.italy.collectionarchive.models.repositories.UserRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(org.generation.italy.collectionarchive.models.repositories.UserRepository userRepository, JwtAuthenticationFilter jwtAuthenticationFilter) {

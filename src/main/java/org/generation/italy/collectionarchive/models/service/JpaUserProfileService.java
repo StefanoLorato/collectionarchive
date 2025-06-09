@@ -17,17 +17,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class JpaUserService implements UserService{
+public class JpaUserProfileService implements UserProfileService{
     private UserContactRepository contactRepo;
-    private UserRepository userRepo;
     private ShippingAddressRepository shippingRepo;
     private UserRepository userRepository;
 
     @Autowired
-    public JpaUserService(UserContactRepository contactRepo, UserRepository userRepo,
+    public JpaUserProfileService(UserContactRepository contactRepo,
                                  ShippingAddressRepository shippingRepo, UserRepository userRepository) {
         this.contactRepo = contactRepo;
-        this.userRepo = userRepo;
         this.shippingRepo = shippingRepo;
         this.userRepository = userRepository;
     }
@@ -99,7 +97,7 @@ public class JpaUserService implements UserService{
     @Transactional
     public UserContact createUserContact(UserContact contact, int userId) throws DataException, EntityNotFoundException {
         try {
-            Optional<User> ou = userRepo.findById(userId);
+            Optional<User> ou = userRepository.findById(userId);
             User user = ou.orElseThrow(() -> new EntityNotFoundException(User.class, userId));
             contact.setUser(user);
             contactRepo.save(contact);
@@ -118,7 +116,7 @@ public class JpaUserService implements UserService{
                 return false;
             }
 
-            User user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
+            User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
             contact.setUser(user);
             contactRepo.save(contact);
             return true;
@@ -155,7 +153,7 @@ public class JpaUserService implements UserService{
     @Override
     public ShippingAddress createShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException {
         try {
-            User user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
+            User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
             address.setUser(user);
             shippingRepo.save(address);
             return address;
@@ -172,7 +170,7 @@ public class JpaUserService implements UserService{
                 return false;
             }
 
-            User user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
+            User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
             address.setUser(user);
             shippingRepo.save(address);
             return true;

@@ -2,8 +2,8 @@ package org.generation.italy.collectionarchive.restcontrollers;
 
 import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
-import org.generation.italy.collectionarchive.models.service.JpaUserService;
-import org.generation.italy.collectionarchive.models.service.UserService;
+import org.generation.italy.collectionarchive.models.service.JpaUserProfileService;
+import org.generation.italy.collectionarchive.models.service.UserProfileService;
 import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.generation.italy.collectionarchive.restdto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,10 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserRestController {
-    private UserService userService;
+    private UserProfileService userService;
 
     @Autowired
-    public UserRestController(JpaUserService userService) {
+    public UserRestController(JpaUserProfileService userService) {
         this.userService = userService;
     }
 

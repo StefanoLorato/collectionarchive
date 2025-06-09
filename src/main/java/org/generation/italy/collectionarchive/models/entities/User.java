@@ -17,11 +17,9 @@ public class User implements UserDetails {
     private int userId;
     private String name;
     private String lastname;
-    private String username;
     private String password;
     private String email;
     private String country;
-    private String role;
     private boolean active;
 
 
@@ -89,16 +87,14 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(int userId, String name, String lastname, String username,
-                String password, String email, String country, String role, boolean active) {
+    public User(int userId, String name, String lastname,
+                String password, String email, String country, boolean active) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
-        this.username = username;
         this.password = password;
         this.email = email;
         this.country = country;
-        this.role = role;
         this.active = active;
     }
 
@@ -138,11 +134,14 @@ public class User implements UserDetails {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -164,13 +163,6 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -183,13 +175,6 @@ public class User implements UserDetails {
     }
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public boolean isActive() {

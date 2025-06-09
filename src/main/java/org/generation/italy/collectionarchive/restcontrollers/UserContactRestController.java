@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.UserContact;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.UserService;
+import org.generation.italy.collectionarchive.models.service.UserProfileService;
 import org.generation.italy.collectionarchive.restdto.UserContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,10 @@ import java.util.Optional;
 @RequestMapping("/api/userContacts")
 public class UserContactRestController {
 
-    private final UserService contactService;
+    private final UserProfileService contactService;
 
     @Autowired
-    public UserContactRestController(UserService contactService) {
+    public UserContactRestController(UserProfileService contactService) {
         this.contactService = contactService;
     }
 
