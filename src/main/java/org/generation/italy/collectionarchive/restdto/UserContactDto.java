@@ -19,7 +19,7 @@ public class UserContactDto {
         this.phone = phone;
     }
 
-    public UserContact toUserConcat(){
+    public UserContact toUserContact(){
         UserContact uc = new UserContact( contactId, null, phone);
         return uc;
     }

@@ -15,16 +15,17 @@ public class CollectionDto {
     private String visibility;
     private String description;
     private LocalDate collectionDate;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private boolean forSale;
-    private double salePrice;
+    private Double salePrice;
     private String visibilityStatus;
 
     public CollectionDto() {
     }
 
     public CollectionDto(int collectionId, String collectionName, boolean completed,
-                      int categoryId, int userId, String visibility, String description, LocalDate collectionDate, LocalDateTime createAt, boolean forSale, double salePrice, String visibilityStatus) {
+                         int categoryId, int userId, String visibility, String description, LocalDate collectionDate,
+                         LocalDateTime createdAt, boolean forSale, Double salePrice, String visibilityStatus) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.completed = completed;
@@ -33,7 +34,7 @@ public class CollectionDto {
         this.visibility = visibility;
         this.description = description;
         this.collectionDate = collectionDate;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.forSale = forSale;
         this.salePrice = salePrice;
         this.visibilityStatus = visibilityStatus;
@@ -41,7 +42,10 @@ public class CollectionDto {
 
     public Collection toCollection(){
         Collection c = new Collection( collectionId, collectionName, completed,
-         null, null, visibility,  description, collectionDate,  createAt,  forSale,  salePrice, visibilityStatus);
+         null, null, visibility,  description, collectionDate, createdAt,  forSale,
+                salePrice, visibilityStatus);
+        c.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
+        c.setVisibility(this.visibility != null ? this.visibility : "visible");
         return c;
     }
 
@@ -49,7 +53,7 @@ public class CollectionDto {
         return new CollectionDto(c.getCollectionId(),c.getCollectionName(),c.isCompleted(),
                                  c.getCategory().getCategoryId(), c.getUser().getUserId(),
                                  c.getVisibility(),c.getDescription(),c.getCollectionDate(),
-                                 c.getCreateAt(),c.isForSale(),c.getSalePrice(),c.getVisibilityStatus());
+                                 c.getCreatedAt(),c.isForSale(),c.getSalePrice(),c.getVisibilityStatus());
     }
 
 
@@ -125,19 +129,19 @@ public class CollectionDto {
         this.forSale = forSale;
     }
 
-    public LocalDateTime getCreateAt() {
-        return createAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public double getSalePrice() {
+    public Double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(double salePrice) {
+    public void setSalePrice(Double salePrice) {
         this.salePrice = salePrice;
     }
 

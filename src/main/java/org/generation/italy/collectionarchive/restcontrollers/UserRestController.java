@@ -4,7 +4,9 @@ import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.service.JpaUserService;
 import org.generation.italy.collectionarchive.models.service.UserService;
+import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.generation.italy.collectionarchive.restdto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,49 +14,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserRestController {
-
     private final UserService userService;
-    private final UserMapper userMapper;
 
-    public UserRestController(UserService userService, UserMapper userMapper) {
+    @Autowired
+    public UserRestController(JpaUserService userService) {
         this.userService = userService;
-        this.userMapper = userMapper;
     }
 
-@GetMapping
-public ResponseEntity<List<UserDto>> getAllUsers() {
-    try {
-        List<UserDto> users = UserService.findAllUsers()
-                .stream()
-                .map(this::toDto)
-                .toList();
+    @GetMapping
+    public ResponseEntity<?> getAllUsers() {
+        List<UserDto> users = userService.findAllUsers().stream().map(UserDto::toDto).toList();
         return ResponseEntity.ok(users);
-    } catch (DataException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
-}
-@GetMapping("/{id}")
-public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
-    try {
-        Optional<User> user = UserService.findUserById(id);
-        return user.map(u -> ResponseEntity.ok(toDto(u)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    } catch (DataException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable int id) {
+        try {
+            Optional<User> user = userService.findUserById(id);
+            return user.map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (DataException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-}
 
     // POST
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
-            User created = userService.createUser(userMapper.fromDto(dto));
-            return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toDto(created));
+            User created = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
         } catch (DataException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -62,9 +55,8 @@ public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
 
     // PUT
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody UserDto dto) {
+    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody User user) {
         try {
-            User user = userMapper.fromDto(dto);
             user.setUserId(id);
             boolean updated = userService.updateUser(user);
             return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
@@ -73,7 +65,7 @@ public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
         }
     }
 
-    // CANCELLA L'UTENTE
+    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         try {
