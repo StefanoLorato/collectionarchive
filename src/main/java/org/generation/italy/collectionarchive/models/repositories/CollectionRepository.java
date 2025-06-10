@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CollectionRepository extends JpaRepository<Collection , Integer> {
-    List<Collection> findByOwner(User owner);
-    Optional<Collection> findByIdAndOwner(Long id, User owner);
+    List<Collection> findByUser(User user);
+    Optional<Collection> findByCollectionIdAndUser(Long id, User user);
 }

@@ -1,5 +1,6 @@
 package org.generation.italy.collectionarchive.restdto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDto {
     private int userId;
@@ -20,6 +22,7 @@ public class UserDto {
     private String email;
     private String country;
     private boolean active;
+    @JsonProperty("authorities")
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDto() {
@@ -44,8 +47,8 @@ public class UserDto {
     }
 
     public static UserDto toDto(User u){
-        return new UserDto(u.getUserId(), u.getName(),u.getLastname(),u.getPassword(),
-                u.getEmail(), u.getCountry(),u.isActive(), u.getAuthorities());
+        return new UserDto(u.getUserId(), u.getName(), u.getLastname(), u.getPassword(),
+                u.getEmail(), u.getCountry(), u.isActive(), u.getAuthorities());
     }
 
     public int getUserId() {
@@ -96,4 +99,5 @@ public class UserDto {
     public void setActive(boolean active) {
         this.active = active;
     }
+
 }

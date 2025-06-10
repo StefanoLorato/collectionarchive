@@ -9,12 +9,14 @@ import org.generation.italy.collectionarchive.restdto.RegisterRequestDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class JpaAuthenticationService implements AuthenticationService {
     private UserRepository userRepo;
     private PasswordEncoder passwordEncoder;

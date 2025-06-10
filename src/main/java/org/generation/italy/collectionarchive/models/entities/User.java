@@ -22,12 +22,9 @@ public class User implements UserDetails {
     private String country;
     private boolean active;
 
-
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
     private List<Authority> authorities;
-
-
 
     @OneToMany (mappedBy = "user" )
     private List<Collection> collections = new ArrayList<>();
@@ -119,7 +116,6 @@ public class User implements UserDetails {
         this.lastname = lastname;
     }
 
-
     //USER LOGIN DETAILS
     @Override
     public java.util.Collection<? extends GrantedAuthority> getAuthorities() {
@@ -183,7 +179,6 @@ public class User implements UserDetails {
     public void setActive(boolean active) {
         this.active = active;
     }
-
 
     //CHARACTERIST LIST
 

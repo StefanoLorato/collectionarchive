@@ -10,14 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserProfileService {
-    // USER
-    List<User> findAllUsers()throws DataException;
-    Optional<User> findUserById(Integer id)throws DataException;
-    User createUser(User user)throws DataException;
-    boolean deleteUser(Integer id)throws DataException;
-    boolean updateUser(User u)throws DataException;
-    Optional<User> findUserByEmail(String email)throws DataException;
-
     // USER CONTACT
     List<UserContact> findAllUserContacts() throws DataException;
     Optional<UserContact> findUserContactById(int id) throws DataException;
@@ -27,6 +19,7 @@ public interface UserProfileService {
 
     //USER LIKE
 
+    //USER COMMENT
 
     // SHIPPING ADDRESS
     List<ShippingAddress> findAllShippingAddresses() throws DataException;

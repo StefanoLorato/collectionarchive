@@ -29,7 +29,6 @@ public class ItemRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getItemById(@PathVariable int id) throws DataException {
-
         Optional<Item> c = itemService.findItemById(id);
         if(c.isEmpty()){
             return ResponseEntity.notFound().build();
