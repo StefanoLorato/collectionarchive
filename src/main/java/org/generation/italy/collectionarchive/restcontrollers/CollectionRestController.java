@@ -38,9 +38,13 @@ public class CollectionRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllCollection() throws DataException {
+    public ResponseEntity<?> getAllCollection(@RequestParam(required = false) String collectionName,
+                                              @RequestParam(required = false) Integer categoryId) throws DataException {
 
-        List<CollectionDto> collectionDtos = collectionService.findAllCollection()
+        CollectionDto filters = new CollectionDto();
+        filters.setCollectionName(collectionName);
+        filters.setCategory(categoryId);
+        List<CollectionDto> collectionDtos = collectionService.searchCollection(filters)
                 .stream().map(CollectionDto::toDto).toList();
         return ResponseEntity.ok(collectionDtos);
     }
