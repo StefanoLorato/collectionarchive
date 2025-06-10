@@ -43,6 +43,7 @@ public class UserDto {
     public User toUser(){
         User u = new User( userId, name,  lastname,
                  password,  email,  country, active);
+        u.setActive(true);
         return u;
     }
 

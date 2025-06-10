@@ -3,6 +3,7 @@ package org.generation.italy.collectionarchive.restdto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.generation.italy.collectionarchive.models.entities.User;
 
 public class RegisterRequestDto {
     @NotEmpty(message = "name is mandatory")
@@ -10,19 +11,33 @@ public class RegisterRequestDto {
     private String name;
     @NotEmpty(message = "lastname is mandatory")
     @Size(min = 3, max = 30)
-    private String lastName;
+    private String lastname;
     @NotEmpty(message = "email is mandatory")
     @Email(message = "email invalid format")
     private String email;
     @NotEmpty(message = "password is mandatory")
     @Size(min = 6 , max = 30)
     private String password;
+    @NotEmpty(message = "country is mandatory")
+    private String country;
 
-    public RegisterRequestDto(String name, String lastName, String email, String password) {
+    public RegisterRequestDto(String name, String lastname, String email, String password, String country) {
         this.name = name;
-        this.lastName = lastName;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
+        this.country = country;
+    }
+
+    public User toUser(){
+        User u = new User();
+        u.setName(name);
+        u.setLastname(lastname);
+        u.setPassword(password);
+        u.setEmail(email);
+        u.setCountry(country);
+        u.setActive(true);
+        return u;
     }
 
     public String getName() {
@@ -32,11 +47,11 @@ public class RegisterRequestDto {
         this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
-    public void setLastName(@NotEmpty(message = "lastname is mandatory") @Size(min = 3, max = 30) String lastName) {
-        this.lastName = lastName;
+    public void setLastname(@NotEmpty(message = "lastname is mandatory") @Size(min = 3, max = 30) String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
@@ -51,5 +66,12 @@ public class RegisterRequestDto {
     }
     public void setPassword(@NotEmpty(message = "password is mandatory") @Size(min = 6, max = 30) String password) {
         this.password = password;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

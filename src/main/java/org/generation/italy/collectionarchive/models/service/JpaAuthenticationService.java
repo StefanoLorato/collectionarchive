@@ -63,9 +63,11 @@ public class JpaAuthenticationService implements AuthenticationService {
         User user = new User();
         user.setUserId(0);
         user.setName(input.getName());
-        user.setLastname(input.getLastName());
+        user.setLastname(input.getLastname());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
+        user.setCountry(input.getCountry());
+        user.setActive(true);
         user.setAuthorities(initialAuthority());
         return user;
     }

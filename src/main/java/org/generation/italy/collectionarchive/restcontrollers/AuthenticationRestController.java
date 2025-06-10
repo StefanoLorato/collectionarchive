@@ -1,6 +1,7 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
 import jakarta.validation.Valid;
+import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.service.AuthenticationService;
 import org.generation.italy.collectionarchive.models.service.UserService;
 import org.generation.italy.collectionarchive.restdto.*;
