@@ -21,9 +21,13 @@ public class MasterUser implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (userRepository.findByUsername("moderator").isEmpty()) {
             User user = new User();
+            user.setName("Alessio");
+            user.setLastname("Bsjefe");
+            user.setEmail("jdpqdjpe@ifjff.com");
             user.setUsername("moderator");
             user.setPassword(passwordEncoder.encode("moderator123"));
-            user.setRole("MODERATOR");
+            user.setRole("admin");
+            user.setCountry("Italy");
             user.setActive(true);
             userRepository.save(user);
             System.out.println("Utente creato!");
