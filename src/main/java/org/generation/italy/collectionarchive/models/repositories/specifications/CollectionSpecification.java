@@ -45,17 +45,14 @@ public class CollectionSpecification {
             if(salePrice == null || condition == null){
                 return builder.conjunction();
             }
-            switch(condition.toLowerCase()){
-                case "equal":
-                    return builder.equal(root.get("salePrice"), salePrice);
-                case "greaterthan":
-                    return builder.greaterThan(root.get("salePrice"), salePrice);
-                case "lessthan":
-                    return builder.lessThan(root.get("salePrice"), salePrice);
-                default:
-                    return builder.conjunction();
-            }
+            return switch (condition.toLowerCase()) {
+                case "equal" -> builder.equal(root.get("salePrice"), salePrice);
+                case "greaterthan" -> builder.greaterThan(root.get("salePrice"), salePrice);
+                case "lessthan" -> builder.lessThan(root.get("salePrice"), salePrice);
+                default -> builder.conjunction();
+            };
         };
 
     }
+
 }
