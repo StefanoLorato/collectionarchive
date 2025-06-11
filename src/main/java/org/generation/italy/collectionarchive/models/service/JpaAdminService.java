@@ -2,7 +2,6 @@ package org.generation.italy.collectionarchive.models.service;
 
 import org.generation.italy.collectionarchive.models.entities.Authority;
 import org.generation.italy.collectionarchive.models.entities.User;
-import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
