@@ -31,10 +31,18 @@ public class UserRestController {
         return ResponseEntity.ok(dto);
     }
 
+
     @PutMapping("/password")
     public ResponseEntity<Void> passwordUpdate(@Valid @RequestBody PasswordUpdateRequestDto passwordUpdateRequestDto){
         userService.updatePassword(passwordUpdateRequestDto);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) throws JsonProcessingException {
+        Optional<User> user = userService.findUserByEmail(email);
+        UserDto dto = UserDto.toDto(user.get());
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/{id}")
