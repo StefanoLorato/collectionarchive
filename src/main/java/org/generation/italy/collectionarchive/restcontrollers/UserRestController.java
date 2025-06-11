@@ -39,7 +39,7 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) throws JsonProcessingException {
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) throws JsonProcessingException {
         Optional<User> user = userService.findUserByEmail(email);
         UserDto dto = UserDto.toDto(user.get());
         return ResponseEntity.ok(dto);
