@@ -102,6 +102,7 @@ public class JpaCollectionService implements CollectionService {
             return collectionRepo.findAll(
                     Specification.where(CollectionSpecification.hasNameLike(dto.getCollectionName())
                             .and(CollectionSpecification.hasCategoryName(dto.getCategoryId())))
+                            .and(CollectionSpecification.hasUserId(dto.getUserId()))
             );
         } catch (PersistenceException pe) {
             throw new DataException("errore nella modifica di una collection", pe);

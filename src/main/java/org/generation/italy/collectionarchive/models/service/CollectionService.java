@@ -17,5 +17,4 @@ public interface CollectionService {
     boolean deleteCollection(int id) throws DataException;
     boolean updateCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
     List<Collection> searchCollection(CollectionDto dto);
-
 }
