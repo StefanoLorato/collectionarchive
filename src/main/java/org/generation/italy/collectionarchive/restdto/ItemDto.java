@@ -1,6 +1,5 @@
 package org.generation.italy.collectionarchive.restdto;
 
-import org.generation.italy.collectionarchive.models.entities.Collection;
 import org.generation.italy.collectionarchive.models.entities.Item;
 
 import java.time.LocalDate;
@@ -84,7 +83,7 @@ public class ItemDto {
             return userId;
         }
 
-        public void setUser(int userId) {
+        public void setUserId(int userId) {
             this.userId = userId;
         }
 
