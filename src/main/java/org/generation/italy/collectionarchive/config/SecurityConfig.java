@@ -3,6 +3,7 @@ package org.generation.italy.collectionarchive.config;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -68,6 +69,7 @@ public class SecurityConfig {
                         configurer
                                 .requestMatchers("/api/auth/**","/swagger-ui/**", "/v3/api-docs/**",
                                         "/swagger-resources/**", "/webjars/**", "/docs").permitAll()
+                                .requestMatchers(HttpMethod.GET, "api/collections/**", "api/items/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
