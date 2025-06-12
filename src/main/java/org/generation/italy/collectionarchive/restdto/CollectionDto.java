@@ -9,23 +9,24 @@ public class CollectionDto {
 
     private int collectionId;
     private String collectionName;
-    private boolean completed;
-    private int categoryId;
-    private int userId;
+    private Boolean completed;
+    private Integer categoryId;
+    private Integer userId;
     private String visibility;
     private String description;
     private LocalDate collectionDate;
     private LocalDateTime createdAt;
-    private boolean forSale;
+    private Boolean forSale;
     private Double salePrice;
     private String visibilityStatus;
+    private String priceComparation;
 
     public CollectionDto() {
     }
 
-    public CollectionDto(int collectionId, String collectionName, boolean completed,
-                         int categoryId, int userId, String visibility, String description, LocalDate collectionDate,
-                         LocalDateTime createdAt, boolean forSale, Double salePrice, String visibilityStatus) {
+    public CollectionDto(int collectionId, String collectionName, Boolean completed,
+                         Integer categoryId, Integer userId, String visibility, String description, LocalDate collectionDate,
+                         LocalDateTime createdAt, Boolean forSale, Double salePrice, String visibilityStatus) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.completed = completed;
@@ -73,27 +74,27 @@ public class CollectionDto {
         this.collectionName = collectionName;
     }
 
-    public boolean isCompleted() {
+    public Boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(Boolean completed) {
         this.completed = completed;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategory(int categoryId) {
+    public void setCategory(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUser(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -121,11 +122,11 @@ public class CollectionDto {
         this.collectionDate = collectionDate;
     }
 
-    public boolean isForSale() {
+    public Boolean isForSale() {
         return forSale;
     }
 
-    public void setForSale(boolean forSale) {
+    public void setForSale(Boolean forSale) {
         this.forSale = forSale;
     }
 
@@ -151,5 +152,13 @@ public class CollectionDto {
 
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
+    }
+
+    public String getPriceComparation() {
+        return priceComparation;
+    }
+
+    public void setPriceComparation(String priceComparation) {
+        this.priceComparation = priceComparation;
     }
 }
