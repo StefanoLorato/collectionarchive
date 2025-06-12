@@ -48,9 +48,18 @@ public class ItemRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllItem() throws DataException {
-
-        List<ItemDto> itemDtos = itemService.findAllItem()
+    public ResponseEntity<?> getAllItem(@RequestParam(required = false) String itemName,
+                                        @RequestParam(required = false) Boolean forSale,
+                                        @RequestParam(required = false) Integer userId,
+                                        @RequestParam(required = false) Double salePrice,
+                                        @RequestParam(required = false) String priceComparation) throws DataException {
+        ItemDto filters = new ItemDto();
+        filters.setItemName(itemName);
+        filters.setForSale(forSale);
+        filters.setUserId(userId);
+        filters.setSalePrice(salePrice);
+        filters.setPriceComparation(priceComparation);
+        List<ItemDto> itemDtos = itemService.searchItem(filters)
                 .stream().map(ItemDto::toDto).toList();
         return ResponseEntity.ok(itemDtos);
     }
@@ -58,8 +67,8 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        int userId = dto.getUser(); // o getUserId() se hai solo l’id
-        int collectionId = dto.getCollection(); // o getCollectionId()
+        int userId = dto.getUserId(); // o getUserId() se hai solo l’id
+        int collectionId = dto.getCollectionId(); // o getCollectionId()
 
         itemService.createItem(c, userId, collectionId);
 
@@ -95,7 +104,7 @@ public class ItemRestController {
         Item i = dto.toItem();
         i.setItemId(id);
 
-        boolean updated = itemService.updateItem(i, dto.getUser(),dto.getCollection());
+        boolean updated = itemService.updateItem(i, dto.getUserId(),dto.getCollectionId());
         if (updated) {
             return ResponseEntity.ok().build();
         } else {

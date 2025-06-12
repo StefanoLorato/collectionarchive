@@ -7,7 +7,10 @@ import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundEx
 import org.generation.italy.collectionarchive.models.repositories.CategoryRepository;
 import org.generation.italy.collectionarchive.models.repositories.CollectionRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
+import org.generation.italy.collectionarchive.models.repositories.specifications.CollectionSpecification;
+import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,6 +102,20 @@ public class JpaCollectionService implements CollectionService{
             return collectionRepo.findByUserEmail(email);
         } catch (Exception e) {
             throw new DataException("Errore nel recupero delle collection dell'utente", e);
+        }
+    }
+
+    @Override
+    public List<Collection> searchCollection(CollectionDto dto) throws DataException {
+        try {
+            return collectionRepo.findAll(
+                    Specification.where(CollectionSpecification.hasNameLike(dto.getCollectionName())
+                                    .and(CollectionSpecification.hasCategoryId(dto.getCategoryId())))
+                                    .and(CollectionSpecification.hasUserId(dto.getUserId()))
+                                    .and(CollectionSpecification.hasSalePrice(dto.getSalePrice(), dto.getPriceComparation()))
+            );
+        } catch (PersistenceException pe) {
+            throw new DataException("errore nella modifica di una collection", pe);
         }
     }
 }
