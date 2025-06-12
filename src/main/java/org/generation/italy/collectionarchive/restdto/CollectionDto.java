@@ -19,6 +19,7 @@ public class CollectionDto {
     private boolean forSale;
     private Double salePrice;
     private String visibilityStatus;
+    private String priceComparation;
 
     public CollectionDto() {
     }
@@ -93,7 +94,7 @@ public class CollectionDto {
         return userId;
     }
 
-    public void setUser(int userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -151,5 +152,13 @@ public class CollectionDto {
 
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
+    }
+
+    public String getPriceComparation() {
+        return priceComparation;
+    }
+
+    public void setPriceComparation(String priceComparation) {
+        this.priceComparation = priceComparation;
     }
 }
