@@ -9,7 +9,7 @@ public class ItemSpecification {
 
     public static Specification<Item> hasNameLike(String itemName){
         return (root, query, builder)->{
-            if(itemName.isEmpty() || itemName == null){
+            if(itemName == null){
                 return builder.conjunction();
             }
             return builder.like(root.get("itemName").as(String.class),

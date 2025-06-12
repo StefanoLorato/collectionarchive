@@ -55,11 +55,13 @@ public class CollectionRestController {
     public ResponseEntity<?> getAllCollection(@RequestParam(required = false) String collectionName,
                                               @RequestParam(required = false) Integer categoryId,
                                               @RequestParam(required = false) Integer userId,
+                                              @RequestParam(required = false) Double salePrice,
                                               @RequestParam(required = false) String priceComparation) throws DataException {
         CollectionDto filters = new CollectionDto();
         filters.setCollectionName(collectionName);
         filters.setCategory(categoryId);
         filters.setUserId(userId);
+        filters.setSalePrice(salePrice);
         filters.setPriceComparation(priceComparation);
         List<CollectionDto> collectionDtos = collectionService.searchCollection(filters)
                 .stream().map(CollectionDto::toDto).toList();
