@@ -80,11 +80,11 @@ public class ItemDto {
             this.collectionId = collectionId;
         }
 
-        public int getUser() {
+        public int getUserId() {
             return userId;
         }
 
-        public void setUser(int userId) {
+        public void setUserId(int userId) {
             this.userId = userId;
         }
 

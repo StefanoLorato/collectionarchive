@@ -20,10 +20,10 @@ import java.util.Optional;
 
 @Service
 public class JpaItemService implements ItemService{
-    private CollectionRepository collectionRepo;
-    private UserRepository userRepo;
-    private CategoryRepository categoryRepo;
-    private ItemRepository itemRepo;
+    private final CollectionRepository collectionRepo;
+    private final UserRepository userRepo;
+    private final CategoryRepository categoryRepo;
+    private final ItemRepository itemRepo;
 
 
     @Autowired
@@ -105,8 +105,10 @@ public class JpaItemService implements ItemService{
     public List<Item> searchItem(ItemDto dto) {
         try{
             return itemRepo.findAll(
-                    Specification.where(ItemSpecification.hasNameLike(dto.getItemName())
-                            .and(ItemSpecification.hasForSale(dto.isForSale())));
+                    Specification.where(ItemSpecification.hasNameLike(dto.getItemName()))
+                            .and(ItemSpecification.hasForSale(dto.isForSale()))
+                            .and(ItemSpecification.hasUserId(dto.getUserId()))
+            );
         } catch (PersistenceException pe) {
             throw new DataException("errore nella modifica di un Item", pe);
         }

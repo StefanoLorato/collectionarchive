@@ -39,8 +39,13 @@ public class ItemRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllItem() throws DataException {
-
+    public ResponseEntity<?> getAllItem(@RequestBody(required = false) String itemName,
+                                        @RequestBody(required = false) Boolean forSale,
+                                        @RequestBody(required = false) Integer userId) throws DataException {
+        ItemDto filters = new ItemDto();
+        filters.setItemName(itemName);
+        filters.setForSale(forSale);
+        filters.setUserId(userId);
         List<ItemDto> itemDtos = itemService.findAllItem()
                 .stream().map(ItemDto::toDto).toList();
         return ResponseEntity.ok(itemDtos);
@@ -49,7 +54,7 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        itemService.createItem(c, dto.getUser(),dto.getCollection());
+        itemService.createItem(c, dto.getUserId(),dto.getCollection());
         ItemDto saved = ItemDto.toDto(c);
 
         URI location = ServletUriComponentsBuilder
@@ -81,7 +86,7 @@ public class ItemRestController {
         Item i = dto.toItem();
         i.setItemId(id);
 
-        boolean updated = itemService.updateItem(i, dto.getUser(),dto.getCollection());
+        boolean updated = itemService.updateItem(i, dto.getUserId(),dto.getCollection());
         if (updated) {
             return ResponseEntity.ok().build();
         } else {
