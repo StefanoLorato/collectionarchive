@@ -8,6 +8,7 @@ import org.generation.italy.collectionarchive.models.repositories.CategoryReposi
 import org.generation.italy.collectionarchive.models.repositories.CollectionRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
 import org.generation.italy.collectionarchive.models.repositories.specifications.CollectionSpecification;
+import org.generation.italy.collectionarchive.models.repositories.specifications.ItemSpecification;
 import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -97,12 +98,13 @@ public class JpaCollectionService implements CollectionService {
     }
 
     @Override
-    public List<Collection> searchCollection(CollectionDto dto) {
+    public List<Collection> searchCollection(CollectionDto dto) throws DataException {
         try {
             return collectionRepo.findAll(
                     Specification.where(CollectionSpecification.hasNameLike(dto.getCollectionName())
                             .and(CollectionSpecification.hasCategoryName(dto.getCategoryId())))
                             .and(CollectionSpecification.hasUserId(dto.getUserId()))
+                            .and(CollectionSpecification.hasSalePrice(dto.getSalePrice(), dto.getPriceComparation()))
             );
         } catch (PersistenceException pe) {
             throw new DataException("errore nella modifica di una collection", pe);

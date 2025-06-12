@@ -40,12 +40,14 @@ public class CollectionRestController {
     @GetMapping
     public ResponseEntity<?> getAllCollection(@RequestParam(required = false) String collectionName,
                                               @RequestParam(required = false) Integer categoryId,
-                                              @RequestParam(required = false) Integer userId) throws DataException {
+                                              @RequestParam(required = false) Integer userId,
+                                              @RequestParam(required = false) String priceComparation) throws DataException {
 
         CollectionDto filters = new CollectionDto();
         filters.setCollectionName(collectionName);
         filters.setCategory(categoryId);
         filters.setUser(userId);
+        filters.setPriceComparation(priceComparation);
         List<CollectionDto> collectionDtos = collectionService.searchCollection(filters)
                 .stream().map(CollectionDto::toDto).toList();
         return ResponseEntity.ok(collectionDtos);

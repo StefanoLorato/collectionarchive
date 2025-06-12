@@ -40,12 +40,12 @@ public class CollectionSpecification {
             return builder.equal((userJoin.get("userId")), userId);
         };
     }
-    public static Specification<Collection> hasSalePrice(Double salePrice, String condition){
+    public static Specification<Collection> hasSalePrice(Double salePrice, String priceComparation){
         return (root, query, builder) -> {
-            if(salePrice == null || condition == null){
+            if(salePrice == null || priceComparation == null){
                 return builder.conjunction();
             }
-            return switch (condition.toLowerCase()) {
+            return switch (priceComparation.toLowerCase()) {
                 case "equal" -> builder.equal(root.get("salePrice"), salePrice);
                 case "greaterthan" -> builder.greaterThan(root.get("salePrice"), salePrice);
                 case "lessthan" -> builder.lessThan(root.get("salePrice"), salePrice);
@@ -54,5 +54,4 @@ public class CollectionSpecification {
         };
 
     }
-
 }

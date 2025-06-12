@@ -102,7 +102,7 @@ public class JpaItemService implements ItemService{
     }
 
     @Override
-    public List<Item> searchItem(ItemDto dto) {
+    public List<Item> searchItem(ItemDto dto) throws DataException {
         try{
             return itemRepo.findAll(
                     Specification.where(ItemSpecification.hasNameLike(dto.getItemName()))

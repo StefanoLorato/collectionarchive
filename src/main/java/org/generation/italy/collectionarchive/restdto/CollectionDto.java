@@ -1,6 +1,7 @@
 package org.generation.italy.collectionarchive.restdto;
 
 import org.generation.italy.collectionarchive.models.entities.Collection;
+import org.generation.italy.collectionarchive.models.repositories.specifications.ItemSpecification;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class CollectionDto {
     private boolean forSale;
     private Double salePrice;
     private String visibilityStatus;
+    private String PriceComparation;
 
     public CollectionDto() {
     }
@@ -151,5 +153,13 @@ public class CollectionDto {
 
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
+    }
+
+    public String getPriceComparation() {
+        return PriceComparation;
+    }
+
+    public void setPriceComparation(String priceComparation) {
+        PriceComparation = priceComparation;
     }
 }
