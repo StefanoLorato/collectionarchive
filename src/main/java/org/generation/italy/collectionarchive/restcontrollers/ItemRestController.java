@@ -39,14 +39,18 @@ public class ItemRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllItem(@RequestBody(required = false) String itemName,
-                                        @RequestBody(required = false) Boolean forSale,
-                                        @RequestBody(required = false) Integer userId) throws DataException {
+    public ResponseEntity<?> getAllItem(@RequestParam(required = false) String itemName,
+                                        @RequestParam(required = false) Boolean forSale,
+                                        @RequestParam(required = false) Integer userId,
+                                        @RequestParam(required = false) Double salePrice,
+                                        @RequestParam(required = false) String priceComparation) throws DataException {
         ItemDto filters = new ItemDto();
         filters.setItemName(itemName);
         filters.setForSale(forSale);
         filters.setUserId(userId);
-        List<ItemDto> itemDtos = itemService.findAllItem()
+        filters.setSalePrice(salePrice);
+        filters.setPriceComparation(priceComparation);
+        List<ItemDto> itemDtos = itemService.searchItem(filters)
                 .stream().map(ItemDto::toDto).toList();
         return ResponseEntity.ok(itemDtos);
     }
@@ -54,7 +58,7 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        itemService.createItem(c, dto.getUserId(),dto.getCollection());
+        itemService.createItem(c, dto.getUserId(),dto.getCollectionId());
         ItemDto saved = ItemDto.toDto(c);
 
         URI location = ServletUriComponentsBuilder
@@ -86,7 +90,7 @@ public class ItemRestController {
         Item i = dto.toItem();
         i.setItemId(id);
 
-        boolean updated = itemService.updateItem(i, dto.getUserId(),dto.getCollection());
+        boolean updated = itemService.updateItem(i, dto.getUserId(),dto.getCollectionId());
         if (updated) {
             return ResponseEntity.ok().build();
         } else {

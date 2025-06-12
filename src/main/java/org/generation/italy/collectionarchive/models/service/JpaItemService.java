@@ -108,6 +108,7 @@ public class JpaItemService implements ItemService{
                     Specification.where(ItemSpecification.hasNameLike(dto.getItemName()))
                             .and(ItemSpecification.hasForSale(dto.isForSale()))
                             .and(ItemSpecification.hasUserId(dto.getUserId()))
+                            .and(ItemSpecification.hasSalePrice(dto.getSalePrice(), dto.getPriceComparation()))
             );
         } catch (PersistenceException pe) {
             throw new DataException("errore nella modifica di un Item", pe);
