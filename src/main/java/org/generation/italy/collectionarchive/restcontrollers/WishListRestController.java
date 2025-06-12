@@ -32,7 +32,7 @@ public class WishListRestController {
             return ResponseEntity.notFound().build();
         }
         WishListDto wls = WishListDto.toDto(wl.get());
-        return ResponseEntity.ok(wl);
+        return ResponseEntity.ok(wls);
     }
     @GetMapping
     public ResponseEntity<?> getAllWishList() throws DataException {

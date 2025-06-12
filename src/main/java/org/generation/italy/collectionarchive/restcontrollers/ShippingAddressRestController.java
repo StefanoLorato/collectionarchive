@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.UserService;
+import org.generation.italy.collectionarchive.models.service.UserProfileService;
 import org.generation.italy.collectionarchive.restdto.ShippingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +19,10 @@ import java.util.Optional;
 @RequestMapping("/api/shippingAddress")
 public class ShippingAddressRestController {
 
-    private final UserService userContactService;
+    private final UserProfileService userContactService;
 
     @Autowired
-    public ShippingAddressRestController(UserService userContactService) {
+    public ShippingAddressRestController(UserProfileService userContactService) {
         this.userContactService = userContactService;
     }
 

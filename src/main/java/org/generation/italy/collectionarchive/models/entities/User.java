@@ -1,25 +1,30 @@
 package org.generation.italy.collectionarchive.models.entities;
 
 import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table (name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "user_id")
     private int userId;
     private String name;
     private String lastname;
-    private String username;
     private String password;
     private String email;
     private String country;
-    private String role;
     private boolean active;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
+    private List<Authority> authorities;
 
     @OneToMany (mappedBy = "user" )
     private List<Collection> collections = new ArrayList<>();
@@ -79,23 +84,20 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String name, String lastname, String username,
-                String password, String email, String country, String role, boolean active) {
+    public User(int userId, String name, String lastname,
+                String password, String email, String country, boolean active) {
         this.userId = userId;
         this.name = name;
         this.lastname = lastname;
-        this.username = username;
         this.password = password;
         this.email = email;
         this.country = country;
-        this.role = role;
         this.active = active;
     }
 
     public int getUserId() {
         return userId;
     }
-
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -103,7 +105,6 @@ public class User {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -111,31 +112,56 @@ public class User {
     public String getLastname() {
         return lastname;
     }
-
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    //USER LOGIN DETAILS
+    @Override
+    public java.util.Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities){
+        this.authorities = authorities;
     }
 
     public String getPassword() {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -143,31 +169,22 @@ public class User {
     public String getCountry() {
         return country;
     }
-
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    //CHARACTERIST LIST
+
     public List<Collection> getCollections() {
         return collections;
     }
-
     public void setCollections(List<Collection> collections) {
         this.collections = collections;
     }
@@ -175,7 +192,6 @@ public class User {
     public List<Item> getItems() {
         return items;
     }
-
     public void setItems(List<Item> items) {
         this.items = items;
     }
@@ -183,7 +199,6 @@ public class User {
     public List<Order> getBuyerOrders() {
         return buyerOrders;
     }
-
     public void setBuyerOrders(List<Order> buyerOrders) {
         this.buyerOrders = buyerOrders;
     }
@@ -191,7 +206,6 @@ public class User {
     public List<Order> getSellerOrders() {
         return sellerOrders;
     }
-
     public void setSellerOrders(List<Order> sellerOrders) {
         this.sellerOrders = sellerOrders;
     }
@@ -199,7 +213,6 @@ public class User {
     public List<Discussion> getBuyerDiscussions() {
         return buyerDiscussions;
     }
-
     public void setBuyerDiscussions(List<Discussion> buyerDiscussions) {
         this.buyerDiscussions = buyerDiscussions;
     }
@@ -207,7 +220,6 @@ public class User {
     public List<Discussion> getSellerDiscussions() {
         return sellerDiscussions;
     }
-
     public void setSellerDiscussions(List<Discussion> sellerDiscussions) {
         this.sellerDiscussions = sellerDiscussions;
     }
@@ -215,7 +227,6 @@ public class User {
     public List<CartItem> getBuyerCartItems() {
         return buyerCartItems;
     }
-
     public void setBuyerCartItems(List<CartItem> buyerCartItems) {
         this.buyerCartItems = buyerCartItems;
     }
@@ -223,7 +234,6 @@ public class User {
     public List<CartItem> getSellerCartItems() {
         return sellerCartItems;
     }
-
     public void setSellerCartItems(List<CartItem> sellerCartItems) {
         this.sellerCartItems = sellerCartItems;
     }
@@ -231,7 +241,6 @@ public class User {
     public List<UserFeedback> getFeedbacksToUser() {
         return feedbacksToUser;
     }
-
     public void setFeedbacksToUser(List<UserFeedback> feedbacksToUser) {
         this.feedbacksToUser = feedbacksToUser;
     }
@@ -239,7 +248,6 @@ public class User {
     public List<UserFeedback> getFeedbacksFromUser() {
         return feedbacksFromUser;
     }
-
     public void setFeedbacksFromUser(List<UserFeedback> feedbacksFromUser) {
         this.feedbacksFromUser = feedbacksFromUser;
     }
@@ -247,7 +255,6 @@ public class User {
     public List<UserLike> getUserLikes() {
         return userLikes;
     }
-
     public void setUserLikes(List<UserLike> userLikes) {
         this.userLikes = userLikes;
     }
@@ -255,7 +262,6 @@ public class User {
     public List<UserComment> getUserComment() {
         return userComment;
     }
-
     public void setUserComment(List<UserComment> userComment) {
         this.userComment = userComment;
     }
@@ -263,7 +269,6 @@ public class User {
     public List<UserContact> getUserContacts() {
         return userContacts;
     }
-
     public void setUserContacts(List<UserContact> userContacts) {
         this.userContacts = userContacts;
     }
@@ -271,7 +276,6 @@ public class User {
     public List<UserPreferredCategory> getUserPreferredCategories() {
         return userPreferredCategories;
     }
-
     public void setUserPreferredCategories(List<UserPreferredCategory> userPreferredCategories) {
         this.userPreferredCategories = userPreferredCategories;
     }
@@ -279,7 +283,6 @@ public class User {
     public List<Bookmark> getUserBookmarks() {
         return userBookmarks;
     }
-
     public void setUserBookmarks(List<Bookmark> userBookmarks) {
         this.userBookmarks = userBookmarks;
     }
@@ -287,7 +290,6 @@ public class User {
     public List<ShippingAddress> getShippingAdresses() {
         return shippingAddresses;
     }
-
     public void setShippingAdresses(List<ShippingAddress> shippingAddresses) {
         this.shippingAddresses = shippingAddresses;
     }
@@ -295,7 +297,6 @@ public class User {
     public List<Notification> getUserNotification() {
         return userNotification;
     }
-
     public void setUserNotification(List<Notification> userNotification) {
         this.userNotification = userNotification;
     }
@@ -303,7 +304,6 @@ public class User {
     public List<Notification> getFromUserNotification() {
         return fromUserNotification;
     }
-
     public void setFromUserNotification(List<Notification> fromUserNotification) {
         this.fromUserNotification = fromUserNotification;
     }
@@ -311,7 +311,6 @@ public class User {
     public List<Report> getReporters() {
         return reporters;
     }
-
     public void setReporters(List<Report> reporters) {
         this.reporters = reporters;
     }
@@ -319,7 +318,6 @@ public class User {
     public List<Report> getReportedUsers() {
         return reportedUsers;
     }
-
     public void setReportedUsers(List<Report> reportedUsers) {
         this.reportedUsers = reportedUsers;
     }

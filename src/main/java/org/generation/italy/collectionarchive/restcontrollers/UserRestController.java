@@ -1,77 +1,92 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
 import org.generation.italy.collectionarchive.models.entities.User;
-import org.generation.italy.collectionarchive.models.exceptions.DataException;
-import org.generation.italy.collectionarchive.models.service.JpaUserService;
+import org.generation.italy.collectionarchive.models.service.UserProfileService;
+import org.generation.italy.collectionarchive.models.service.UserService;
+import org.generation.italy.collectionarchive.restdto.PasswordUpdateRequestDto;
+import org.generation.italy.collectionarchive.restdto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/users")
 public class UserRestController {
-    private final JpaUserService userService;
+    private UserService userService;
 
-    public UserRestController(JpaUserService userService) {
+    @Autowired
+    public UserRestController(UserService userService, UserProfileService userProfileService) {
         this.userService = userService;
     }
-    // GET all users
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            return ResponseEntity.ok(userService.findAllUsers());
-        } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+
+    @GetMapping("/userInfo")
+    public ResponseEntity<UserDto> getUserInfo() throws JsonProcessingException {
+        UserDto dto = UserDto.toDto(userService.getUserInfo());
+        return ResponseEntity.ok(dto);
     }
 
-    // GET
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        try {
-            Optional<User> user = userService.findUserById(id);
-            return user.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
-        } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+
+    @PutMapping("/password")
+    public ResponseEntity<Void> passwordUpdate(@Valid @RequestBody PasswordUpdateRequestDto passwordUpdateRequestDto){
+        userService.updatePassword(passwordUpdateRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // POST
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User created = userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) throws JsonProcessingException {
+        Optional<User> user = userService.findUserByEmail(email);
+        UserDto dto = UserDto.toDto(user.get());
+        return ResponseEntity.ok(dto);
     }
 
-    // PUT
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody User user) {
-        try {
-            user.setUserId(id);
-            boolean updated = userService.updateUser(user);
-            return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-        } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDto dto) {
+        if(id != dto.getUserId()){
+            return ResponseEntity.badRequest().body("L'id del path non corrisponde all'id del dto");
+        }
+        Optional<User> ou = userService.findUserById(id);
+        if(ou.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        User u = dto.toUser();
+
+        boolean updated = userService.updateUser(u);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // DELETE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-        try {
-            boolean deleted = userService.deleteUser(id);
-            return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-        } catch (DataException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
+        Optional<User> u = userService.findUserById(id);
+        if(u.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        UserDto dto = UserDto.toDto(u.get());
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/deactivate/{id}")
+    public ResponseEntity<?> deactivateUser(@PathVariable int id) {
+        Optional<User> ou = userService.findUserById(id);
+        if(ou.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean updated = userService.deactivateUser(id);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
+
 }

@@ -18,7 +18,7 @@ public class CollectionSpecification {
                 return builder.conjunction();
             }
             return builder.like(root.get("collectionName").as(String.class),
-            "%" + collectionName.toLowerCase() + "%");
+                    "%" + collectionName.toLowerCase() + "%");
         };
     }
 

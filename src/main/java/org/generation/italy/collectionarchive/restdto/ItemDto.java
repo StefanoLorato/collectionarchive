@@ -48,13 +48,13 @@ public class ItemDto {
     }
 
     public Item toItem(){
-            Item i = new Item(itemId,null, null,
-                    itemName, itemDescription, itemPhoto, condition,
-                    purchaseDate,  releaseDate, purchasePrice,salePrice,
-                    itemVersion, itemEdition, forSale,  visibilityStatus);
-          i.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
-            return i;
-        }
+        Item i = new Item(itemId,null, null,
+                itemName, itemDescription, itemPhoto, condition,
+                purchaseDate,  releaseDate, purchasePrice,salePrice,
+                itemVersion, itemEdition, forSale,  visibilityStatus);
+        i.setVisibilityStatus(this.visibilityStatus != null ? this.visibilityStatus : "visible");
+        return i;
+    }
 
     public static ItemDto toDto(Item i){
         return new ItemDto(i.getItemId(),i.getCollection().getCollectionId(),

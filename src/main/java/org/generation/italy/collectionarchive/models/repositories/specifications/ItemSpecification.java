@@ -28,9 +28,9 @@ public class ItemSpecification {
 
     public static Specification<Item> hasSalePrice(Double salePrice, String priceComparation){
         return(root, query, builder) ->{
-          if (salePrice == null || priceComparation == null){
-              return builder.conjunction();
-          }
+            if (salePrice == null || priceComparation == null){
+                return builder.conjunction();
+            }
             return switch (priceComparation.toLowerCase()) {
                 case "equal" -> builder.equal(root.get("salePrice"), salePrice);
                 case "greaterthan" -> builder.greaterThan(root.get("salePrice"), salePrice);

@@ -20,10 +20,10 @@ import java.util.Optional;
 
 @Service
 public class JpaItemService implements ItemService{
-    private final CollectionRepository collectionRepo;
-    private final UserRepository userRepo;
-    private final CategoryRepository categoryRepo;
-    private final ItemRepository itemRepo;
+    private CollectionRepository collectionRepo;
+    private UserRepository userRepo;
+    private CategoryRepository categoryRepo;
+    private ItemRepository itemRepo;
 
 
     @Autowired
@@ -99,6 +99,11 @@ public class JpaItemService implements ItemService{
         } catch (PersistenceException pe) {
             throw new DataException("errore nella modifica di un Item", pe);
         }
+    }
+
+    @Override
+    public List<Item> findItemByCollectionId(int collectionId) {
+        return itemRepo.findByCollectionCollectionId(collectionId);
     }
 
     @Override

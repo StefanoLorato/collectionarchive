@@ -29,13 +29,22 @@ public class ItemRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getItemById(@PathVariable int id) throws DataException {
-
         Optional<Item> c = itemService.findItemById(id);
         if(c.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         ItemDto io = ItemDto.toDto(c.get());
-        return ResponseEntity.ok(c);
+        return ResponseEntity.ok(io);
+    }
+
+    @GetMapping("/collection/{collectionId}")
+    public ResponseEntity<?> getItemsByCollectionId(@PathVariable("collectionId") int collectionId) {
+        List<ItemDto> items = itemService.findItemByCollectionId(collectionId)
+                .stream().map(ItemDto::toDto).toList();
+        if (items.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping
@@ -58,7 +67,11 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        itemService.createItem(c, dto.getUserId(),dto.getCollectionId());
+        int userId = dto.getUserId(); // o getUserId() se hai solo l’id
+        int collectionId = dto.getCollectionId(); // o getCollectionId()
+
+        itemService.createItem(c, userId, collectionId);
+
         ItemDto saved = ItemDto.toDto(c);
 
         URI location = ServletUriComponentsBuilder
@@ -66,6 +79,7 @@ public class ItemRestController {
                 .path("/{id}")
                 .buildAndExpand(saved.getItemId())
                 .toUri();
+
         return ResponseEntity.created(location).body(saved);
     }
 
