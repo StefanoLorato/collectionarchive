@@ -2,72 +2,75 @@ package org.generation.italy.collectionarchive.models.service;
 
 import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
-import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 import org.generation.italy.collectionarchive.models.entities.User;
-import org.generation.italy.collectionarchive.models.entities.UserContact;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
-import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.repositories.ShippingAddressRepository;
-import org.generation.italy.collectionarchive.models.repositories.UserContactRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
-import org.generation.italy.collectionarchive.restdto.UserDto;
+import org.generation.italy.collectionarchive.restdto.PasswordUpdateRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
 public class JpaUserService implements UserService{
-    private UserContactRepository contactRepo;
     private UserRepository userRepo;
-    private ShippingAddressRepository shippingRepo;
-
-    public User toEntity(UserDto dto) {
-        User user = new User();
-        user.setEmail(dto.getEmail());
-        user.setUsername(dto.getUsername());
-        //user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        return user;
-    }
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public JpaUserService(UserContactRepository contactRepo, UserRepository userRepo,
-                         ShippingAddressRepository shippingRepo, UserRepository userRepository) {
-        this.contactRepo = contactRepo;
+    public JpaUserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
-        this.shippingRepo = shippingRepo;
-
-    }
-
-    // USER
-    @Override
-    public List<User> findAllUsers() throws DataException{
-        return userRepo.findAll();
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public Optional<User> findUserById(Integer id) throws DataException{
-        return userRepo.findById(id);
+    public User getUserInfo() {
+        return getAuthenticatedUser();
     }
 
     @Override
-    public User createUser(User user) throws DataException {
-        try {
-            return userRepo.save(user);
-        } catch (PersistenceException e) {
-            throw new DataException("errore nella creazione dell'user", e);
+    public void updatePassword(PasswordUpdateRequestDto passwordUpdateRequestDto) {
+        User user = getAuthenticatedUser();
+        if(!isOldPasswordCorrect(user.getPassword(), passwordUpdateRequestDto.getOldPassword())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Current password is incorrect");
         }
+
+        if(!isNewPasswordConfirmed(passwordUpdateRequestDto.getNewPassword(), passwordUpdateRequestDto.getNewPassword2())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New Passwords do not match");
+        }
+
+        if(!isNewPasswordDifferent(passwordUpdateRequestDto.getOldPassword(), passwordUpdateRequestDto.getNewPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password cannot be equal to old password");
+        }
+
+        user.setPassword(passwordEncoder.encode(passwordUpdateRequestDto.getNewPassword()));
+        userRepo.save(user);
     }
 
-    @Override
-    public boolean deleteUser(Integer id) throws DataException{
-        Optional<User> ou = userRepo.findById(id);
-        if(ou.isEmpty()){
-            return false;
+    private boolean isOldPasswordCorrect(String currentPassword, String oldPassword) {
+        return passwordEncoder.matches(oldPassword, currentPassword);
+    }
+
+    private boolean isNewPasswordConfirmed(String newPassword, String newPasswordConfirmation) {
+        return newPassword.equals(newPasswordConfirmation);
+    }
+
+    private boolean isNewPasswordDifferent(String oldPassword, String newPassword) {
+        return !oldPassword.equals(newPassword);
+    }
+
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() ||
+                authentication.getPrincipal().equals("anonymousUser")) {
+            throw new AccessDeniedException("Authentication required");
         }
-        userRepo.delete(ou.get());
-        return true;
+        return (User) authentication.getPrincipal();
     }
 
     @Transactional
@@ -90,109 +93,25 @@ public class JpaUserService implements UserService{
         return userRepo.findByEmail(email);
     }
 
-    // USER CONTACT
-
     @Override
-    public List<UserContact> findAllUserContacts() throws DataException {
-        return contactRepo.findAll();
+    public Optional<User> findUserById(Integer id) throws DataException {
+        return userRepo.findById(id);
     }
 
     @Override
-    public Optional<UserContact> findUserContactById(int id) throws DataException {
-        return contactRepo.findById(id);
-    }
-
-    @Override
-    @Transactional
-    public UserContact createUserContact(UserContact contact, int userId) throws DataException, EntityNotFoundException {
+    public boolean deactivateUser(int userId) throws DataException {
         try {
             Optional<User> ou = userRepo.findById(userId);
-            User user = ou.orElseThrow(() -> new EntityNotFoundException(User.class, userId));
-            contact.setUser(user);
-            contactRepo.save(contact);
-            return contact;
-        } catch (PersistenceException e) {
-            throw new DataException("Errore durante la creazione del contatto", e);
-        }
-    }
-
-    @Override
-    @Transactional
-    public boolean updateUserContact(UserContact contact, int userId) throws DataException, EntityNotFoundException {
-        try {
-            Optional<UserContact> existing = contactRepo.findById(contact.getContactId());
-            if (existing.isEmpty()) {
+            if (ou.isEmpty()) {
                 return false;
             }
-
-            User user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
-            contact.setUser(user);
-            contactRepo.save(contact);
+            User u = ou.get();
+            u.setActive(false);
+            userRepo.save(u);
             return true;
         } catch (PersistenceException e) {
-            throw new DataException("Errore durante l'aggiornamento del contatto", e);
+            throw new DataException("errore nella disattivazione dell'user", e);
         }
-    }
 
-    @Override
-    @Transactional
-    public boolean deleteUserContact(int id) throws DataException {
-        Optional<UserContact> existing = contactRepo.findById(id);
-        if (existing.isPresent()) {
-            contactRepo.delete(existing.get());
-            return true;
-        }
-        return false;
-    }
-
-    // SHIPPING ADDRESS
-
-    @Override
-    public List<ShippingAddress> findAllShippingAddresses() throws DataException {
-        return shippingRepo.findAll();
-    }
-
-    @Override
-    public Optional<ShippingAddress> findShippingAddressById(int id) throws DataException {
-        return shippingRepo.findById(id);
-    }
-
-    @Override
-    public ShippingAddress createShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException {
-        try {
-            User user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
-            address.setUser(user);
-            shippingRepo.save(address);
-            return address;
-        } catch (PersistenceException e) {
-            throw new DataException("Errore durante la creazione dell'indirizzo", e);
-        }
-    }
-
-    @Override
-    public boolean updateShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException {
-        try {
-            Optional<ShippingAddress> existing = shippingRepo.findById(address.getShippingId());
-            if (existing.isEmpty()) {
-                return false;
-            }
-
-            User user = userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException(User.class, userId));
-            address.setUser(user);
-            shippingRepo.save(address);
-            return true;
-        } catch (PersistenceException e) {
-            throw new DataException("Errore durante l'aggiornamento del contatto", e);
-        }
-    }
-
-    @Override
-    public boolean deleteShippingAddress(int id) throws DataException {
-        Optional<ShippingAddress> existing = shippingRepo.findById(id);
-        if (existing.isPresent()) {
-            shippingRepo.delete(existing.get());
-            return true;
-        }
-        return false;
     }
 }

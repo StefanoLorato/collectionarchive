@@ -1,83 +1,92 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
 import org.generation.italy.collectionarchive.models.entities.User;
-import org.generation.italy.collectionarchive.models.exceptions.DataException;
-import org.generation.italy.collectionarchive.models.service.JpaUserService;
+import org.generation.italy.collectionarchive.models.service.UserProfileService;
 import org.generation.italy.collectionarchive.models.service.UserService;
-import org.generation.italy.collectionarchive.restdto.OrderDto;
+import org.generation.italy.collectionarchive.restdto.PasswordUpdateRequestDto;
 import org.generation.italy.collectionarchive.restdto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/users")
 public class UserRestController {
-
-    private final UserService userService;
+    private UserService userService;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public UserRestController(UserService userService, UserProfileService userProfileService) {
         this.userService = userService;
     }
 
-    // GET tutti gli utenti
-    @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> users = userService.findAllUsers()
-                .stream()
-                .map(UserDto::toDto)
-                .peek(dto -> dto.setPassword(null))// nascondi la password
-                .peek(dto -> dto.setEmail(null))// nascondi la mail
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(users);
-    }
-
-    // GET utente per ID
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
-        Optional<User> userOpt = userService.findUserById(id);
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        UserDto dto = UserDto.toDto(userOpt.get());
-        dto.setPassword(null);
-        dto.setEmail(null);
+    @GetMapping("/userInfo")
+    public ResponseEntity<UserDto> getUserInfo() throws JsonProcessingException {
+        UserDto dto = UserDto.toDto(userService.getUserInfo());
         return ResponseEntity.ok(dto);
     }
 
-    // POST
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        User user = userDto.toUser();
-        // Qui in futuro encoder per la password
-        User created = userService.createUser(user);
-        UserDto createdDto = UserDto.toDto(created);
-        createdDto.setPassword(null);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdDto);
+
+    @PutMapping("/password")
+    public ResponseEntity<Void> passwordUpdate(@Valid @RequestBody PasswordUpdateRequestDto passwordUpdateRequestDto){
+        userService.updatePassword(passwordUpdateRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // PUT
+    @GetMapping("/email/{email}")
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email) throws JsonProcessingException {
+        Optional<User> user = userService.findUserByEmail(email);
+        UserDto dto = UserDto.toDto(user.get());
+        return ResponseEntity.ok(dto);
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
-        User user = userDto.toUser();
-        user.setUserId(id);
-        boolean success = userService.updateUser(user);
-        return success ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDto dto) {
+        if(id != dto.getUserId()){
+            return ResponseEntity.badRequest().body("L'id del path non corrisponde all'id del dto");
+        }
+        Optional<User> ou = userService.findUserById(id);
+        if(ou.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        User u = dto.toUser();
+
+        boolean updated = userService.updateUser(u);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // DELETE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-        boolean success = userService.deleteUser(id);
-        return success ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
+        Optional<User> u = userService.findUserById(id);
+        if(u.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        UserDto dto = UserDto.toDto(u.get());
+        return ResponseEntity.ok(dto);
     }
+
+    @PutMapping("/deactivate/{id}")
+    public ResponseEntity<?> deactivateUser(@PathVariable int id) {
+        Optional<User> ou = userService.findUserById(id);
+        if(ou.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean updated = userService.deactivateUser(id);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
-

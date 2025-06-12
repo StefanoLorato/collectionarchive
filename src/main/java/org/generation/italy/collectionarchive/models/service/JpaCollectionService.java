@@ -93,6 +93,14 @@ public class JpaCollectionService implements CollectionService{
         }
     }
 
+    @Override
+    public List<Collection> findAllByUserEmail(String email) throws DataException {
+        try {
+            return collectionRepo.findByUserEmail(email);
+        } catch (Exception e) {
+            throw new DataException("Errore nel recupero delle collection dell'utente", e);
+        }
+    }
 }
 
 

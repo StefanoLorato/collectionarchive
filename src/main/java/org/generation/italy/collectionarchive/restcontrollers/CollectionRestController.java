@@ -7,6 +7,9 @@ import org.generation.italy.collectionarchive.models.service.CollectionService;
 import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,6 +28,7 @@ public class CollectionRestController {
     @Autowired
     public CollectionRestController(CollectionService collectionService) {
         this.collectionService = collectionService;
+
     }
 
     @GetMapping("/{id}")
@@ -38,9 +42,17 @@ public class CollectionRestController {
         return ResponseEntity.ok(co);
     }
 
+    @GetMapping("/loggedUser")
+    public ResponseEntity<?> getUserCollections(@AuthenticationPrincipal(expression = "username") String email) throws DataException {
+        List<CollectionDto> collections = collectionService.findAllByUserEmail(email)
+                .stream().map(CollectionDto::toDto).toList();
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(collections);
+    }
+
+
     @GetMapping
     public ResponseEntity<?> getAllCollection() throws DataException {
-
         List<CollectionDto> collectionDtos = collectionService.findAllCollection()
                 .stream().map(CollectionDto::toDto).toList();
         return ResponseEntity.ok(collectionDtos);
@@ -81,6 +93,7 @@ public class CollectionRestController {
             return ResponseEntity.notFound().build();
         }
         Collection c = dto.toCollection();
+        c.setCreatedAt(co.get().getCreatedAt());
         c.setCollectionId(id);
 
         boolean updated = collectionService.updateCollection(c, dto.getUserId(), dto.getCategoryId());
@@ -91,3 +104,4 @@ public class CollectionRestController {
         }
     }
 }
+
