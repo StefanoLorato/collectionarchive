@@ -14,7 +14,7 @@ public class CollectionSpecification {
 
     public static Specification<Collection>hasNameLike(String collectionName){
         return ( root, query, builder) ->{
-            if(collectionName.isEmpty() || collectionName == null){
+            if(collectionName == null){
                 return builder.conjunction();
             }
             return builder.like(root.get("collectionName").as(String.class),
@@ -22,7 +22,7 @@ public class CollectionSpecification {
         };
     }
 
-    public static Specification<Collection> hasCategoryName (Integer categoryId){
+    public static Specification<Collection> hasCategoryId (Integer categoryId){
         return (root, query, builder) ->{
             if(categoryId == null){
                 return builder.conjunction();
@@ -33,7 +33,7 @@ public class CollectionSpecification {
     }
     public static Specification<Collection> hasUserId(Integer userId){
         return(root, query, builder)-> {
-            if(userId == null ){
+            if(userId == null){
                 return builder.conjunction();
             }
             Join<Collection, User> userJoin = root.join("user");

@@ -7,8 +7,8 @@ import java.time.LocalDate;
 public class ItemDto {
 
     private int itemId;
-    private int collectionId;
-    private int userId;
+    private Integer collectionId;
+    private Integer userId;
     private String itemName;
     private String itemDescription;
     private String itemPhoto;
@@ -19,17 +19,17 @@ public class ItemDto {
     private Double salePrice;
     private String itemVersion;
     private String itemEdition;
-    private boolean forSale;
+    private Boolean forSale;
     private String visibilityStatus;
     private String priceComparation;
 
     public ItemDto() {
     }
 
-    public ItemDto(int itemId, int collectionId, int userId, String itemName, String itemDescription,
+    public ItemDto(int itemId, Integer collectionId, Integer userId, String itemName, String itemDescription,
                    String itemPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
                    Double purchasePrice, Double salePrice, String itemVersion, String itemEdition,
-                   boolean forSale, String visibilityStatus) {
+                   Boolean forSale, String visibilityStatus) {
         this.itemId = itemId;
         this.collectionId = collectionId;
         this.userId = userId;
@@ -72,19 +72,19 @@ public class ItemDto {
         this.itemId = itemId;
     }
 
-    public int getCollectionId() {
+    public Integer getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    public void setCollectionId(Integer collectionId) {
         this.collectionId = collectionId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -168,11 +168,11 @@ public class ItemDto {
         this.itemEdition = itemEdition;
     }
 
-    public boolean isForSale() {
+    public Boolean isForSale() {
         return forSale;
     }
 
-    public void setForSale(boolean forSale) {
+    public void setForSale(Boolean forSale) {
         this.forSale = forSale;
     }
 
