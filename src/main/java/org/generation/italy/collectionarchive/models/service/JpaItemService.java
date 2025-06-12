@@ -7,7 +7,10 @@ import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.repositories.*;
+import org.generation.italy.collectionarchive.models.repositories.specifications.ItemSpecification;
+import org.generation.italy.collectionarchive.restdto.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,6 +96,25 @@ public class JpaItemService implements ItemService{
             itemRepo.save(i);
 
             return true;
+        } catch (PersistenceException pe) {
+            throw new DataException("errore nella modifica di un Item", pe);
+        }
+    }
+
+    @Override
+    public List<Item> findItemByCollectionId(int collectionId) {
+        return itemRepo.findByCollectionCollectionId(collectionId);
+    }
+
+    @Override
+    public List<Item> searchItem(ItemDto dto) throws DataException {
+        try{
+            return itemRepo.findAll(
+                    Specification.where(ItemSpecification.hasNameLike(dto.getItemName()))
+                            .and(ItemSpecification.hasForSale(dto.isForSale()))
+                            .and(ItemSpecification.hasUserId(dto.getUserId()))
+                            .and(ItemSpecification.hasSalePrice(dto.getSalePrice(), dto.getPriceComparation()))
+            );
         } catch (PersistenceException pe) {
             throw new DataException("errore nella modifica di un Item", pe);
         }

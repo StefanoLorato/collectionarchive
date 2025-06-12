@@ -7,10 +7,14 @@ import org.generation.italy.collectionarchive.models.service.CollectionService;
 import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +28,7 @@ public class CollectionRestController {
     @Autowired
     public CollectionRestController(CollectionService collectionService) {
         this.collectionService = collectionService;
+
     }
 
     @GetMapping("/{id}")
@@ -34,13 +39,31 @@ public class CollectionRestController {
             return ResponseEntity.notFound().build();
         }
         CollectionDto co = CollectionDto.toDto(c.get());
-        return ResponseEntity.ok(c);
+        return ResponseEntity.ok(co);
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllCollection() throws DataException {
+    @GetMapping("/loggedUser")
+    public ResponseEntity<?> getUserCollections(@AuthenticationPrincipal(expression = "username") String email) throws DataException {
+        List<CollectionDto> collections = collectionService.findAllByUserEmail(email)
+                .stream().map(CollectionDto::toDto).toList();
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(collections);
+    }
 
-        List<CollectionDto> collectionDtos = collectionService.findAllCollection()
+
+    @GetMapping
+    public ResponseEntity<?> getAllCollection(@RequestParam(required = false) String collectionName,
+                                              @RequestParam(required = false) Integer categoryId,
+                                              @RequestParam(required = false) Integer userId,
+                                              @RequestParam(required = false) Double salePrice,
+                                              @RequestParam(required = false) String priceComparation) throws DataException {
+        CollectionDto filters = new CollectionDto();
+        filters.setCollectionName(collectionName);
+        filters.setCategory(categoryId);
+        filters.setUserId(userId);
+        filters.setSalePrice(salePrice);
+        filters.setPriceComparation(priceComparation);
+        List<CollectionDto> collectionDtos = collectionService.searchCollection(filters)
                 .stream().map(CollectionDto::toDto).toList();
         return ResponseEntity.ok(collectionDtos);
     }
@@ -48,6 +71,7 @@ public class CollectionRestController {
     @PostMapping
     public ResponseEntity<CollectionDto> createCollection(@RequestBody CollectionDto dto) throws DataException, EntityNotFoundException {
         Collection c = dto.toCollection();
+        c.setCreatedAt(LocalDateTime.now());
         collectionService.createCollection(c, dto.getUserId(), dto.getCategoryId());
 
         CollectionDto saved = CollectionDto.toDto(c);
@@ -73,11 +97,13 @@ public class CollectionRestController {
         if(id != dto.getCollectionId()){
             return ResponseEntity.badRequest().body("L'id del path non corrisponde all'id del dto");
         }
+
         Optional<Collection> co = collectionService.findCollectionById(id);
         if(co.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         Collection c = dto.toCollection();
+        c.setCreatedAt(co.get().getCreatedAt());
         c.setCollectionId(id);
 
         boolean updated = collectionService.updateCollection(c, dto.getUserId(), dto.getCategoryId());
@@ -88,3 +114,4 @@ public class CollectionRestController {
         }
     }
 }
+

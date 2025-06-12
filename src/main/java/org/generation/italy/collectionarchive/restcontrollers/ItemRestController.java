@@ -29,19 +29,37 @@ public class ItemRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getItemById(@PathVariable int id) throws DataException {
-
         Optional<Item> c = itemService.findItemById(id);
         if(c.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         ItemDto io = ItemDto.toDto(c.get());
-        return ResponseEntity.ok(c);
+        return ResponseEntity.ok(io);
+    }
+
+    @GetMapping("/collection/{collectionId}")
+    public ResponseEntity<?> getItemsByCollectionId(@PathVariable("collectionId") int collectionId) {
+        List<ItemDto> items = itemService.findItemByCollectionId(collectionId)
+                .stream().map(ItemDto::toDto).toList();
+        if (items.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllItem() throws DataException {
-
-        List<ItemDto> itemDtos = itemService.findAllItem()
+    public ResponseEntity<?> getAllItem(@RequestParam(required = false) String itemName,
+                                        @RequestParam(required = false) Boolean forSale,
+                                        @RequestParam(required = false) Integer userId,
+                                        @RequestParam(required = false) Double salePrice,
+                                        @RequestParam(required = false) String priceComparation) throws DataException {
+        ItemDto filters = new ItemDto();
+        filters.setItemName(itemName);
+        filters.setForSale(forSale);
+        filters.setUserId(userId);
+        filters.setSalePrice(salePrice);
+        filters.setPriceComparation(priceComparation);
+        List<ItemDto> itemDtos = itemService.searchItem(filters)
                 .stream().map(ItemDto::toDto).toList();
         return ResponseEntity.ok(itemDtos);
     }
@@ -49,7 +67,11 @@ public class ItemRestController {
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
-        itemService.createItem(c, dto.getUser(),dto.getCollection());
+        int userId = dto.getUserId(); // o getUserId() se hai solo l’id
+        int collectionId = dto.getCollectionId(); // o getCollectionId()
+
+        itemService.createItem(c, userId, collectionId);
+
         ItemDto saved = ItemDto.toDto(c);
 
         URI location = ServletUriComponentsBuilder
@@ -57,6 +79,7 @@ public class ItemRestController {
                 .path("/{id}")
                 .buildAndExpand(saved.getItemId())
                 .toUri();
+
         return ResponseEntity.created(location).body(saved);
     }
 
@@ -81,7 +104,7 @@ public class ItemRestController {
         Item i = dto.toItem();
         i.setItemId(id);
 
-        boolean updated = itemService.updateItem(i, dto.getUser(),dto.getCollection());
+        boolean updated = itemService.updateItem(i, dto.getUserId(),dto.getCollectionId());
         if (updated) {
             return ResponseEntity.ok().build();
         } else {
