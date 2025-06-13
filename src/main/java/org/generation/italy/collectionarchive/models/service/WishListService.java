@@ -16,6 +16,5 @@ public interface WishListService {
     boolean deleteWishList(int desiredItemId) throws DataException;
 
     boolean updateWishList(WishList w, int collectionId) throws DataException;
-
     List<WishList> findWishListByCollectionId(Integer id) throws DataException;
 }
