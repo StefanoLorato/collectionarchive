@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class WishListDto {
         private int desiredObjectId;
-        private int collectionId;
+        private Integer collectionId;
         private String itemName;
         private String itemDescription;
         private LocalDate releaseDate;
@@ -16,7 +16,7 @@ public class WishListDto {
         public WishListDto() {
         }
 
-        public WishListDto(int desiredObjectId, int collectionId, String itemName,
+        public WishListDto(int desiredObjectId, Integer collectionId, String itemName,
                            String itemDescription, LocalDate releaseDate,
                            String itemVersion, String itemEdition) {
             this.desiredObjectId = desiredObjectId;
@@ -48,11 +48,11 @@ public class WishListDto {
         this.desiredObjectId = desiredObjectId;
     }
 
-    public int getCollectionId() {
+    public Integer getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    public void setCollectionId(Integer collectionId) {
         this.collectionId = collectionId;
     }
 
