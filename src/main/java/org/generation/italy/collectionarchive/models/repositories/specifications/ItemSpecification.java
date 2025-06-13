@@ -12,7 +12,8 @@ public class ItemSpecification {
             if(itemName == null){
                 return builder.conjunction();
             }
-            return builder.like(root.get("itemName").as(String.class),
+            return builder.like(
+                    builder.lower(root.get("itemName")),
                     "%" + itemName.toLowerCase() + "%");
         };
     }
