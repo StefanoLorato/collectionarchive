@@ -11,9 +11,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private int categoryId;
+    private Integer categoryId;
     @Column (name = "category_name")
     private String categoryName;
+    private String photo;
 
     @OneToMany (mappedBy = "category")
     private List<Collection> collections = new ArrayList<>();
@@ -25,16 +26,17 @@ public class Category {
     public Category() {
     }
 
-    public Category(int categoryId, String categoryName) {
+    public Category(Integer categoryId, String categoryName, String photo) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+        this.photo = photo;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -60,5 +62,13 @@ public class Category {
 
     public void setUserPreferredCategories(List<UserPreferredCategory> userPreferredCategories) {
         this.userPreferredCategories = userPreferredCategories;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
