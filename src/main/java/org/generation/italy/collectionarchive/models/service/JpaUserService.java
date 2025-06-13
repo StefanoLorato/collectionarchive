@@ -18,6 +18,8 @@ import org.generation.italy.collectionarchive.models.entities.Order;
 import org.generation.italy.collectionarchive.models.entities.UserFeedback;
 import org.generation.italy.collectionarchive.models.repositories.OrderRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserFeedbackRepository;
+import org.generation.italy.collectionarchive.models.entities.UserComment;
+
 
 
 
@@ -34,7 +36,7 @@ public class JpaUserService implements UserService{
     private ItemRepository itemRepo;
     private UserFeedbackRepository userFeedbackRepo;
     private OrderRepository orderRepo;
-
+    private UserCommentRepository userCommentRepo;
 
 
     @Autowired
@@ -45,7 +47,7 @@ public class JpaUserService implements UserService{
                           UserLikeRepository userLikeRepo,
                           ItemRepository itemRepo,
                           UserFeedbackRepository userFeedbackRepo,
-                          OrderRepository orderRepo) {
+                          OrderRepository orderRepo, UserCommentRepository userCommentRepo) {
         this.contactRepo = contactRepo;
         this.userRepo = userRepo;
         this.shippingRepo = shippingRepo;
@@ -54,6 +56,8 @@ public class JpaUserService implements UserService{
         this.itemRepo = itemRepo;
         this.userFeedbackRepo = userFeedbackRepo;
         this.orderRepo = orderRepo;
+        this.userCommentRepo = userCommentRepo;
+
     }
 
     // USER
@@ -329,5 +333,81 @@ public class JpaUserService implements UserService{
             throw new DataException("Errore durante l'eliminazione del feedback", e);
         }
     }
+    @Override
+    public List<UserComment> findAllUserComments() throws DataException {
+        try {
+            return userCommentRepo.findAll();
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nel recupero dei commenti", e);
+        }
+    }
+
+    @Override
+    public Optional<UserComment> findUserCommentById(int id) throws DataException {
+        try {
+            return userCommentRepo.findById(id);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nel recupero del commento", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public UserComment createUserComment(int userId, int objectId, String comment)
+            throws DataException, EntityNotFoundException {
+        try {
+            User user = userRepo.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
+            Item item = itemRepo.findById(objectId)
+                    .orElseThrow(() -> new EntityNotFoundException(Item.class, objectId));
+
+            UserComment uc = new UserComment();
+            uc.setUser(user);
+            uc.setItem(item);
+            uc.setComment(comment);
+
+            return userCommentRepo.save(uc);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nella creazione del commento", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean updateUserComment(UserComment comment, int userId, int objectId)
+            throws DataException, EntityNotFoundException {
+        try {
+            if (!userCommentRepo.existsById(comment.getCommentId())) return false;
+
+            User user = userRepo.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
+            Item item = itemRepo.findById(objectId)
+                    .orElseThrow(() -> new EntityNotFoundException(Item.class, objectId));
+
+            comment.setUser(user);
+            comment.setItem(item);
+
+            userCommentRepo.save(comment);
+            return true;
+        } catch (PersistenceException e) {
+            throw new DataException("Errore durante l'aggiornamento del commento", e);
+        }
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteUserComment(int id) throws DataException {
+        try {
+            Optional<UserComment> comment = userCommentRepo.findById(id);
+            if (comment.isPresent()) {
+                userCommentRepo.delete(comment.get());
+                return true;
+            }
+            return false;
+        } catch (PersistenceException e) {
+            throw new DataException("Errore durante l'eliminazione del commento", e);
+        }
+    }
+
 
 }

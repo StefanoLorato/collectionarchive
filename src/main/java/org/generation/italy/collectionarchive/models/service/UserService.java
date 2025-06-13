@@ -47,4 +47,11 @@ public interface UserService {
             throws DataException, EntityNotFoundException;
     boolean deleteUserFeedback(int id) throws DataException;
 
+    // USER COMMENT
+    List<UserComment> findAllUserComments() throws DataException;
+    Optional<UserComment> findUserCommentById(int id) throws DataException;
+    UserComment createUserComment(int userId, int objectId, String comment) throws DataException, EntityNotFoundException;
+    boolean updateUserComment(UserComment comment, int userId, int objectId) throws DataException, EntityNotFoundException;
+    boolean deleteUserComment(int id) throws DataException;
+
 }
