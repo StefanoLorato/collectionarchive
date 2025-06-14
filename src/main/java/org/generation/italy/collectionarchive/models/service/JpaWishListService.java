@@ -74,4 +74,9 @@ public class JpaWishListService implements WishListService{
         wishListRepo.save(w);
         return true;
     }
+
+    @Override
+    public List<WishList> findWishListByCollectionId(Integer id) throws DataException {
+        return wishListRepo.findByCollectionCollectionId(id);
+    }
 }

@@ -25,6 +25,7 @@ public class WishListRestController {
     public WishListRestController(WishListService wishListService) {
         this.wishListService = wishListService;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getWishListById(@PathVariable int id) throws DataException {
         Optional<WishList> wl = wishListService.findWIshListById(id);
@@ -35,11 +36,20 @@ public class WishListRestController {
         return ResponseEntity.ok(wls);
     }
     @GetMapping
-    public ResponseEntity<?> getAllWishList() throws DataException {
-        List<WishListDto> wishListDtos = wishListService.findAllWIshList()
-                .stream().map(WishListDto::toDto).toList();
+    public ResponseEntity<?> getAllWishList(@RequestParam(required = false) Integer id) throws DataException {
+        List<WishListDto> wishListDtos= wishListService.findAllWIshList()
+                    .stream().map(WishListDto::toDto).toList();
         return ResponseEntity.ok(wishListDtos);
+
     }
+    @GetMapping("/collection/{id}")
+    public ResponseEntity<?> getWishListByCollectionId(Integer id) throws DataException {
+        List<WishListDto> wishListDtos = wishListService.findWishListByCollectionId(id)
+                    .stream().map(WishListDto::toDto).toList();
+        return ResponseEntity.ok(wishListDtos);
+
+    }
+
 
     @PostMapping
     public ResponseEntity<WishListDto> createWishList(@RequestBody WishListDto dto) throws DataException, EntityNotFoundException {

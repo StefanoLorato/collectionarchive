@@ -17,7 +17,8 @@ public class CollectionSpecification {
             if(collectionName == null){
                 return builder.conjunction();
             }
-            return builder.like(root.get("collectionName").as(String.class),
+            return builder.like(
+                    builder.lower(root.get("collectionName")),
                     "%" + collectionName.toLowerCase() + "%");
         };
     }
