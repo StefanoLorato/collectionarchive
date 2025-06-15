@@ -3,6 +3,7 @@ package org.generation.italy.collectionarchive.models.service;
 import org.generation.italy.collectionarchive.models.entities.CartItem;
 import org.generation.italy.collectionarchive.models.entities.Order;
 import org.generation.italy.collectionarchive.models.entities.OrderItem;
+import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 
@@ -13,7 +14,7 @@ public interface OrderService {
     //ORDER
     List<Order> findAllOrders() throws DataException;
     Optional<Order> findOrderById(int orderId) throws DataException;
-    Order createOrder(Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException;
+    Order createOrder(Order o, Integer buyerId, Integer sellerId, Integer shipppingId) throws DataException, EntityNotFoundException;
     boolean deleteOrder(int orderId) throws DataException;
     boolean updateOrder(Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException;
     //ORDER ITEM

@@ -5,14 +5,14 @@ import org.generation.italy.collectionarchive.models.entities.OrderItem;
 public class OrderItemDto {
     private int orderItemId;
     private int orderId;
-    private int itemId;
-    private int collectionId;
+    private Integer itemId;
+    private Integer collectionId;
     private Double price;
 
     public OrderItemDto() {
     }
 
-    public OrderItemDto(int orderItemId, int orderId, int itemId,
+    public OrderItemDto(int orderItemId, Integer orderId, Integer itemId,
                      int collectionId, Double price) {
         this.orderItemId = orderItemId;
         this.orderId = orderId;
@@ -34,6 +34,7 @@ public class OrderItemDto {
 
         if (oi.getItem() != null) {
             dto.setItemId(oi.getItem().getItemId());
+            dto.setCollectionId(null);
         }
         if (oi.getCollection() != null) {
             dto.setCollectionId(oi.getCollection().getCollectionId());
@@ -58,19 +59,19 @@ public class OrderItemDto {
         this.orderId = orderId;
     }
 
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 
-    public int getCollectionId() {
+    public Integer getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    public void setCollectionId(Integer collectionId) {
         this.collectionId = collectionId;
     }
 

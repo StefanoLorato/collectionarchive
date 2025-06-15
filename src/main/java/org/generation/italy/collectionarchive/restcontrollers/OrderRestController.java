@@ -4,7 +4,6 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.Order;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.CollectionService;
 import org.generation.italy.collectionarchive.models.service.OrderService;
 import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class OrderRestController {
     private OrderService orderService;
 
     @Autowired
-    public OrderRestController(CollectionService collectionService){
+    public OrderRestController(OrderService orderService){
         this.orderService = orderService;
     }
 
@@ -49,7 +48,7 @@ public class OrderRestController {
 
         Order o = dto.toOrder();
         o.setOrderedAt(LocalDateTime.now());
-        orderService.createOrder(o, dto.getBuyerId(), dto.getSellerId());
+        orderService.createOrder(o, dto.getBuyerId(), dto.getSellerId(), dto.getShippingAddressId());
         OrderDto saved = OrderDto.toDto(o);
 
         URI location = ServletUriComponentsBuilder

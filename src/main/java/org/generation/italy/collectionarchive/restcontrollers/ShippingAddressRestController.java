@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/shippingAddress")
+@RequestMapping("/api/shippingAddresses")
 public class ShippingAddressRestController {
 
     private final UserProfileService userContactService;
@@ -87,5 +87,14 @@ public class ShippingAddressRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getShippingAddressByUserId(@PathVariable Integer id) throws DataException{
+        List<ShippingDto> dtos = userContactService.findShippingAddressesByUserId(id)
+                .stream()
+                .map(ShippingDto::toDto)
+                .toList();
+        return ResponseEntity.ok(dtos);
     }
 }

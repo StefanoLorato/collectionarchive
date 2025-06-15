@@ -20,16 +20,19 @@ public class JpaOrderService implements OrderService {
     private CollectionRepository collectionRepo;
     private ItemRepository itemRepo;
     private CartItemRepository cartItemRepo;
+    private ShippingAddressRepository shippingRepo;
 
     @Autowired
     public JpaOrderService(OrderRepository orderRepo,OrderItemRepository orderItemRepo,UserRepository userRepo,
-                           CollectionRepository collectionRepo,ItemRepository itemRepo, CartItemRepository cartItemRepo){
+                           CollectionRepository collectionRepo,ItemRepository itemRepo, CartItemRepository cartItemRepo,
+                           ShippingAddressRepository shippingRepo){
       this.orderRepo= orderRepo;
       this.orderItemRepo = orderItemRepo;
       this.userRepo = userRepo;
       this.collectionRepo = collectionRepo;
       this.itemRepo = itemRepo;
       this.cartItemRepo = cartItemRepo;
+      this.shippingRepo = shippingRepo;
     }
 
     //ORDER
@@ -44,15 +47,18 @@ public class JpaOrderService implements OrderService {
     }
 
     @Override
-    public Order createOrder(Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException {
+    public Order createOrder(Order o, Integer buyerId, Integer sellerId, Integer shippingId) throws DataException, EntityNotFoundException {
         try{
             Optional<User> ob = userRepo.findById(buyerId);
             User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
             Optional<User> os = userRepo.findById(sellerId);
             User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
+            Optional<ShippingAddress> osa = shippingRepo.findById(sellerId);
+            ShippingAddress sa = osa.orElseThrow(() -> new EntityNotFoundException(ShippingAddress.class, shippingId));
 
             o.setBuyer(buyer);
             o.setSeller(seller);
+            o.setShippingAddress(sa);
 
             orderRepo.save(o);
             return o;

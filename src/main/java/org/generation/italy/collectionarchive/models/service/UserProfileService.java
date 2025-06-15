@@ -27,4 +27,5 @@ public interface UserProfileService {
     ShippingAddress createShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException;
     boolean updateShippingAddress(ShippingAddress address, int userId) throws DataException, EntityNotFoundException;
     boolean deleteShippingAddress(int id) throws DataException;
+    List<ShippingAddress> findShippingAddressesByUserId(Integer id) throws DataException;
 }

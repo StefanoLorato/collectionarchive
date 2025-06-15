@@ -3,14 +3,14 @@ package org.generation.italy.collectionarchive.restdto;
 import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
 
 public class ShippingDto {
-    private int shippingId;
-    private int userId;
+    private Integer shippingId;
+    private Integer userId;
     private String address;
     private String city;
     private String country;
     private String postalCode;
 
-    public ShippingDto(int shippingId, int userId, String address, String city, String country, String postalCode) {
+    public ShippingDto(Integer shippingId, Integer userId, String address, String city, String country, String postalCode) {
         this.shippingId = shippingId;
         this.userId = userId;
         this.address = address;
@@ -28,19 +28,19 @@ public class ShippingDto {
 
     }
 
-    public int getShippingId() {
+    public Integer getShippingId() {
         return shippingId;
     }
 
-    public void setShippingId(int shippingId) {
+    public void setShippingId(Integer shippingId) {
         this.shippingId = shippingId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

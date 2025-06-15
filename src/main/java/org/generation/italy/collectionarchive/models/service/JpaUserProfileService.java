@@ -137,4 +137,11 @@ public class JpaUserProfileService implements UserProfileService{
         }
         return false;
     }
+
+    @Override
+    public List<ShippingAddress> findShippingAddressesByUserId(Integer id) throws DataException {
+        return shippingRepo.findByUserUserId(id);
+    }
+
+
 }
