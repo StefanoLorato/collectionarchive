@@ -47,17 +47,14 @@ public class JpaOrderService implements OrderService {
     }
 
     @Override
-    public Order createOrder(Order o, Integer buyerId, Integer sellerId, Integer shippingId) throws DataException, EntityNotFoundException {
+    public Order createOrder(Order o, Integer buyerId, Integer shippingId) throws DataException, EntityNotFoundException {
         try{
             Optional<User> ob = userRepo.findById(buyerId);
             User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
-            Optional<User> os = userRepo.findById(sellerId);
-            User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
-            Optional<ShippingAddress> osa = shippingRepo.findById(sellerId);
+            Optional<ShippingAddress> osa = shippingRepo.findById(shippingId);
             ShippingAddress sa = osa.orElseThrow(() -> new EntityNotFoundException(ShippingAddress.class, shippingId));
 
             o.setBuyer(buyer);
-            o.setSeller(seller);
             o.setShippingAddress(sa);
 
             orderRepo.save(o);
@@ -79,7 +76,7 @@ public class JpaOrderService implements OrderService {
 
     @Transactional
     @Override
-    public boolean updateOrder(Order o, Integer buyerId, Integer sellerId) throws DataException, EntityNotFoundException {
+    public boolean updateOrder(Order o, Integer buyerId, Integer shippingId) throws DataException, EntityNotFoundException {
         try{
             Optional<Order> oo = orderRepo.findById(o.getOrderId());
             if(oo.isEmpty()){
@@ -88,11 +85,11 @@ public class JpaOrderService implements OrderService {
 
             Optional<User> ob = userRepo.findById(buyerId);
             User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
-            Optional<User> os = userRepo.findById(sellerId);
-            User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
+            Optional<ShippingAddress> osa = shippingRepo.findById(shippingId);
+            ShippingAddress sa = osa.orElseThrow(() -> new EntityNotFoundException(ShippingAddress.class, shippingId));
 
             o.setBuyer(buyer);
-            o.setSeller(seller);
+            o.setShippingAddress(sa);
 
             orderRepo.save(o);
             return true;
@@ -113,10 +110,12 @@ public class JpaOrderService implements OrderService {
     }
 
     @Override
-    public OrderItem createOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException {
+    public OrderItem createOrderItem(OrderItem oi, Integer orderId, Integer sellerId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException {
         try{
             Optional<Order> ob = orderRepo.findById(orderId);
             Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
+            Optional<User> os = userRepo.findById(sellerId);
+            User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
 
             Item i = null;
             Collection c = null;
@@ -130,6 +129,7 @@ public class JpaOrderService implements OrderService {
             }
 
             oi.setOrder(order);
+            oi.setSeller(seller);
             oi.setItem(i);
             oi.setCollection(c);
 
@@ -152,7 +152,7 @@ public class JpaOrderService implements OrderService {
 
     @Transactional
     @Override
-    public boolean updateOrderItem(OrderItem oi, Integer orderId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException {
+    public boolean updateOrderItem(OrderItem oi, Integer orderId, Integer sellerId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException {
         try{
             Optional<OrderItem> ooi = orderItemRepo.findById(oi.getOrderItemId());
             if(ooi.isEmpty()){
@@ -161,6 +161,8 @@ public class JpaOrderService implements OrderService {
 
             Optional<Order> ob = orderRepo.findById(orderId);
             Order order = ob.orElseThrow(() -> new EntityNotFoundException(User.class, orderId));
+            Optional<User> os = userRepo.findById(sellerId);
+            User seller = os.orElseThrow(() -> new EntityNotFoundException(User.class, sellerId));
 
             Item i = null;
             Collection c = null;
@@ -176,6 +178,7 @@ public class JpaOrderService implements OrderService {
             }
 
             oi.setOrder(order);
+            oi.setSeller(seller);
             oi.setItem(i);
             oi.setCollection(c);
 

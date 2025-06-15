@@ -42,19 +42,6 @@ public class OrderItemRestController {
         return ResponseEntity.ok(orderItemDto);
     }
 
-    @PostMapping
-    public ResponseEntity<OrderItemDto> createOrderItem(@RequestBody OrderItemDto dto) throws DataException, EntityNotFoundException {
-        OrderItem o = dto.toOrderItem();
-        orderItemService.createOrderItem(o, dto.getOrderId(), dto.getItemId(), dto.getCollectionId());
-        OrderItemDto saved = OrderItemDto.toDto(o);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(saved.getOrderId())
-                .toUri();
-        return ResponseEntity.created(location).body(saved);
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderItemById(@PathVariable int id) throws DataException{
         boolean deleted = orderItemService.deleteOrderItem(id);
@@ -64,21 +51,4 @@ public class OrderItemRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrderItem(@PathVariable int id, @RequestBody OrderItemDto dto) throws DataException, EntityNotFoundException{
-        if(id != dto.getOrderItemId()){
-            return ResponseEntity.badRequest().body("l'id del path non corrisponde all'id del dto");
-        }
-        Optional<OrderItem> oo = orderItemService.findOrderItemById(id);
-        if(oo.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        OrderItem o = dto.toOrderItem();
-        boolean updated = orderItemService.updateOrderItem(o, dto.getOrderId(), dto.getItemId(), dto.getCollectionId());
-        if (updated) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

@@ -16,9 +16,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private User seller;
     @Column (name="ordered_at")
     private LocalDateTime orderedAt;
     private String status;
@@ -26,19 +23,22 @@ public class Order {
     @JoinColumn (name="shipping_id")
     private ShippingAddress shippingAddress;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {
     }
 
-    public Order(int orderId, User buyer, User seller, LocalDateTime orderedAt, String status, ShippingAddress shippingAddress) {
+    public Order(int orderId, User buyer, LocalDateTime orderedAt, String status, ShippingAddress shippingAddress) {
         this.orderId = orderId;
         this.buyer = buyer;
-        this.seller = seller;
         this.orderedAt = orderedAt;
         this.status = status;
         this.shippingAddress = shippingAddress;
+    }
+
+    public void addOrderItem(OrderItem oi){
+        orderItems.add(oi);
     }
 
     public int getOrderId() {
@@ -53,13 +53,6 @@ public class Order {
     }
     public void setBuyer(User buyer) {
         this.buyer = buyer;
-    }
-
-    public User getSeller() {
-        return seller;
-    }
-    public void setSeller(User seller) {
-        this.seller = seller;
     }
 
     public LocalDateTime getOrderedAt() {
