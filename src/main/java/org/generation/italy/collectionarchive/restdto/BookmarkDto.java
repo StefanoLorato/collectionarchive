@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 public class BookmarkDto {
     private int bookmarkId;
     private int userId;
-    private int itemId;
-    private int collectionId;
+    private Integer itemId;
+    private Integer collectionId;
     private LocalDateTime savedAt;
 
     public BookmarkDto() {
     }
 
-    public BookmarkDto(int bookmarkId, int userId, int itemId, int collectionId, LocalDateTime savedAt) {
+    public BookmarkDto(int bookmarkId, int userId, Integer itemId, Integer collectionId, LocalDateTime savedAt) {
         this.bookmarkId = bookmarkId;
         this.userId = userId;
         this.itemId = itemId;
@@ -22,14 +22,25 @@ public class BookmarkDto {
         this.savedAt = savedAt;
     }
 
-    private Bookmark ToBookMark() {
+    public Bookmark ToBookMark() {
         Bookmark bm = new Bookmark(bookmarkId, null, null, null, savedAt);
         return bm;
     }
 
-    private static BookmarkDto toDto(Bookmark bm) {
-        return new BookmarkDto(bm.getBookmarkId(), bm.getUser().getUserId(),
-                bm.getItem().getItemId(), bm.getCollection().getCollectionId(), bm.getSavedAt());
+    public static BookmarkDto toDto(Bookmark bm) {
+        BookmarkDto bDto =  new BookmarkDto();
+
+        bDto.setBookmarkId(bm.getBookmarkId());
+        bDto.setUserId(bm.getUser().getUserId());
+        bDto.setSavedAt(bm.getSavedAt());
+
+        if(bm.getItem() != null){
+           bDto.setItemId(bm.getItem().getItemId());
+        }
+        if(bm.getCollection() != null){
+            bDto.setCollectionId(bm.getCollection().getCollectionId());
+        }
+        return bDto;
     }
 
     public int getBookmarkId() {
@@ -48,19 +59,19 @@ public class BookmarkDto {
         this.userId = userId;
     }
 
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
     }
 
-    public int getCollectionId() {
+    public Integer getCollectionId() {
         return collectionId;
     }
 
-    public void setCollectionId(int collectionId) {
+    public void setCollectionId(Integer collectionId) {
         this.collectionId = collectionId;
     }
 

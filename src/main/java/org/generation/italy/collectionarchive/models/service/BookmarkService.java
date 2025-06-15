@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface BookmarkService {
     List<Bookmark> findAllBookmarks() throws DataException;
     Optional<Bookmark> findBookmarkById(int bookmarkId) throws DataException;
-    Bookmark createBookmark(Bookmark b, int userId, int itemId,  int collectionId) throws DataException;
-    boolean deleteBookmark(int bookmarkId);
-    boolean updateBookmark(Bookmark b, int userId, int itemId, int collectionId) throws DataException;
+    Bookmark createBookmark(Bookmark b, int userId, Integer itemId,  Integer collectionId) throws DataException;
+    boolean deleteBookmark(int bookmarkId) throws DataException;
+    boolean updateBookmark(Bookmark b, int userId, Integer itemId, Integer collectionId) throws DataException;
 
 }
