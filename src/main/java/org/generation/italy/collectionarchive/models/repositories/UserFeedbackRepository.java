@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UserFeedbackRepository extends JpaRepository<UserFeedback, Integer> {
-    Optional<UserFeedback> findByOrderOrderId(int orderId);
+    Optional<UserFeedback> findByOrderOrderId(Integer orderId);
 }

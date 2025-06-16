@@ -25,6 +25,8 @@ public class Order {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
+    @OneToMany(mappedBy = "order")
+    private List<UserFeedback> orderFeedbacks = new ArrayList<>();
 
     public Order() {
     }
