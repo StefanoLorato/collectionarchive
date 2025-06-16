@@ -44,7 +44,6 @@ public class MessageDto {
     public LocalDateTime getSentAt() { return sentAt; }
     public void setSentAt(LocalDateTime sentAt) { this.sentAt = sentAt; }
 
-    // Converto da Entity a DTO
     public static MessageDto toDto(Message m) {
         return new MessageDto(
                 m.getMessageId(),
@@ -56,13 +55,11 @@ public class MessageDto {
         );
     }
 
-    // Converto da DTO a Entity (solo i campi necessari, senza Discussion e User che vanno gestiti a parte)
     public Message toMessage() {
         Message msg = new Message();
         msg.setMessageId(this.messageId);
         msg.setContent(this.content);
         msg.setSentAt(this.sentAt);
-        // Discussion, sender e receiver li imposti nel service
         return msg;
     }
 }

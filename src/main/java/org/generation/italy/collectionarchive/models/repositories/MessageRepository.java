@@ -3,7 +3,6 @@ package org.generation.italy.collectionarchive.models.repositories;
 import org.generation.italy.collectionarchive.models.entities.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

@@ -29,10 +29,10 @@ public class DiscussionService {
 
     public DiscussionDto createDiscussion(DiscussionDto dto) {
         User buyer = userRepository.findById(dto.getBuyerId())
-                .orElseThrow(() -> new IllegalArgumentException("Buyer not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Compratore non trovato!"));
 
         User seller = userRepository.findById(dto.getSellerId())
-                .orElseThrow(() -> new IllegalArgumentException("Seller not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Venditore non trovato!"));
 
         Discussion discussion = new Discussion();
         discussion.setBuyer(buyer);
@@ -40,16 +40,16 @@ public class DiscussionService {
 
         if (dto.getItemId() != null) {
             Item item = itemRepository.findById(dto.getItemId())
-                    .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Oggetto non trovato!"));
             discussion.setItem(item);
             discussion.setCollection(null);
         } else if (dto.getCollectionId() != null) {
             Collection collection = collectionRepository.findById(dto.getCollectionId())
-                    .orElseThrow(() -> new IllegalArgumentException("Collection not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Collezione non trovata!"));
             discussion.setCollection(collection);
             discussion.setItem(null);
         } else {
-            throw new IllegalArgumentException("Devi passare o itemId o collectionId, non entrambi null");
+            throw new IllegalArgumentException("Devi passare o un oggetto o una collezione!");
         }
 
         Discussion saved = discussionRepository.save(discussion);

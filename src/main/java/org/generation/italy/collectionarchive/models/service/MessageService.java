@@ -4,6 +4,8 @@ import org.generation.italy.collectionarchive.models.entities.Discussion;
 import org.generation.italy.collectionarchive.models.entities.Message;
 import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DiscussionNotFoundException;
+import org.generation.italy.collectionarchive.models.exceptions.ReceiverNotFoundException;
+import org.generation.italy.collectionarchive.models.exceptions.SenderNotFoundException;
 import org.generation.italy.collectionarchive.models.repositories.DiscussionRepository;
 import org.generation.italy.collectionarchive.models.repositories.MessageRepository;
 import org.generation.italy.collectionarchive.models.repositories.UserRepository;
@@ -27,23 +29,23 @@ public class MessageService {
     private UserRepository userRepository;
 
     public MessageDto saveMessage(MessageDto dto) {
-        if (dto.getDiscussionId() == null) throw new IllegalArgumentException("DiscussionId non può essere null");
-        if (dto.getSenderId() == null) throw new IllegalArgumentException("SenderId non può essere null");
-        if (dto.getReceiverId() == null) throw new IllegalArgumentException("ReceiverId non può essere null");
+        if (dto.getDiscussionId() == null) throw new IllegalArgumentException("Devi inserire il numero della discussione!");
+        if (dto.getSenderId() == null) throw new IllegalArgumentException("Inserisci il mittente!");
+        if (dto.getReceiverId() == null) throw new IllegalArgumentException("Inserisci il ricevente!");
 
         Discussion discussion = discussionRepository.findById(dto.getDiscussionId())
                 .orElseThrow(() -> new DiscussionNotFoundException("Discussione non trovata!"));
 
         User sender = userRepository.findById(dto.getSenderId())
-                .orElseThrow(() -> new IllegalArgumentException("Sender not found"));
+                .orElseThrow(() -> new SenderNotFoundException("Mittente non trovato!"));
 
         User receiver = userRepository.findById(dto.getReceiverId())
-                .orElseThrow(() -> new IllegalArgumentException("Receiver not found"));
+                .orElseThrow(() -> new ReceiverNotFoundException("Ricevente non trovato!"));
 
 
         if (!((discussion.getBuyer().equals(sender) && discussion.getSeller().equals(receiver)) ||
                 (discussion.getSeller().equals(sender) && discussion.getBuyer().equals(receiver)))) {
-            throw new IllegalArgumentException("Sender and receiver must be buyer and seller of the discussion");
+            throw new IllegalArgumentException("Mittente e ricevente non corrispondono alla discussione!");
         }
 
         Message msg = new Message();
