@@ -113,5 +113,20 @@ public class CollectionRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/{id}/visibility")
+    public ResponseEntity<?> toggleComplete(@PathVariable Integer id) throws DataException {
+        Optional<Collection> ot = collectionService.findCollectionById(id);
+        if(ot.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        Collection t = ot.get();
+        t.setVisibility(t.getVisibility().equals("visible") ? "hidden" : "visible");
+        boolean updated = collectionService.updateCollection(t, t.getUser().getUserId(), t.getCategory().getCategoryId());
+        if (updated) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }}
 }
 
