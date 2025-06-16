@@ -76,5 +76,4 @@ public class Category {
         this.userPreferredCategories = userPreferredCategories;
     }
 
-
 }
