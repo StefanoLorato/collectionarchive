@@ -15,7 +15,7 @@ public class UserFeedback {
     private int feedbackId;
     @OneToOne
     @JoinColumn(name = "order_id")
-    private Order orderId;
+    private Order order;
     @ManyToOne
     @JoinColumn (name = "from_user_id")
     private User fromUser;
@@ -33,10 +33,10 @@ public class UserFeedback {
     public UserFeedback() {
     }
 
-    public UserFeedback(int feedbackId, Order orderId, User fromUser, User toUser, int rating,
+    public UserFeedback(int feedbackId, Order order, User fromUser, User toUser, int rating,
                         String comment, LocalDateTime createdAt) {
         this.feedbackId = feedbackId;
-        this.orderId = orderId;
+        this.order = order;
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.rating = rating;
@@ -53,11 +53,11 @@ public class UserFeedback {
     }
 
     public Order getOrder() {
-        return orderId;
+        return order;
     }
 
-    public void setOrder(Order orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public User getFromUser() {
@@ -98,14 +98,6 @@ public class UserFeedback {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Order getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Order orderId) {
-        this.orderId = orderId;
     }
 
     public List<Notification> getFeedbackNotification() {

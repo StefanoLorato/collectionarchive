@@ -13,6 +13,9 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
     @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
     @ManyToOne
@@ -23,10 +26,11 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(int orderItemId, Order order, Item item,
+    public OrderItem(int orderItemId, Order order, User seller, Item item,
                      Collection collection, Double price) {
         this.orderItemId = orderItemId;
         this.order = order;
+        this.seller = seller;
         this.item = item;
         this.collection = collection;
         this.price = price;
@@ -44,6 +48,13 @@ public class OrderItem {
     }
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public User getSeller() {
+        return seller;
+    }
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 
     public Item getItem() {

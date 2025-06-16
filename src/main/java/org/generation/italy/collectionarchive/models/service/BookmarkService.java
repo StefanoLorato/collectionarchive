@@ -12,5 +12,4 @@ public interface BookmarkService {
     Bookmark createBookmark(Bookmark b, int userId, Integer itemId,  Integer collectionId) throws DataException;
     boolean deleteBookmark(int bookmarkId) throws DataException;
     boolean updateBookmark(Bookmark b, int userId, Integer itemId, Integer collectionId) throws DataException;
-
 }

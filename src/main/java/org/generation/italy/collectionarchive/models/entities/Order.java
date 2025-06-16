@@ -16,24 +16,31 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private User seller;
     @Column (name="ordered_at")
     private LocalDateTime orderedAt;
+    private String status;
+    @ManyToOne
+    @JoinColumn (name="shipping_id")
+    private ShippingAddress shippingAddress;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> orderItems = new ArrayList<>();
-
+    @OneToMany(mappedBy = "order")
+    private List<UserFeedback> orderFeedbacks = new ArrayList<>();
 
     public Order() {
     }
 
-    public Order(int orderId, User buyer, User seller, LocalDateTime orderedAt) {
+    public Order(int orderId, User buyer, LocalDateTime orderedAt, String status, ShippingAddress shippingAddress) {
         this.orderId = orderId;
         this.buyer = buyer;
-        this.seller = seller;
         this.orderedAt = orderedAt;
+        this.status = status;
+        this.shippingAddress = shippingAddress;
+    }
+
+    public void addOrderItem(OrderItem oi){
+        orderItems.add(oi);
     }
 
     public int getOrderId() {
@@ -50,18 +57,25 @@ public class Order {
         this.buyer = buyer;
     }
 
-    public User getSeller() {
-        return seller;
-    }
-    public void setSeller(User seller) {
-        this.seller = seller;
-    }
-
     public LocalDateTime getOrderedAt() {
         return orderedAt;
     }
     public void setOrderedAt(LocalDateTime orderedAt) {
         this.orderedAt = orderedAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+    public void setShippingAddress(ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
     public List<OrderItem> getOrderItems() {
@@ -70,5 +84,4 @@ public class Order {
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-
 }

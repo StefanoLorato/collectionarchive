@@ -34,8 +34,9 @@ public class User implements UserDetails {
     //ORDERS
     @OneToMany (mappedBy = "buyer")
     private List<Order> buyerOrders = new ArrayList<>();
+    //ORDERITEMS
     @OneToMany (mappedBy = "seller")
-    private List<Order> sellerOrders = new ArrayList<>();
+    private List<OrderItem> sellerOrders = new ArrayList<>();
 
     //DISCUSSIONS
     @OneToMany (mappedBy = "buyer")
@@ -203,10 +204,10 @@ public class User implements UserDetails {
         this.buyerOrders = buyerOrders;
     }
 
-    public List<Order> getSellerOrders() {
+    public List<OrderItem> getSellerOrders() {
         return sellerOrders;
     }
-    public void setSellerOrders(List<Order> sellerOrders) {
+    public void setSellerOrders(List<OrderItem> sellerOrders) {
         this.sellerOrders = sellerOrders;
     }
 

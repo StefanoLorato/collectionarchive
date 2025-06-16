@@ -35,7 +35,7 @@ public class BookmarkDto {
         bDto.setSavedAt(bm.getSavedAt());
 
         if(bm.getItem() != null){
-           bDto.setItemId(bm.getItem().getItemId());
+            bDto.setItemId(bm.getItem().getItemId());
         }
         if(bm.getCollection() != null){
             bDto.setCollectionId(bm.getCollection().getCollectionId());
@@ -83,4 +83,3 @@ public class BookmarkDto {
         this.savedAt = savedAt;
     }
 }
-
