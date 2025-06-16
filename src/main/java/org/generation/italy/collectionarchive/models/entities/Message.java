@@ -12,33 +12,42 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
-    private int messageId;
+    private Integer messageId;
     @ManyToOne
-    @JoinColumn (name = "discussion_id")
+    @JoinColumn(name = "discussion_id")
     private Discussion discussion;
     private String content;
     @Column (name = "sent_at")
     private LocalDateTime sentAt;
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
+
+
 
     @OneToMany(mappedBy = "message")
     List<Notification> messageNotification = new ArrayList<>();
     @OneToMany(mappedBy = "message")
     private List<Report> reportedMessages = new ArrayList<>();
 
+
     public Message() {
     }
 
-    public Message(int messageId, Discussion discussion, String content, LocalDateTime sentAt) {
+    public Message(Integer messageId, Discussion discussion, String content, LocalDateTime sentAt) {
         this.messageId = messageId;
         this.discussion = discussion;
         this.content = content;
         this.sentAt = sentAt;
     }
 
-    public int getMessageId() {
+    public Integer getMessageId() {
         return messageId;
     }
-    public void setMessageId(int messageId) {
+    public void setMessageId(Integer messageId) {
         this.messageId = messageId;
     }
 
@@ -78,4 +87,9 @@ public class Message {
     public void setReportedMessages(List<Report> reportedMessages) {
         this.reportedMessages = reportedMessages;
     }
+    public User getSender() { return sender; }
+    public void setSender(User sender) { this.sender = sender; }
+
+    public User getReceiver() { return receiver; }
+    public void setReceiver(User receiver) { this.receiver = receiver; }
 }
