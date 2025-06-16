@@ -37,7 +37,7 @@ public class JpaUserProfileService implements UserProfileService{
         this.userFeedbackRepo = userFeedbackRepo;
         this.orderRepo = orderRepo;
         this.userCommentRepo = userCommentRepo;
-        this.collectionRepo = collectionRepo;
+        this.userLikeRepo = userLikeRepo;
     }
 
     // USER CONTACT
