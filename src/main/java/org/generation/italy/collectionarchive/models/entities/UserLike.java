@@ -18,6 +18,9 @@ public class UserLike {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+    @ManyToOne
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
 
     @OneToMany(mappedBy = "like")
     List<Notification> likeNotification = new ArrayList<>();
@@ -26,7 +29,7 @@ public class UserLike {
     public UserLike() {
     }
 
-    public UserLike(int likeId, User user, Item item) {
+    public UserLike(int likeId, User user, Item item, Collection collection) {
         this.likeId = likeId;
         this.user = user;
         this.item = item;
@@ -64,5 +67,11 @@ public class UserLike {
         this.likeNotification = likeNotification;
     }
 
+    public Collection getCollection() {
+        return collection;
+    }
 
+    public void setCollection(Collection collection) {
+        this.collection = collection;
+    }
 }

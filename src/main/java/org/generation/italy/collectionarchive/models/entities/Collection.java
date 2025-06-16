@@ -57,6 +57,9 @@ public class Collection {
     @OneToMany(mappedBy = "collection")
     private List<WishList> desiredItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "collection")
+    private List<UserLike> likes = new ArrayList<>();
+
     public Collection() {
     }
 
@@ -228,5 +231,11 @@ public class Collection {
         this.desiredItems = desiredItems;
     }
 
+    public List<UserLike> getLikes() {
+        return likes;
+    }
 
+    public void setLikes(List<UserLike> likes) {
+        this.likes = likes;
+    }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface UserLikeRepository extends JpaRepository<UserLike, Integer> {
     List<UserLike> findByUserUserId(int userId);
-    boolean existsByUserUserIdAndItemItemId(int userId, int itemId);
+    boolean existsByUserUserIdAndItemItemIdAndCollectionCollectionId(Integer userId, Integer itemId, Integer collectionId);
 }

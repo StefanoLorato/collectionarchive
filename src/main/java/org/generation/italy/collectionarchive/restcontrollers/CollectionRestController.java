@@ -115,7 +115,7 @@ public class CollectionRestController {
     }
 
     @PutMapping("/{id}/visibility")
-    public ResponseEntity<?> toggleComplete(@PathVariable Integer id) throws DataException {
+    public ResponseEntity<?> toggleVisibility(@PathVariable Integer id) throws DataException {
         Optional<Collection> ot = collectionService.findCollectionById(id);
         if(ot.isEmpty()){
             return ResponseEntity.notFound().build();

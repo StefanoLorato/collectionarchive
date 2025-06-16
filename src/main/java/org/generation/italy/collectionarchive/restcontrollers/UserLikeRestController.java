@@ -3,9 +3,7 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.UserLike;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
-import org.generation.italy.collectionarchive.models.service.JpaUserService;
 import org.generation.italy.collectionarchive.models.service.UserProfileService;
-import org.generation.italy.collectionarchive.models.service.UserService;
 import org.generation.italy.collectionarchive.restdto.UserLikeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,12 +67,13 @@ public class UserLikeRestController {
     @PostMapping
     public ResponseEntity<?> createUserLike(@RequestBody UserLikeDto dto) {
         try {
-            boolean alreadyLiked = userService.userAlreadyLikedItem(dto.getUser(), dto.getItemId());
+            boolean alreadyLiked = userService.userAlreadyLikedItem(dto.getUserId(), dto.getItemId(), dto.getCollectionId());
             if (alreadyLiked) {
                 return ResponseEntity.badRequest().body("Utente ha già messo like a questo item");
             }
+            UserLike like = dto.toUserLike();
 
-            UserLike created = userService.createUserLike(dto.getUser(), dto.getItemId());
+            UserLike created = userService.createUserLike(like, dto.getUserId(), dto.getItemId(), dto.getCollectionId());
             UserLikeDto savedDto = UserLikeDto.toDto(created);
 
             URI location = ServletUriComponentsBuilder

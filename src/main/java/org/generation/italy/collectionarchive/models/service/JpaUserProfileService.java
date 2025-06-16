@@ -22,11 +22,14 @@ public class JpaUserProfileService implements UserProfileService{
     private UserFeedbackRepository userFeedbackRepo;
     private OrderRepository orderRepo;
     private UserCommentRepository userCommentRepo;
+    private CollectionRepository collectionRepo;
 
     @Autowired
     public JpaUserProfileService(UserContactRepository contactRepo,
                                  ShippingAddressRepository shippingRepo, UserRepository userRepo,
-                                 UserLikeRepository userLikeRepo, ItemRepository itemRepo, OrderRepository orderRepo, UserFeedbackRepository userFeedbackRepo, UserCommentRepository userCommentRepo) {
+                                 UserLikeRepository userLikeRepo, ItemRepository itemRepo, OrderRepository orderRepo,
+                                 UserFeedbackRepository userFeedbackRepo, UserCommentRepository userCommentRepo,
+                                 CollectionRepository collectionRepo) {
         this.contactRepo = contactRepo;
         this.shippingRepo = shippingRepo;
         this.userRepo = userRepo;
@@ -34,6 +37,7 @@ public class JpaUserProfileService implements UserProfileService{
         this.userFeedbackRepo = userFeedbackRepo;
         this.orderRepo = orderRepo;
         this.userCommentRepo = userCommentRepo;
+        this.collectionRepo = collectionRepo;
     }
 
     // USER CONTACT
@@ -163,16 +167,25 @@ public class JpaUserProfileService implements UserProfileService{
 
     @Override
     @Transactional
-    public UserLike createUserLike(int userId, int itemId) throws DataException, EntityNotFoundException {
+    public UserLike createUserLike(UserLike like, Integer userId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException {
         try {
             User user = userRepo.findById(userId)
                     .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
-            Item item = itemRepo.findById(itemId)
-                    .orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
 
-            UserLike like = new UserLike();
+            Item i = null;
+            Collection c = null;
+            if(itemId != null) {
+                Optional<Item> oi = itemRepo.findById(itemId);
+                i = oi.orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+            if(collectionId != null) {
+                Optional<Collection> oc = collectionRepo.findById(collectionId);
+                c = oc.orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
+
             like.setUser(user);
-            like.setItem(item);
+            like.setItem(i);
+            like.setCollection(c);
             return userLikeRepo.save(like);
         } catch (PersistenceException e) {
             throw new DataException("Errore durante la creazione del like", e);
@@ -196,8 +209,8 @@ public class JpaUserProfileService implements UserProfileService{
     }
 
     @Override
-    public boolean userAlreadyLikedItem(int userId, int itemId) throws DataException {
-        return userLikeRepo.existsByUserUserIdAndItemItemId(userId, itemId);
+    public boolean userAlreadyLikedItem(Integer userId, Integer itemId, Integer collectionId) throws DataException {
+        return userLikeRepo.existsByUserUserIdAndItemItemIdAndCollectionCollectionId(userId, itemId, collectionId);
     }
     @Override
     public List<UserFeedback> findAllUserFeedbacks() throws DataException {

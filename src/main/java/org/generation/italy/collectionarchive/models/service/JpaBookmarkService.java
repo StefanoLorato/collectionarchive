@@ -105,4 +105,9 @@ public class JpaBookmarkService implements BookmarkService{
             throw new DataException("errore nell'update di un bookmark", pe);
         }
     }
+
+    @Override
+    public List<Bookmark> findBookmarksByUserId(int id) throws DataException {
+        return bookmarkRepo.findByUserUserId(id);
+    }
 }

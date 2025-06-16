@@ -5,25 +5,37 @@ import org.generation.italy.collectionarchive.models.entities.UserLike;
 public class UserLikeDto {
     private int likeId;
     private int userId;
-    private int itemId;
+    private Integer itemId;
+    private Integer collectionId;
 
     public UserLikeDto() {
     }
 
-    public UserLikeDto(int likeId, int userId, int itemId) {
+    public UserLikeDto(int likeId, Integer userId, Integer itemId, Integer collectionId) {
         this.likeId = likeId;
         this.userId = userId;
         this.itemId = itemId;
+        this.collectionId = collectionId;
     }
 
 
     public UserLike toUserLike(){
-        UserLike ul = new UserLike(likeId, null, null);
+        UserLike ul = new UserLike(likeId, null, null, null);
         return ul;
     }
 
     public static UserLikeDto toDto(UserLike ul){
-        return new UserLikeDto(ul.getLikeId(), ul.getUser().getUserId(), ul.getItem().getItemId());
+        UserLikeDto dto = new UserLikeDto();
+
+        dto.setUserId(ul.getUser().getUserId());
+
+        if(ul.getItem() != null){
+            dto.setItemId(ul.getItem().getItemId());
+        }
+        if(ul.getCollection() != null){
+            dto.setCollectionId(ul.getCollection().getCollectionId());
+        }
+        return dto;
     }
 
     public int getLikeId() {
@@ -34,19 +46,27 @@ public class UserLikeDto {
         this.likeId = likeId;
     }
 
-    public int getUser() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUser(int user) {
+    public void setUserId(int user) {
         this.userId = user;
     }
 
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    public Integer getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(Integer collectionId) {
+        this.collectionId = collectionId;
     }
 }

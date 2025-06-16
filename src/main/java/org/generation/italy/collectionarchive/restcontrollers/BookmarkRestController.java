@@ -26,6 +26,7 @@ public class BookmarkRestController {
     public BookmarkRestController(BookmarkService bookmarkService) {
         this.bookmarkService = bookmarkService;
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookmarkById(@PathVariable int id) throws DataException {
         Optional<Bookmark> b = bookmarkService.findBookmarkById(id);
@@ -35,12 +36,21 @@ public class BookmarkRestController {
         BookmarkDto bm = BookmarkDto.toDto(b.get());
         return ResponseEntity.ok(bm);
     }
+
     @GetMapping
     public ResponseEntity<?> getAllBookmark() throws DataException {
         List<BookmarkDto> bookmarkDtos= bookmarkService.findAllBookmarks()
                 .stream().map(BookmarkDto::toDto).toList();
         return ResponseEntity.ok(bookmarkDtos);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getBookmarksByUserId(@PathVariable int id) throws DataException{
+        List<BookmarkDto> bookmarkDtos = bookmarkService.findBookmarksByUserId(id)
+                .stream().map(BookmarkDto::toDto).toList();
+        return ResponseEntity.ok(bookmarkDtos);
+    }
+
     @PostMapping
     public ResponseEntity<BookmarkDto> createBookmark(@RequestBody BookmarkDto dto) throws DataException, EntityNotFoundException {
         Bookmark bm = dto.ToBookMark();
@@ -54,6 +64,7 @@ public class BookmarkRestController {
                 .toUri();
         return ResponseEntity.created(location).body(saved);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBookmarkById(@PathVariable int id) throws DataException{
         boolean deleted = bookmarkService.deleteBookmark(id);
@@ -62,6 +73,7 @@ public class BookmarkRestController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBookmark(@PathVariable int id, @RequestBody BookmarkDto dto) throws DataException{
         if(id != dto.getBookmarkId()){

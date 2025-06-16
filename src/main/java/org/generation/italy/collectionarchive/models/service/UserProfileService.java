@@ -26,10 +26,10 @@ public interface UserProfileService {
     // USER LIKE
     List<UserLike> findAllUserLikes() throws DataException;
     Optional<UserLike> findUserLikeById(int id) throws DataException;
-    UserLike createUserLike(int userId, int itemId) throws DataException, EntityNotFoundException;
+    UserLike createUserLike(UserLike like, Integer userId, Integer itemId, Integer collectionId) throws DataException, EntityNotFoundException;
     boolean deleteUserLike(int id) throws DataException;
     List<UserLike> findUserLikesByUserId(int userId) throws DataException;
-    boolean userAlreadyLikedItem(int userId, int itemId) throws DataException;
+    boolean userAlreadyLikedItem(Integer userId, Integer itemId, Integer collectionId) throws DataException;
 
     // USER FEEDBACK
 
