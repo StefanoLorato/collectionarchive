@@ -41,6 +41,13 @@ public class BookmarkRestController {
                 .stream().map(BookmarkDto::toDto).toList();
         return ResponseEntity.ok(bookmarkDtos);
     }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getBookmarksByUserId(@PathVariable int id) throws DataException{
+        List<BookmarkDto> bookmarkDtos = bookmarkService.findBookmarksByUserId(id)
+                .stream().map(BookmarkDto::toDto).toList();
+        return ResponseEntity.ok(bookmarkDtos);
+    }
+
     @PostMapping
     public ResponseEntity<BookmarkDto> createBookmark(@RequestBody BookmarkDto dto) throws DataException, EntityNotFoundException {
         Bookmark bm = dto.ToBookMark();
