@@ -170,6 +170,7 @@ public class OrderRestController {
                 oi.getCollection().setUser(buyer);
             } else {
                 oi.getItem().setUser(buyer);
+                oi.getItem().setCollection(null);
             }
         }
         OrderItemDto updated = OrderItemDto.toDto(oi);

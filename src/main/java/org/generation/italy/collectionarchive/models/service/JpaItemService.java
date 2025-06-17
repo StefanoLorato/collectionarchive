@@ -120,4 +120,9 @@ public class JpaItemService implements ItemService{
         }
     }
 
+    @Override
+    public List<Item> findOrphanedItemByUserId(int id) throws DataException {
+        return itemRepo.findByCollectionCollectionIdIsNullAndUserUserId(id);
+    }
+
 }

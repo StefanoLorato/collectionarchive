@@ -2,12 +2,14 @@ package org.generation.italy.collectionarchive.restcontrollers;
 
 
 import org.generation.italy.collectionarchive.models.entities.Item;
+import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.ItemService;
 import org.generation.italy.collectionarchive.restdto.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -52,7 +54,15 @@ public class ItemRestController {
                                         @RequestParam(required = false) Boolean forSale,
                                         @RequestParam(required = false) Integer userId,
                                         @RequestParam(required = false) Double salePrice,
-                                        @RequestParam(required = false) String priceComparation) throws DataException {
+                                        @RequestParam(required = false) String priceComparation,
+                                        @RequestParam(required = false) Boolean orphaned,
+                                        @AuthenticationPrincipal User user) throws DataException {
+        // TODO bisognerebbe integrare questa ricerca nella successiva
+        if(orphaned){
+            List<Item> items = itemService.findOrphanedItemByUserId(user.getUserId());
+            return ResponseEntity.ok(items.stream().map(ItemDto::toDto).toList());
+        }
+
         ItemDto filters = new ItemDto();
         filters.setItemName(itemName);
         filters.setForSale(forSale);

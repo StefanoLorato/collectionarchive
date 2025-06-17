@@ -57,11 +57,12 @@ public class ItemDto {
     }
 
     public static ItemDto toDto(Item i){
-        return new ItemDto(i.getItemId(),i.getCollection().getCollectionId(),
+        return new ItemDto(i.getItemId(),(i.getCollection() != null ? i.getCollection().getCollectionId() : null),
                 i.getUser().getUserId(), i.getItemName(), i.getItemDescription(),i.getItemPhoto(),
                 i.getCondition(),i.getPurchaseDate(),i.getReleaseDate(),
                 i.getPurchasePrice(), i.getSalePrice(), i.getItemVersion(),
                 i.getItemEdition(), i.isForSale(), i.getVisibilityStatus());
+
     }
 
     public int getItemId() {

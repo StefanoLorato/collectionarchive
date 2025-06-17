@@ -18,4 +18,5 @@ public interface ItemService {
     boolean updateItem(Item t, int userId, int collectionId) throws DataException, EntityNotFoundException;
     List<Item> findItemByCollectionId(int collectionId);
     List<Item> searchItem(ItemDto dto) throws DataException;
+    List<Item> findOrphanedItemByUserId(int id) throws DataException;
 }

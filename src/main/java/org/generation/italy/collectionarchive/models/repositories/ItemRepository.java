@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Integer>, JpaSpecificationExecutor<Item> {
     List<Item> findByCollectionCollectionId(int collectionId);
+    List<Item> findByCollectionCollectionIdIsNullAndUserUserId(int id);
 }
