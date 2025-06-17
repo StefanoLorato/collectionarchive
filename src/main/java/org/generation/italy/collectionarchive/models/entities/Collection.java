@@ -57,7 +57,7 @@ public class Collection {
     @OneToMany(mappedBy = "collection")
     private List<WishList> desiredItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "collection")
+    @OneToMany(mappedBy = "collection", fetch = FetchType.EAGER)
     private List<UserLike> likes = new ArrayList<>();
 
     public Collection() {

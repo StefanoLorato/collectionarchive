@@ -57,7 +57,7 @@ public class Item {
     @OneToMany (mappedBy = "item")
     private List<CartItem> cartItems = new ArrayList<>();
 
-    @OneToMany ( mappedBy = "item")
+    @OneToMany ( mappedBy = "item", fetch = FetchType.EAGER)
     private List<UserLike> itemsLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")

@@ -20,6 +20,8 @@ public class CollectionDto {
     private Double salePrice;
     private String visibilityStatus;
     private String priceComparation;
+    private boolean isLiked;
+    private int numLikes;
 
     public CollectionDto() {
     }
@@ -160,5 +162,33 @@ public class CollectionDto {
 
     public void setPriceComparation(String priceComparation) {
         this.priceComparation = priceComparation;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Boolean getForSale() {
+        return forSale;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
+    public int getNumLikes() {
+        return numLikes;
+    }
+
+    public void setNumLikes(int numLikes) {
+        this.numLikes = numLikes;
     }
 }
