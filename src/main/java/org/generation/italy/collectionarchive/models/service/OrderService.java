@@ -1,11 +1,9 @@
 package org.generation.italy.collectionarchive.models.service;
 
-import org.generation.italy.collectionarchive.models.entities.CartItem;
-import org.generation.italy.collectionarchive.models.entities.Order;
-import org.generation.italy.collectionarchive.models.entities.OrderItem;
-import org.generation.italy.collectionarchive.models.entities.ShippingAddress;
+import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
+import org.generation.italy.collectionarchive.models.exceptions.LogicException;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +12,7 @@ public interface OrderService {
     //ORDER
     List<Order> findAllOrders() throws DataException;
     Optional<Order> findOrderById(int orderId) throws DataException;
-    Order createOrder(Order o, Integer buyerId, Integer shipppingId) throws DataException, EntityNotFoundException;
+    Order createOrder(User user, Order o, Integer buyerId, Integer shipppingId) throws DataException, EntityNotFoundException, LogicException;
     boolean deleteOrder(int orderId) throws DataException;
     boolean updateOrder(Order o, Integer buyerId, Integer shippingId) throws DataException, EntityNotFoundException;
     List<Order> findOrderByBuyerId(int id) throws DataException;

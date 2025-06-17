@@ -6,8 +6,10 @@ import jakarta.persistence.PersistenceException;
 import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
+import org.generation.italy.collectionarchive.models.exceptions.LogicException;
 import org.generation.italy.collectionarchive.models.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +53,11 @@ public class JpaOrderService implements OrderService {
     }
 
     @Override
-    public Order createOrder(Order o, Integer buyerId, Integer shippingId) throws DataException, EntityNotFoundException {
+    public Order createOrder(User user, Order o, Integer buyerId, Integer shippingId)
+            throws DataException, EntityNotFoundException, LogicException{
+        if(buyerId == user.getUserId()){
+            throw new LogicException("non puoi compreare un oggetto che possiedi");
+        }
         try{
             Optional<User> ob = userRepo.findById(buyerId);
             User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));

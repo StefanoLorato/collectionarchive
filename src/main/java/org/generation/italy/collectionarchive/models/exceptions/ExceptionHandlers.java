@@ -16,10 +16,15 @@ public class ExceptionHandlers {
         return buildResponseEntity(exc, HttpStatus.valueOf(exc.getStatusCode().value()));
     }
 
+    @ExceptionHandler(LogicException.class)
+    public ResponseEntity<ExceptionResponses> handleException(LogicException exc){
+        return buildResponseEntity(exc, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponses> handleException(Exception exc) {
         exc.printStackTrace();
-        return buildResponseEntity(exc, HttpStatus.BAD_REQUEST);
+        return buildResponseEntity(exc, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ResponseEntity<ExceptionResponses> buildResponseEntity(Exception exc, HttpStatus status) {

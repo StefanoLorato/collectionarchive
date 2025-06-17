@@ -4,6 +4,7 @@ package org.generation.italy.collectionarchive.restcontrollers;
 import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
+import org.generation.italy.collectionarchive.models.exceptions.LogicException;
 import org.generation.italy.collectionarchive.models.service.CollectionService;
 import org.generation.italy.collectionarchive.models.service.ItemService;
 import org.generation.italy.collectionarchive.models.service.OrderService;
@@ -12,10 +13,12 @@ import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.generation.italy.collectionarchive.restdto.OrderItemDto;
 import org.generation.italy.collectionarchive.restdto.OrderItemStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -75,18 +78,23 @@ public class OrderRestController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto dto) throws DataException, EntityNotFoundException{
+    public ResponseEntity<OrderDto> createOrder(@AuthenticationPrincipal User user, @RequestBody OrderDto dto)
+            throws DataException, EntityNotFoundException, LogicException {
+        if(user.getUserId() == dto.getBuyerId()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Non puoi comprare un oggetto che possiedi");
+        }
         Order o = dto.toOrder();
         o.setOrderedAt(LocalDateTime.now());
 
-        orderService.createOrder(o, dto.getBuyerId(), dto.getShippingAddressId());
+        orderService.createOrder(user, o, dto.getBuyerId(), dto.getShippingAddressId());
         dto.getOrderItems().forEach(oiDto -> {
             OrderItem oi = oiDto.toOrderItem();
             oi.setStatus("pending");
             orderService.createOrderItem(oi, o.getOrderId(), oiDto.getSellerId(), oiDto.getItemId(), oiDto.getCollectionId());
             o.addOrderItem(oi);
         });
-        Order saved = orderService.findOrderById(o.getOrderId()).orElseThrow(() -> new EntityNotFoundException("errore nel caricamento dell'ordine con id" + o.getOrderId()));
+        Order saved = orderService.findOrderById(o.getOrderId())
+                .orElseThrow(() -> new EntityNotFoundException("errore nel caricamento dell'ordine con id" + o.getOrderId()));
         OrderDto savedDto = OrderDto.toDto(o);
 
         URI location = ServletUriComponentsBuilder
