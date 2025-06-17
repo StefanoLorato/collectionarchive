@@ -80,9 +80,13 @@ public class OrderRestController {
     @Transactional
     public ResponseEntity<OrderDto> createOrder(@AuthenticationPrincipal User user, @RequestBody OrderDto dto)
             throws DataException, EntityNotFoundException, LogicException {
-        if(user.getUserId() == dto.getBuyerId()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Non puoi comprare un oggetto che possiedi");
+        List<OrderItemDto> oiDtos = dto.getOrderItems();
+        for(OrderItemDto oi : oiDtos){
+            if(user.getUserId() == oi.getSellerId()){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Non puoi comprare un oggetto che possiedi");
+            }
         }
+
         Order o = dto.toOrder();
         o.setOrderedAt(LocalDateTime.now());
 

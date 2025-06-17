@@ -55,9 +55,9 @@ public class JpaOrderService implements OrderService {
     @Override
     public Order createOrder(User user, Order o, Integer buyerId, Integer shippingId)
             throws DataException, EntityNotFoundException, LogicException{
-        if(buyerId == user.getUserId()){
-            throw new LogicException("non puoi compreare un oggetto che possiedi");
-        }
+//        if(buyerId == user.getUserId()){
+//            throw new LogicException("non puoi compreare un oggetto che possiedi");
+//        }
         try{
             Optional<User> ob = userRepo.findById(buyerId);
             User buyer = ob.orElseThrow(() -> new EntityNotFoundException(User.class, buyerId));
