@@ -1,6 +1,9 @@
 package org.generation.italy.collectionarchive.restdto;
 
+import org.generation.italy.collectionarchive.models.entities.Bookmark;
 import org.generation.italy.collectionarchive.models.entities.Collection;
+import org.generation.italy.collectionarchive.models.entities.User;
+import org.generation.italy.collectionarchive.models.entities.UserLike;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,15 +23,19 @@ public class CollectionDto {
     private Double salePrice;
     private String visibilityStatus;
     private String priceComparation;
-    private boolean isLiked;
+    private boolean liked;
     private int numLikes;
+    private boolean bookmarked;
+    private Integer likeId;
+    private Integer bookmarkId;
 
     public CollectionDto() {
     }
 
     public CollectionDto(int collectionId, String collectionName, Boolean completed,
                          Integer categoryId, Integer userId, String visibility, String description, LocalDate collectionDate,
-                         LocalDateTime createdAt, Boolean forSale, Double salePrice, String visibilityStatus) {
+                         LocalDateTime createdAt, Boolean forSale, Double salePrice, String visibilityStatus, boolean liked,
+                         int numLikes, boolean bookmarked, Integer likeId, Integer bookmarkId) {
         this.collectionId = collectionId;
         this.collectionName = collectionName;
         this.completed = completed;
@@ -41,6 +48,11 @@ public class CollectionDto {
         this.forSale = forSale;
         this.salePrice = salePrice;
         this.visibilityStatus = visibilityStatus;
+        this.liked = liked;
+        this.numLikes = numLikes;
+        this.bookmarked = bookmarked;
+        this.likeId = likeId;
+        this.bookmarkId = bookmarkId;
     }
 
     public Collection toCollection(){
@@ -52,13 +64,22 @@ public class CollectionDto {
         return c;
     }
 
-    public static CollectionDto toDto(Collection c){
+    public static CollectionDto toDto(Collection c, User loggedUser){
+        int numLikes = c.getLikes().size();
+        boolean isLiked = loggedUser != null && c.getLikes()
+                .stream().anyMatch(l -> l.getUser().equals(loggedUser));
+        boolean isBookmarked = loggedUser != null && c.getCollectionBookmarks()
+                .stream().anyMatch(b -> b.getUser().equals(loggedUser));
+        Integer likeId = c.getLikes().stream().filter(l -> l.getUser().equals(loggedUser))
+                .findFirst().map(UserLike::getLikeId).orElse(null);
+        Integer bookmarkId = c.getCollectionBookmarks().stream().filter(b -> b.getUser().equals(loggedUser))
+                .findFirst().map(Bookmark::getBookmarkId).orElse(null);
         return new CollectionDto(c.getCollectionId(),c.getCollectionName(),c.isCompleted(),
                                  c.getCategory().getCategoryId(), c.getUser().getUserId(),
                                  c.getVisibility(),c.getDescription(),c.getCollectionDate(),
-                                 c.getCreatedAt(),c.isForSale(),c.getSalePrice(),c.getVisibilityStatus());
+                                 c.getCreatedAt(),c.isForSale(),c.getSalePrice(),c.getVisibilityStatus(),
+                                isLiked, numLikes, isBookmarked, likeId, bookmarkId);
     }
-
 
     public int getCollectionId() {
         return collectionId;
@@ -177,11 +198,11 @@ public class CollectionDto {
     }
 
     public boolean isLiked() {
-        return isLiked;
+        return liked;
     }
 
     public void setLiked(boolean liked) {
-        isLiked = liked;
+        this.liked = liked;
     }
 
     public int getNumLikes() {
@@ -190,5 +211,29 @@ public class CollectionDto {
 
     public void setNumLikes(int numLikes) {
         this.numLikes = numLikes;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
+    }
+
+    public Integer getLikeId() {
+        return likeId;
+    }
+
+    public void setLikeId(Integer likeId) {
+        this.likeId = likeId;
+    }
+
+    public Integer getBookmarkId() {
+        return bookmarkId;
+    }
+
+    public void setBookmarkId(Integer bookmarkId) {
+        this.bookmarkId = bookmarkId;
     }
 }

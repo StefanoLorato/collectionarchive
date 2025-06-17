@@ -63,7 +63,7 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<UserComment> itemsComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private List<Bookmark> itemBookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")

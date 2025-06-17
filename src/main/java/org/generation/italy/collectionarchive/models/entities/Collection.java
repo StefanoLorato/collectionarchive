@@ -48,7 +48,7 @@ public class Collection {
     @OneToMany (mappedBy = "collection")
     private List<CartItem> cartItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "collection")
+    @OneToMany(mappedBy = "collection", fetch = FetchType.EAGER)
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "collection")

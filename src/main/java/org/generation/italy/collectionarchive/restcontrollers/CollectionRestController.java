@@ -1,6 +1,8 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
+import org.generation.italy.collectionarchive.models.entities.Bookmark;
 import org.generation.italy.collectionarchive.models.entities.Collection;
+import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.CollectionService;
@@ -21,60 +23,64 @@ import java.util.Optional;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/collections")
-
 public class CollectionRestController {
     private CollectionService collectionService;
 
     @Autowired
     public CollectionRestController(CollectionService collectionService) {
         this.collectionService = collectionService;
-
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCollectionById(@PathVariable int id) throws DataException {
+    public ResponseEntity<?> getCollectionById(@AuthenticationPrincipal User user, @PathVariable int id) throws DataException {
 
         Optional<Collection> c = collectionService.findCollectionById(id);
         if(c.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        CollectionDto co = CollectionDto.toDto(c.get());
+        CollectionDto co = CollectionDto.toDto(c.get(), user);
         return ResponseEntity.ok(co);
     }
 
     @GetMapping("/loggedUser")
-    public ResponseEntity<?> getUserCollections(@AuthenticationPrincipal(expression = "username") String email) throws DataException {
-        List<CollectionDto> collections = collectionService.findAllByUserEmail(email)
-                .stream().map(CollectionDto::toDto).toList();
+    public ResponseEntity<?> getUserCollections(@AuthenticationPrincipal User user) throws DataException {
+        List<CollectionDto> collections = collectionService.findAllByUserEmail(user.getEmail())
+                .stream().map( c -> CollectionDto.toDto(c, user)).toList();
         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(collections);
     }
-
 
     @GetMapping
     public ResponseEntity<?> getAllCollection(@RequestParam(required = false) String collectionName,
                                               @RequestParam(required = false) Integer categoryId,
                                               @RequestParam(required = false) Integer userId,
                                               @RequestParam(required = false) Double salePrice,
-                                              @RequestParam(required = false) String priceComparation) throws DataException {
+                                              @RequestParam(required = false) String priceComparation,
+                                              @RequestParam(required = false) Boolean bookmarked,
+                                              @AuthenticationPrincipal User user) throws DataException {
+        //TODO da integrare nei filtri
+        if(bookmarked != null && bookmarked){
+            List<Collection> collections = collectionService.findAllCollection();
+        }
+
         CollectionDto filters = new CollectionDto();
         filters.setCollectionName(collectionName);
         filters.setCategory(categoryId);
         filters.setUserId(userId);
         filters.setSalePrice(salePrice);
         filters.setPriceComparation(priceComparation);
-        List<CollectionDto> collectionDtos = collectionService.searchCollection(filters)
-                .stream().map(CollectionDto::toDto).toList();
+        List<Collection> collections = collectionService.searchCollection(filters);
+        List<CollectionDto> collectionDtos = collections.stream().map( c -> CollectionDto.toDto(c, user)).toList();
         return ResponseEntity.ok(collectionDtos);
     }
 
     @PostMapping
-    public ResponseEntity<CollectionDto> createCollection(@RequestBody CollectionDto dto) throws DataException, EntityNotFoundException {
+    public ResponseEntity<CollectionDto> createCollection(@AuthenticationPrincipal User user, @RequestBody CollectionDto dto) throws DataException, EntityNotFoundException {
         Collection c = dto.toCollection();
         c.setCreatedAt(LocalDateTime.now());
         collectionService.createCollection(c, dto.getUserId(), dto.getCategoryId());
 
-        CollectionDto saved = CollectionDto.toDto(c);
+        CollectionDto saved = CollectionDto.toDto(c, user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

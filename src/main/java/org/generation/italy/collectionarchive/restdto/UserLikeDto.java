@@ -4,7 +4,7 @@ import org.generation.italy.collectionarchive.models.entities.UserLike;
 
 public class UserLikeDto {
     private int likeId;
-    private int userId;
+    private Integer userId;
     private Integer itemId;
     private Integer collectionId;
 
@@ -17,7 +17,6 @@ public class UserLikeDto {
         this.itemId = itemId;
         this.collectionId = collectionId;
     }
-
 
     public UserLike toUserLike(){
         UserLike ul = new UserLike(likeId, null, null, null);
@@ -46,11 +45,11 @@ public class UserLikeDto {
         this.likeId = likeId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int user) {
+    public void setUserId(Integer user) {
         this.userId = user;
     }
 
