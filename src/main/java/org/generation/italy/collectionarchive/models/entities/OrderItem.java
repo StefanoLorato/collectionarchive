@@ -22,18 +22,20 @@ public class OrderItem {
     @JoinColumn(name = "collection_id")
     private Collection collection;
     private Double  price;
+    private String status;
 
     public OrderItem() {
     }
 
     public OrderItem(int orderItemId, Order order, User seller, Item item,
-                     Collection collection, Double price) {
+                     Collection collection, Double price, String status) {
         this.orderItemId = orderItemId;
         this.order = order;
         this.seller = seller;
         this.item = item;
         this.collection = collection;
         this.price = price;
+        this.status = status;
     }
 
     public int getOrderItemId() {
@@ -76,5 +78,12 @@ public class OrderItem {
     }
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -12,15 +12,18 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ExceptionResponses> handleException(ResponseStatusException exc) {
+        exc.printStackTrace();
         return buildResponseEntity(exc, HttpStatus.valueOf(exc.getStatusCode().value()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponses> handleException(Exception exc) {
+        exc.printStackTrace();
         return buildResponseEntity(exc, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<ExceptionResponses> buildResponseEntity(Exception exc, HttpStatus status) {
+        exc.printStackTrace();
         ExceptionResponses error = new ExceptionResponses();
         error.setStatus(status.value());
         error.setMessage(exc.getMessage());

@@ -18,7 +18,6 @@ public class Order {
     private User buyer;
     @Column (name="ordered_at")
     private LocalDateTime orderedAt;
-    private String status;
     @ManyToOne
     @JoinColumn (name="shipping_id")
     private ShippingAddress shippingAddress;
@@ -31,11 +30,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(int orderId, User buyer, LocalDateTime orderedAt, String status, ShippingAddress shippingAddress) {
+    public Order(int orderId, User buyer, LocalDateTime orderedAt, ShippingAddress shippingAddress) {
         this.orderId = orderId;
         this.buyer = buyer;
         this.orderedAt = orderedAt;
-        this.status = status;
         this.shippingAddress = shippingAddress;
     }
 
@@ -62,13 +60,6 @@ public class Order {
     }
     public void setOrderedAt(LocalDateTime orderedAt) {
         this.orderedAt = orderedAt;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public ShippingAddress getShippingAddress() {

@@ -17,7 +17,7 @@ public class Item {
     @ManyToOne
     @JoinColumn (name = "collection_id")
     private Collection collection;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn (name = "user_id")
     private User user;
     @Column (name = "item_name")

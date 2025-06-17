@@ -1,5 +1,7 @@
 package org.generation.italy.collectionarchive.models.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceException;
 import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
@@ -21,6 +23,8 @@ public class JpaOrderService implements OrderService {
     private ItemRepository itemRepo;
     private CartItemRepository cartItemRepo;
     private ShippingAddressRepository shippingRepo;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     public JpaOrderService(OrderRepository orderRepo,OrderItemRepository orderItemRepo,UserRepository userRepo,
@@ -96,6 +100,23 @@ public class JpaOrderService implements OrderService {
         } catch (PersistenceException pe){
             throw new DataException("errore nella modifica di un ordine", pe);
         }
+    }
+
+    @Override
+    public List<Order> findOrderByBuyerId(int id) throws DataException {
+        return orderRepo.findByBuyerUserId(id);
+    }
+
+    @Override
+    public List<Order> findOrderByItemsSeller(int id) throws DataException {
+        List<Order> orders = orderRepo.findOrdersWithItemsFromSeller(id);
+        for(Order order : orders){
+            entityManager.detach(order);
+            List<OrderItem> filtered = order.getOrderItems().stream()
+                    .filter(item -> item.getSeller().getUserId() == id).toList();
+            order.setOrderItems(filtered);
+        }
+        return orders;
     }
 
     //ORDER ITEM
@@ -187,6 +208,11 @@ public class JpaOrderService implements OrderService {
         } catch (PersistenceException pe){
             throw new DataException("errore nella modifica di un order item", pe);
         }
+    }
+
+    @Override
+    public List<OrderItem> findOrderItemsBySellerId(int id) throws DataException {
+        return orderItemRepo.findBySellerUserId(id);
     }
 
     //CART iTEM

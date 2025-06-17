@@ -1,15 +1,19 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
 
-import org.generation.italy.collectionarchive.models.entities.Order;
-import org.generation.italy.collectionarchive.models.entities.OrderItem;
+import org.generation.italy.collectionarchive.models.entities.*;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
+import org.generation.italy.collectionarchive.models.service.CollectionService;
+import org.generation.italy.collectionarchive.models.service.ItemService;
 import org.generation.italy.collectionarchive.models.service.OrderService;
+import org.generation.italy.collectionarchive.models.service.UserService;
 import org.generation.italy.collectionarchive.restdto.OrderDto;
 import org.generation.italy.collectionarchive.restdto.OrderItemDto;
+import org.generation.italy.collectionarchive.restdto.OrderItemStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,16 +28,29 @@ import java.util.Optional;
 @RequestMapping("/api/orders")
 public class OrderRestController {
     private OrderService orderService;
+    private UserService userService;
+    private CollectionService collectionService;
+    private ItemService itemService;
 
     @Autowired
-    public OrderRestController(OrderService orderService){
+    public OrderRestController(OrderService orderService, UserService userService,
+                               CollectionService collectionService, ItemService itemService){
         this.orderService = orderService;
+        this.userService = userService;
+        this.collectionService = collectionService;
+        this.itemService = itemService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllOrders() throws DataException{
-        List<OrderDto> orders = orderService.findAllOrders().stream().map(OrderDto::toDto).toList();
-        return ResponseEntity.ok(orders);
+    public ResponseEntity<?> getAllOrders(@RequestParam(required = false) Integer sellerId) throws DataException{
+        List<Order> orders;
+        if(sellerId != null){
+            orders = orderService.findOrderByItemsSeller(sellerId);
+        } else {
+            orders = orderService.findAllOrders();
+        }
+        List<OrderDto> dtos = orders.stream().map(OrderDto::toDto).toList();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
@@ -46,6 +63,16 @@ public class OrderRestController {
         return ResponseEntity.ok(orderDto);
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getOrderByUserId(@PathVariable Integer id){
+        Optional<User> buyer = userService.findUserById(id);
+        if(buyer.isEmpty()){
+            return ResponseEntity.badRequest().body("utente non trovato");
+        }
+        List<OrderDto> orders = orderService.findOrderByBuyerId(id).stream().map(OrderDto::toDto).toList();
+        return ResponseEntity.ok(orders);
+    }
+
     @PostMapping
     @Transactional
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto dto) throws DataException, EntityNotFoundException{
@@ -55,6 +82,7 @@ public class OrderRestController {
         orderService.createOrder(o, dto.getBuyerId(), dto.getShippingAddressId());
         dto.getOrderItems().forEach(oiDto -> {
             OrderItem oi = oiDto.toOrderItem();
+            oi.setStatus("pending");
             orderService.createOrderItem(oi, o.getOrderId(), oiDto.getSellerId(), oiDto.getItemId(), oiDto.getCollectionId());
             o.addOrderItem(oi);
         });
@@ -114,7 +142,7 @@ public class OrderRestController {
         if(orderItemId != dto.getOrderItemId()){
             return ResponseEntity.badRequest().body("l'id del path non corrisponde all'id del dto");
         }
-        Optional<OrderItem> oo = orderService.findOrderItemById(id);
+        Optional<OrderItem> oo = orderService.findOrderItemById(orderItemId);
         if(oo.isEmpty()){
             return ResponseEntity.notFound().build();
         }
@@ -125,5 +153,26 @@ public class OrderRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PatchMapping("/{id}/orderItems/{orderItemId}")
+    @Transactional
+    public ResponseEntity<OrderItemDto> updateOrderItemStatus(@AuthenticationPrincipal User user, @PathVariable int id, @RequestBody OrderItemStatusDto dto, @PathVariable int orderItemId) throws EntityNotFoundException{
+        Order o = orderService.findOrderById(id).orElseThrow(()-> new EntityNotFoundException("ordine non trovato con id: " + id));
+
+        OrderItem oi = orderService.findOrderItemById(orderItemId).orElseThrow(() -> new EntityNotFoundException("linea d'ordine non trovata con id: " + orderItemId));
+
+        User buyer = userService.findUserById(o.getBuyer().getUserId()).orElseThrow(() -> new EntityNotFoundException(("Buyer non trovato con id: " + o.getBuyer().getUserId())));
+        oi.setStatus(dto.getStatus());
+        if(dto.getStatus().equals("accepted")){
+            System.out.println("cambiando proprietario all'oggetto");
+            if(oi.getCollection() != null){
+                oi.getCollection().setUser(buyer);
+            } else {
+                oi.getItem().setUser(buyer);
+            }
+        }
+        OrderItemDto updated = OrderItemDto.toDto(oi);
+        return ResponseEntity.ok(updated);
     }
 }

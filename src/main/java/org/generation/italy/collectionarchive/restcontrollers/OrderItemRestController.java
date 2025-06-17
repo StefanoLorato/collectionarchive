@@ -27,9 +27,15 @@ public class OrderItemRestController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllOrderItems() throws DataException {
-        List<OrderItemDto> orderItems = orderItemService.findAllOrderItems().stream().map(OrderItemDto::toDto).toList();
-        return ResponseEntity.ok(orderItems);
+    public ResponseEntity<?> getAllOrderItems(@RequestParam(required = false) Integer sellerId) throws DataException {
+        List<OrderItem> orderItems;
+        if(sellerId != null){
+            orderItems = orderItemService.findOrderItemsBySellerId(sellerId);
+        } else {
+            orderItems = orderItemService.findAllOrderItems();
+        }
+        List<OrderItemDto> dtos = orderItems.stream().map(OrderItemDto::toDto).toList();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
