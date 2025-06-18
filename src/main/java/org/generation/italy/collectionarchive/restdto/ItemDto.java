@@ -27,7 +27,9 @@ public class ItemDto {
     private String priceComparation;
     private boolean liked;
     private int numLikes;
+    private boolean bookmarked;
     private Integer likeId;
+    private Integer bookmarkId;
 
     public ItemDto() {
     }
@@ -36,7 +38,7 @@ public class ItemDto {
                    String itemPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
                    Double purchasePrice, Double salePrice, String itemVersion, String itemEdition,
                    Boolean forSale, String visibilityStatus, boolean liked,
-                   int numLikes, Integer likeId) {
+                   int numLikes, boolean bookmarked, Integer likeId, Integer bookmarkId) {
         this.itemId = itemId;
         this.collectionId = collectionId;
         this.userId = userId;
@@ -54,7 +56,9 @@ public class ItemDto {
         this.visibilityStatus = visibilityStatus;
         this.liked = liked;
         this.numLikes = numLikes;
+        this.bookmarked = bookmarked;
         this.likeId = likeId;
+        this.bookmarkId = bookmarkId;
     }
 
     public Item toItem(){
@@ -70,13 +74,17 @@ public class ItemDto {
         int numLikes = i.getItemsLikes().size();
         boolean isLiked = loggedUser != null && i.getItemsLikes()
                 .stream().anyMatch(l -> l.getUser().equals(loggedUser));
+        boolean isBookmarked = loggedUser != null && i.getItemBookmarks()
+                .stream().anyMatch(b -> b.getUser().equals(loggedUser));
         Integer likeId = i.getItemsLikes().stream().filter(l -> l.getUser().equals(loggedUser))
                 .findFirst().map(UserLike::getLikeId).orElse(null);
+        Integer bookmarkId = i.getItemBookmarks().stream().filter(b -> b.getUser().equals(loggedUser))
+                .findFirst().map(Bookmark::getBookmarkId).orElse(null);
         return new ItemDto(i.getItemId(),(i.getCollection() != null ? i.getCollection().getCollectionId() : null),
                 i.getUser().getUserId(), i.getItemName(), i.getItemDescription(),i.getItemPhoto(),
                 i.getCondition(),i.getPurchaseDate(),i.getReleaseDate(),
                 i.getPurchasePrice(), i.getSalePrice(), i.getItemVersion(),
-                i.getItemEdition(), i.isForSale(), i.getVisibilityStatus(), isLiked, numLikes, likeId);
+                i.getItemEdition(), i.isForSale(), i.getVisibilityStatus(), isLiked, numLikes, isBookmarked, likeId, bookmarkId);
     }
 
     public int getItemId() {
@@ -233,5 +241,21 @@ public class ItemDto {
 
     public void setLikeId(Integer likeId) {
         this.likeId = likeId;
+    }
+
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
+    }
+
+    public Integer getBookmarkId() {
+        return bookmarkId;
+    }
+
+    public void setBookmarkId(Integer bookmarkId) {
+        this.bookmarkId = bookmarkId;
     }
 }

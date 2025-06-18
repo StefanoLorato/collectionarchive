@@ -240,7 +240,7 @@ CREATE TABLE orders (
 
     CONSTRAINT "PK_order_id" PRIMARY KEY (order_id),
 
-    CONSTRAINT FK_orders_buyer FOREIGN KEY (buyer_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE NO ACTION,
+    CONSTRAINT FK_orders_buyer FOREIGN KEY (buyer_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE NO ACTION
 );
 
 CREATE TABLE order_items (

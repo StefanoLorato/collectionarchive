@@ -6,26 +6,39 @@ public class UserCommentDto {
 
     private int commentId;
     private int userId;
-    private int itemId;
+    private Integer itemId;
+    private Integer collectionId;
     private String comment;
 
     public UserCommentDto() {
     }
 
-    public UserCommentDto(int commentId, int userId, int itemId, String comment) {
+    public UserCommentDto(int commentId, int userId, Integer itemId, Integer collectionId, String comment) {
         this.commentId = commentId;
         this.userId = userId;
         this.itemId = itemId;
+        this.collectionId = collectionId;
         this.comment = comment;
     }
 
     public UserComment toUserComment(){
-        UserComment uc = new UserComment( commentId, null,null,comment);
+        UserComment uc = new UserComment( commentId, null,null, null,comment);
         return uc;
     }
 
     public static UserCommentDto toDto(UserComment uc){
-        return new UserCommentDto(uc.getCommentId(), uc.getUser().getUserId(), uc.getItem().getItemId(), uc.getComment());
+        UserCommentDto dto = new UserCommentDto();
+
+        dto.setCommentId(uc.getCommentId());
+        dto.setUserId(uc.getUser().getUserId());
+
+        if(uc.getItem() != null){
+            dto.setItemId(uc.getItem().getItemId());
+        }
+        if(uc.getCollection() != null){
+            dto.setCollectionId(uc.getCollection().getCollectionId());
+        }
+        return dto;
     }
 
 
@@ -46,19 +59,27 @@ public class UserCommentDto {
         this.userId = userId;
     }
 
-    public int getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
     public String getComment() {
         return comment;
     }
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Integer getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
+
+    public Integer getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(Integer collectionId) {
+        this.collectionId = collectionId;
     }
 }

@@ -57,10 +57,15 @@ public class ItemRestController {
                                         @RequestParam(required = false) Double salePrice,
                                         @RequestParam(required = false) String priceComparation,
                                         @RequestParam(required = false) Boolean orphaned,
+                                        @RequestParam(required = false) Boolean bookmarked,
                                         @AuthenticationPrincipal User user) throws DataException {
         // TODO bisognerebbe integrare questa ricerca nella successiva
         if(orphaned){
             List<Item> items = itemService.findOrphanedItemByUserId(user.getUserId());
+            return ResponseEntity.ok(items.stream().map(i -> ItemDto.toDto(i, user)).toList());
+        }
+        if(bookmarked){
+            List<Item> items = itemService.findItemByBookmarkUserId(user.getUserId());
             return ResponseEntity.ok(items.stream().map(i -> ItemDto.toDto(i, user)).toList());
         }
 

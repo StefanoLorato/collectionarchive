@@ -1,6 +1,7 @@
 package org.generation.italy.collectionarchive.restcontrollers;
 
 import org.generation.italy.collectionarchive.models.entities.UserComment;
+import org.generation.italy.collectionarchive.models.entities.UserLike;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.UserProfileService;
@@ -56,7 +57,8 @@ public class UserCommentRestController {
     @PostMapping
     public ResponseEntity<?> createComment(@RequestBody UserCommentDto dto) {
         try {
-            UserComment created = userService.createUserComment(dto.getUserId(), dto.getItemId(), dto.getComment());
+            UserComment comment = dto.toUserComment();
+            UserComment created = userService.createUserComment(comment, dto.getUserId(), dto.getItemId(), dto.getCollectionId(), dto.getComment());
             return ResponseEntity.status(HttpStatus.CREATED).body(UserCommentDto.toDto(created));
         } catch (DataException | EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

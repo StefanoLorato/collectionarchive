@@ -19,4 +19,5 @@ public interface ItemService {
     List<Item> findItemByCollectionId(int collectionId);
     List<Item> searchItem(ItemDto dto) throws DataException;
     List<Item> findOrphanedItemByUserId(int id) throws DataException;
+    List<Item> findItemByBookmarkUserId(int id) throws DataException;
 }

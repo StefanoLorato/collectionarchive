@@ -60,6 +60,9 @@ public class Collection {
     @OneToMany(mappedBy = "collection", fetch = FetchType.EAGER)
     private List<UserLike> likes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "collection")
+    private List<UserComment> comments = new ArrayList<>();
+
     public Collection() {
     }
 
@@ -237,5 +240,13 @@ public class Collection {
 
     public void setLikes(List<UserLike> likes) {
         this.likes = likes;
+    }
+
+    public List<UserComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<UserComment> comments) {
+        this.comments = comments;
     }
 }

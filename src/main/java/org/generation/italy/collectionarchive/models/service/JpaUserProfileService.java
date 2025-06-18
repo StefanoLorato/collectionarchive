@@ -300,18 +300,26 @@ public class JpaUserProfileService implements UserProfileService{
 
     @Override
     @Transactional
-    public UserComment createUserComment(int userId, int objectId, String comment)
+    public UserComment createUserComment(UserComment uc, int userId, Integer itemId, Integer collectionId, String comment)
             throws DataException, EntityNotFoundException {
         try {
             User user = userRepo.findById(userId)
                     .orElseThrow(() -> new EntityNotFoundException(User.class, userId));
-            Item item = itemRepo.findById(objectId)
-                    .orElseThrow(() -> new EntityNotFoundException(Item.class, objectId));
 
-            UserComment uc = new UserComment();
+            Item i = null;
+            Collection c = null;
+            if(itemId != null) {
+                Optional<Item> oi = itemRepo.findById(itemId);
+                i = oi.orElseThrow(() -> new EntityNotFoundException(Item.class, itemId));
+            }
+            if(collectionId != null) {
+                Optional<Collection> oc = collectionRepo.findById(collectionId);
+                c = oc.orElseThrow(() -> new EntityNotFoundException(Collection.class, collectionId));
+            }
+
             uc.setUser(user);
-            uc.setItem(item);
-            uc.setComment(comment);
+            uc.setItem(i);
+            uc.setCollection(c);
 
             return userCommentRepo.save(uc);
         } catch (PersistenceException e) {

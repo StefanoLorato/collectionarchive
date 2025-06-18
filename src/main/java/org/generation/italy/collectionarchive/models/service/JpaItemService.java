@@ -125,4 +125,9 @@ public class JpaItemService implements ItemService{
         return itemRepo.findByCollectionCollectionIdIsNullAndUserUserId(id);
     }
 
+    @Override
+    public List<Item> findItemByBookmarkUserId(int id) throws DataException {
+        return itemRepo.findByBookmarkUserId(id);
+    }
+
 }

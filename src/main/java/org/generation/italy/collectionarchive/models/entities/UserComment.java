@@ -19,6 +19,9 @@ public class UserComment {
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
+    @ManyToOne
+    @JoinColumn(name = "collection_id")
+    private Collection collection;
     private String comment;
 
     @OneToMany(mappedBy = "comment")
@@ -30,10 +33,11 @@ public class UserComment {
     public UserComment() {
     }
 
-    public UserComment(int commentId, User user, Item item, String comment) {
+    public UserComment(int commentId, User user, Item item, Collection collection, String comment) {
         this.commentId = commentId;
         this.user = user;
         this.item = item;
+        this.collection = collection;
         this.comment = comment;
     }
 
@@ -84,5 +88,13 @@ public class UserComment {
 
     public void setReportedComments(List<Report> reportedComments) {
         this.reportedComments = reportedComments;
+    }
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Collection collection) {
+        this.collection = collection;
     }
 }
