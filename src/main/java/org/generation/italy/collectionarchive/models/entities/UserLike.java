@@ -11,7 +11,7 @@ public class UserLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name= "like_id")
-    private int likeId;
+    private Integer likeId;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -29,17 +29,17 @@ public class UserLike {
     public UserLike() {
     }
 
-    public UserLike(int likeId, User user, Item item, Collection collection) {
+    public UserLike(Integer likeId, User user, Item item, Collection collection) {
         this.likeId = likeId;
         this.user = user;
         this.item = item;
     }
 
-    public int getLikeId() {
+    public Integer getLikeId() {
         return likeId;
     }
 
-    public void setLikeId(int likeId) {
+    public void setLikeId(Integer likeId) {
         this.likeId = likeId;
     }
 

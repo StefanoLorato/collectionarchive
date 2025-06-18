@@ -3,7 +3,7 @@ package org.generation.italy.collectionarchive.restdto;
 import org.generation.italy.collectionarchive.models.entities.UserLike;
 
 public class UserLikeDto {
-    private int likeId;
+    private Integer likeId;
     private Integer userId;
     private Integer itemId;
     private Integer collectionId;
@@ -11,7 +11,7 @@ public class UserLikeDto {
     public UserLikeDto() {
     }
 
-    public UserLikeDto(int likeId, Integer userId, Integer itemId, Integer collectionId) {
+    public UserLikeDto(Integer likeId, Integer userId, Integer itemId, Integer collectionId) {
         this.likeId = likeId;
         this.userId = userId;
         this.itemId = itemId;
@@ -26,6 +26,7 @@ public class UserLikeDto {
     public static UserLikeDto toDto(UserLike ul){
         UserLikeDto dto = new UserLikeDto();
 
+        dto.setLikeId(ul.getLikeId());
         dto.setUserId(ul.getUser().getUserId());
 
         if(ul.getItem() != null){
@@ -37,11 +38,11 @@ public class UserLikeDto {
         return dto;
     }
 
-    public int getLikeId() {
+    public Integer getLikeId() {
         return likeId;
     }
 
-    public void setLikeId(int likeId) {
+    public void setLikeId(Integer likeId) {
         this.likeId = likeId;
     }
 
