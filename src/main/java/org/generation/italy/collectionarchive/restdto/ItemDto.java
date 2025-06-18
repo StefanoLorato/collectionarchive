@@ -1,6 +1,9 @@
 package org.generation.italy.collectionarchive.restdto;
 
+import org.generation.italy.collectionarchive.models.entities.Bookmark;
 import org.generation.italy.collectionarchive.models.entities.Item;
+import org.generation.italy.collectionarchive.models.entities.User;
+import org.generation.italy.collectionarchive.models.entities.UserLike;
 
 import java.time.LocalDate;
 
@@ -22,6 +25,9 @@ public class ItemDto {
     private Boolean forSale;
     private String visibilityStatus;
     private String priceComparation;
+    private boolean liked;
+    private int numLikes;
+    private Integer likeId;
 
     public ItemDto() {
     }
@@ -29,7 +35,8 @@ public class ItemDto {
     public ItemDto(int itemId, Integer collectionId, Integer userId, String itemName, String itemDescription,
                    String itemPhoto, String condition, LocalDate purchaseDate, LocalDate releaseDate,
                    Double purchasePrice, Double salePrice, String itemVersion, String itemEdition,
-                   Boolean forSale, String visibilityStatus) {
+                   Boolean forSale, String visibilityStatus, boolean liked,
+                   int numLikes, Integer likeId) {
         this.itemId = itemId;
         this.collectionId = collectionId;
         this.userId = userId;
@@ -45,6 +52,9 @@ public class ItemDto {
         this.itemEdition = itemEdition;
         this.forSale = forSale;
         this.visibilityStatus = visibilityStatus;
+        this.liked = liked;
+        this.numLikes = numLikes;
+        this.likeId = likeId;
     }
 
     public Item toItem(){
@@ -56,13 +66,17 @@ public class ItemDto {
         return i;
     }
 
-    public static ItemDto toDto(Item i){
+    public static ItemDto toDto(Item i, User loggedUser){
+        int numLikes = i.getItemsLikes().size();
+        boolean isLiked = loggedUser != null && i.getItemsLikes()
+                .stream().anyMatch(l -> l.getUser().equals(loggedUser));
+        Integer likeId = i.getItemsLikes().stream().filter(l -> l.getUser().equals(loggedUser))
+                .findFirst().map(UserLike::getLikeId).orElse(null);
         return new ItemDto(i.getItemId(),(i.getCollection() != null ? i.getCollection().getCollectionId() : null),
                 i.getUser().getUserId(), i.getItemName(), i.getItemDescription(),i.getItemPhoto(),
                 i.getCondition(),i.getPurchaseDate(),i.getReleaseDate(),
                 i.getPurchasePrice(), i.getSalePrice(), i.getItemVersion(),
-                i.getItemEdition(), i.isForSale(), i.getVisibilityStatus());
-
+                i.getItemEdition(), i.isForSale(), i.getVisibilityStatus(), isLiked, numLikes, likeId);
     }
 
     public int getItemId() {
@@ -191,5 +205,33 @@ public class ItemDto {
 
     public void setPriceComparation(String priceComparation) {
         this.priceComparation = priceComparation;
+    }
+
+    public Boolean getForSale() {
+        return forSale;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
+    }
+
+    public int getNumLikes() {
+        return numLikes;
+    }
+
+    public void setNumLikes(int numLikes) {
+        this.numLikes = numLikes;
+    }
+
+    public Integer getLikeId() {
+        return likeId;
+    }
+
+    public void setLikeId(Integer likeId) {
+        this.likeId = likeId;
     }
 }

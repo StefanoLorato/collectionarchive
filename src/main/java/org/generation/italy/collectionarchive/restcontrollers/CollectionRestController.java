@@ -60,7 +60,8 @@ public class CollectionRestController {
                                               @AuthenticationPrincipal User user) throws DataException {
         //TODO da integrare nei filtri
         if(bookmarked != null && bookmarked){
-            List<Collection> collections = collectionService.findAllCollection();
+            List<Collection> collections = collectionService.findCollectionsByBookmarkUserId(user.getUserId());
+            return ResponseEntity.ok(collections.stream().map(c -> CollectionDto.toDto(c, user)).toList());
         }
 
         CollectionDto filters = new CollectionDto();

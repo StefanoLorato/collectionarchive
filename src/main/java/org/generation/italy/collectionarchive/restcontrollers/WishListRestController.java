@@ -43,13 +43,11 @@ public class WishListRestController {
 
     }
     @GetMapping("/collection/{id}")
-    public ResponseEntity<?> getWishListByCollectionId(Integer id) throws DataException {
+    public ResponseEntity<?> getWishListByCollectionId(@PathVariable Integer id) throws DataException {
         List<WishListDto> wishListDtos = wishListService.findWishListByCollectionId(id)
                     .stream().map(WishListDto::toDto).toList();
         return ResponseEntity.ok(wishListDtos);
-
     }
-
 
     @PostMapping
     public ResponseEntity<WishListDto> createWishList(@RequestBody WishListDto dto) throws DataException, EntityNotFoundException {

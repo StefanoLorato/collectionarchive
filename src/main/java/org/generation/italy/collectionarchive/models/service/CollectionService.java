@@ -18,5 +18,5 @@ public interface CollectionService {
     boolean updateCollection(Collection c, int userId, int categoryId) throws DataException, EntityNotFoundException;
     List<Collection> findAllByUserEmail(String email) throws DataException;
     List<Collection> searchCollection(CollectionDto dto) throws DataException;
-
+    List<Collection> findCollectionsByBookmarkUserId(int id) throws DataException;
 }

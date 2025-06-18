@@ -6,6 +6,7 @@ import org.generation.italy.collectionarchive.models.entities.User;
 import org.generation.italy.collectionarchive.models.exceptions.DataException;
 import org.generation.italy.collectionarchive.models.exceptions.EntityNotFoundException;
 import org.generation.italy.collectionarchive.models.service.ItemService;
+import org.generation.italy.collectionarchive.restdto.CollectionDto;
 import org.generation.italy.collectionarchive.restdto.ItemDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,19 +31,19 @@ public class ItemRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getItemById(@PathVariable int id) throws DataException {
+    public ResponseEntity<?> getItemById(@AuthenticationPrincipal User user, @PathVariable int id) throws DataException {
         Optional<Item> c = itemService.findItemById(id);
         if(c.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        ItemDto io = ItemDto.toDto(c.get());
+        ItemDto io = ItemDto.toDto(c.get(), user);
         return ResponseEntity.ok(io);
     }
 
     @GetMapping("/collection/{collectionId}")
-    public ResponseEntity<?> getItemsByCollectionId(@PathVariable("collectionId") int collectionId) {
+    public ResponseEntity<?> getItemsByCollectionId(@AuthenticationPrincipal User user, @PathVariable("collectionId") int collectionId) {
         List<ItemDto> items = itemService.findItemByCollectionId(collectionId)
-                .stream().map(ItemDto::toDto).toList();
+                .stream().map(i -> ItemDto.toDto(i, user)).toList();
         if (items.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -60,7 +61,7 @@ public class ItemRestController {
         // TODO bisognerebbe integrare questa ricerca nella successiva
         if(orphaned){
             List<Item> items = itemService.findOrphanedItemByUserId(user.getUserId());
-            return ResponseEntity.ok(items.stream().map(ItemDto::toDto).toList());
+            return ResponseEntity.ok(items.stream().map(i -> ItemDto.toDto(i, user)).toList());
         }
 
         ItemDto filters = new ItemDto();
@@ -70,19 +71,19 @@ public class ItemRestController {
         filters.setSalePrice(salePrice);
         filters.setPriceComparation(priceComparation);
         List<ItemDto> itemDtos = itemService.searchItem(filters)
-                .stream().map(ItemDto::toDto).toList();
+                .stream().map(i -> ItemDto.toDto(i, user)).toList();
         return ResponseEntity.ok(itemDtos);
     }
 
     @PostMapping
-    public ResponseEntity<ItemDto> createItem(@RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
+    public ResponseEntity<ItemDto> createItem(@AuthenticationPrincipal User user, @RequestBody ItemDto dto) throws DataException, EntityNotFoundException {
         Item c = dto.toItem();
         int userId = dto.getUserId(); // o getUserId() se hai solo l’id
         int collectionId = dto.getCollectionId(); // o getCollectionId()
 
         itemService.createItem(c, userId, collectionId);
 
-        ItemDto saved = ItemDto.toDto(c);
+        ItemDto saved = ItemDto.toDto(c, user);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

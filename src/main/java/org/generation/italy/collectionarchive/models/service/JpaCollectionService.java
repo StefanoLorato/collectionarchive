@@ -118,6 +118,11 @@ public class JpaCollectionService implements CollectionService{
             throw new DataException("errore nella modifica di una collection", pe);
         }
     }
+
+    @Override
+    public List<Collection> findCollectionsByBookmarkUserId(int id) throws DataException {
+        return collectionRepo.findByBookmarkUserId(id);
+    }
 }
 
 
