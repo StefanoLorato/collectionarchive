@@ -42,7 +42,8 @@ public interface UserProfileService {
 
     // USER COMMENT
     List<UserComment> findAllUserComments() throws DataException;
-    Optional<UserComment> findUserCommentById(int id) throws DataException;
+    Optional<UserComment> findCommentById(int id) throws DataException;
+    List<UserComment> findUserCommentByCollectionId(int id) throws DataException;
     UserComment createUserComment(UserComment c, int userId, Integer itemId, Integer collectionId, String comment) throws DataException, EntityNotFoundException;
     boolean updateUserComment(UserComment comment, int userId, int objectId) throws DataException, EntityNotFoundException;
     boolean deleteUserComment(int id) throws DataException;
