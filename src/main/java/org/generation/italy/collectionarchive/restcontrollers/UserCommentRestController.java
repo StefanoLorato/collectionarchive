@@ -29,13 +29,22 @@ public class UserCommentRestController {
 
     // GET all
     @GetMapping
-    public ResponseEntity<?> getAllComments() {
+    public ResponseEntity<?> getAllComments(@RequestParam(required = false) Integer collectionId) {
+        List<UserCommentDto> comments;
         try {
-            List<UserCommentDto> comments = userService.findAllUserComments()
-                    .stream()
-                    .map(UserCommentDto::toDto)
-                    .toList();
-            return ResponseEntity.ok(comments);
+            if (collectionId != null) {
+                comments = userService.findUserCommentByCollectionId(collectionId)
+                        .stream()
+                        .map(UserCommentDto::toDto)
+                        .toList();
+                return ResponseEntity.ok(comments);
+            } else {
+                comments = userService.findAllUserComments()
+                        .stream()
+                        .map(UserCommentDto::toDto)
+                        .toList();
+                return ResponseEntity.ok(comments);
+            }
         } catch (DataException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -45,9 +54,12 @@ public class UserCommentRestController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getCommentById(@PathVariable int id) {
         try {
-            Optional<UserComment> comment = userService.findUserCommentById(id);
-            return comment.map(c -> ResponseEntity.ok(UserCommentDto.toDto(c)))
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+            Optional<UserComment> comment = userService.findCommentById(id);
+            if(comment.isEmpty()){
+                return ResponseEntity.notFound().build();
+            }
+            UserCommentDto dto = UserCommentDto.toDto(comment.get());
+            return ResponseEntity.ok(dto);
         } catch (DataException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

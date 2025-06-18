@@ -290,7 +290,16 @@ public class JpaUserProfileService implements UserProfileService{
     }
 
     @Override
-    public Optional<UserComment> findUserCommentById(int id) throws DataException {
+    public List<UserComment> findUserCommentByCollectionId(int collectionId) throws DataException {
+        try {
+            return userCommentRepo.findByCollectionCollectionId(collectionId);
+        } catch (PersistenceException e) {
+            throw new DataException("Errore nel recupero dei commenti per la collection", e);
+        }
+    }
+
+    @Override
+    public Optional<UserComment> findCommentById(int id) throws DataException {
         try {
             return userCommentRepo.findById(id);
         } catch (PersistenceException e) {

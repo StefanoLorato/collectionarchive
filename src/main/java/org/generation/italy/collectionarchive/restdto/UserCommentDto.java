@@ -9,6 +9,7 @@ public class UserCommentDto {
     private Integer itemId;
     private Integer collectionId;
     private String comment;
+    private String name;
 
     public UserCommentDto() {
     }
@@ -31,6 +32,8 @@ public class UserCommentDto {
 
         dto.setCommentId(uc.getCommentId());
         dto.setUserId(uc.getUser().getUserId());
+        dto.setComment(uc.getComment());
+        dto.setName(uc.getUser().getName());
 
         if(uc.getItem() != null){
             dto.setItemId(uc.getItem().getItemId());
@@ -41,7 +44,13 @@ public class UserCommentDto {
         return dto;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getCommentId() {
         return commentId;
