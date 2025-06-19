@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface DiscussionRepository extends JpaRepository<Discussion, Integer> {
     List<Discussion> findByCollectionCollectionIdAndBuyerUserId(int collectionId, int buyerId);
+    List<Discussion> findByBuyerUserId(int buyerId);
+    List<Discussion> findBySellerUserId(int sellerId);
+
     @Query("SELECT DISTINCT d FROM Discussion d WHERE d.buyer.userId = :id OR d.seller.userId = :id")
     List<Discussion> findByBuyerUserIdAndSellerUserId(@Param("id") int id);
 }

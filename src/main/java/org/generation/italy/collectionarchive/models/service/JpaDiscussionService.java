@@ -82,4 +82,11 @@ public class JpaDiscussionService implements DiscussionService {
     public List<Discussion> getDiscussionsByUserId(int id) throws DataException {
         return discussionRepository.findByBuyerUserIdAndSellerUserId(id);
     }
+
+    @Override
+    public List<List<Discussion>> getDiscussionByBuyerAndSeller(int userId) throws DataException {
+        List<Discussion> buyerList = discussionRepository.findByBuyerUserId( userId);
+        List<Discussion> sellerList = discussionRepository.findBySellerUserId( userId);
+        return List.of(buyerList, sellerList);
+    }
 }

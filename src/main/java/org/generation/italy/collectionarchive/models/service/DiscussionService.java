@@ -13,4 +13,5 @@ public interface DiscussionService {
     List<Discussion> getAllDiscussions() throws DataException;
     List<Discussion> getDiscussionByCollectionIdAndUserId(int collectionId, int userId) throws DataException;
     List<Discussion> getDiscussionsByUserId(int id) throws DataException;
+    List<List<Discussion>> getDiscussionByBuyerAndSeller(int userId) throws DataException;
 }

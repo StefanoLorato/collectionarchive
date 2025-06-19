@@ -77,8 +77,15 @@ public class DiscussionRestController {
         List<DiscussionDto> dtos = discussionService.getDiscussionsByUserId(id)
                 .stream().map(d -> DiscussionDto.toDto(d, true)).toList();
         return ResponseEntity.ok(dtos);
+    }
 
-
+    @GetMapping("/logged-user/buyer-and-seller")
+    public ResponseEntity<List<List<DiscussionDto>>> getDiscussionForUser(@AuthenticationPrincipal User user) throws DataException{
+        var discussions = discussionService.getDiscussionByBuyerAndSeller(user.getUserId());
+        var buyerDiscussionDto = discussions.getFirst().stream().map(d -> DiscussionDto.toDto(d, true)).toList();
+        var sellerDiscussionDto = discussions.getLast().stream().map(d -> DiscussionDto.toDto(d, true)).toList();
+        List<List<DiscussionDto>> dtoList = List.of(buyerDiscussionDto, sellerDiscussionDto);
+        return ResponseEntity.ok(dtoList);
     }
 
 }
