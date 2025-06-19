@@ -142,7 +142,7 @@ CREATE TABLE items (
     CONSTRAINT FK_item_collection FOREIGN KEY (collection_id) REFERENCES collections(collection_id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT FK_item_user FOREIGN KEY (user_id) REFERENCES users(user_id),
     CONSTRAINT "CHK_purchase_price" CHECK (purchase_price IS NULL OR purchase_price > 0),
-    CONSTRAINT "CHK_sale_price" CHECK (sale_price IS NULL OR sale_price > 0) NOT VALID,
+    CONSTRAINT "CHK_sale_price" CHECK (sale_price IS NULL OR sale_price >= 0) NOT VALID,
 	CONSTRAINT "CHK_visibility_status" CHECK (visibility_status IN ('visible', 'sold', 'deleted', 'archived'))
 );
 

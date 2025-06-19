@@ -11,7 +11,7 @@ public class Discussion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "discussion_id")
-    private int discussionId;
+    private Integer discussionId;
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
@@ -31,7 +31,7 @@ public class Discussion {
     public Discussion() {
     }
 
-    public Discussion(int discussionId, User buyer, User seller, Item item, Collection collection) {
+    public Discussion(Integer discussionId, User buyer, User seller, Item item, Collection collection) {
         this.discussionId = discussionId;
         this.buyer = buyer;
         this.seller = seller;
@@ -39,10 +39,10 @@ public class Discussion {
         this.collection = collection;
     }
 
-    public int getDiscussionId() {
+    public Integer getDiscussionId() {
         return discussionId;
     }
-    public void setDiscussionId(int discussionId) {
+    public void setDiscussionId(Integer discussionId) {
         this.discussionId = discussionId;
     }
 
@@ -79,5 +79,9 @@ public class Discussion {
     }
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public void addMessage(Message m) {
+        messages.add(m);
     }
 }

@@ -13,6 +13,9 @@ import org.generation.italy.collectionarchive.restdto.DiscussionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class JpaDiscussionService implements DiscussionService {
 
@@ -58,5 +61,25 @@ public class JpaDiscussionService implements DiscussionService {
         Discussion saved = discussionRepository.save(discussion);
 
         return saved;
+    }
+
+    @Override
+    public Optional<Discussion> findDiscussionById(int id) throws DataException {
+        return discussionRepository.findById(id);
+    }
+
+    @Override
+    public List<Discussion> getAllDiscussions() throws DataException {
+        return discussionRepository.findAll();
+    }
+
+    @Override
+    public List<Discussion> getDiscussionByCollectionIdAndUserId(int collectionId, int userId) throws DataException {
+        return discussionRepository.findByCollectionCollectionIdAndBuyerUserId(collectionId, userId);
+    }
+
+    @Override
+    public List<Discussion> getDiscussionsByUserId(int id) throws DataException {
+        return discussionRepository.findByBuyerUserIdAndSellerUserId(id);
     }
 }

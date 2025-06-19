@@ -14,6 +14,8 @@ public class MessageDto {
     private Integer receiverId;
     private String content;
     private LocalDateTime sentAt;
+    private String senderName;
+    private String receiverName;
 
     public MessageDto() {}
 
@@ -44,8 +46,24 @@ public class MessageDto {
     public LocalDateTime getSentAt() { return sentAt; }
     public void setSentAt(LocalDateTime sentAt) { this.sentAt = sentAt; }
 
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
     public static MessageDto toDto(Message m) {
-        return new MessageDto(
+        MessageDto dto = new MessageDto(
                 m.getMessageId(),
                 m.getDiscussion().getDiscussionId(),
                 m.getSender().getUserId(),
@@ -53,6 +71,10 @@ public class MessageDto {
                 m.getContent(),
                 m.getSentAt()
         );
+
+        dto.setSenderName(m.getSender().getName());
+        dto.setReceiverName(m.getReceiver().getName());
+        return dto;
     }
 
     public Message toMessage() {

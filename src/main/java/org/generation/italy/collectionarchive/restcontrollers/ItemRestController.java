@@ -33,9 +33,7 @@ public class ItemRestController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getItemById(@AuthenticationPrincipal User user, @PathVariable int id) throws DataException {
         Optional<Item> c = itemService.findItemById(id);
-        if(c.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
+
         ItemDto io = ItemDto.toDto(c.get(), user);
         return ResponseEntity.ok(io);
     }

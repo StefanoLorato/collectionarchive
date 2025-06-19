@@ -44,7 +44,8 @@ public class JpaMessageService implements MessageService{
         User receiver = userRepository.findById(receiverId)
                 .orElseThrow(() -> new ReceiverNotFoundException("Ricevente non trovato!"));
 
-
+        System.out.println("buyer:" + discussion.getBuyer().getUserId() + "seller" + discussion.getSeller().getUserId());
+        System.out.println("sender:" + senderId + "receiver" + receiverId);
         if (!((discussion.getBuyer().equals(sender) && discussion.getSeller().equals(receiver)) ||
                 (discussion.getSeller().equals(sender) && discussion.getBuyer().equals(receiver)))) {
             throw new IllegalArgumentException("Mittente e ricevente non corrispondono alla discussione!");
